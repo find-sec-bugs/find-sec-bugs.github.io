@@ -39,11 +39,11 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Find Security Bugs</a>
+            <a class="navbar-brand" href="/">Find Security Bugs</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class=''><a href="index.htm">Home</a></li>
+                <li class=''><a href="/">Home</a></li>
                 <li class="dropdown ">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">How To <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
@@ -99,8 +99,8 @@
             
 <p>The use of a predictable random value can lead to vulnerabilities when used in certain security critical contexts. For example, when the value is used as:</p>
 <ul>
-<li>a CSRF token</li>
-<li>a password reset token (sent by email)</li>
+<li>a CSRF token: a predictable token can lead to a CSRF attack as an attacker will know the value of the token</li>
+<li>a password reset token (sent by email): a predictable password token can lead to an account takeover, since an attacker will guess the URL of the change password form</li>
 <li>any other secret value</li>
 </ul>
 <p>
@@ -461,7 +461,7 @@ that looks at the end of the filename (e.g., endswith ".log") to make sure its a
     </section>
     
     <section>
-        <a class="anchor" name="WEAK_TRUST_MANAGER"></a><h2 class="page-header">TrustManager implementation empty  <a href="#WEAK_TRUST_MANAGER" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="WEAK_TRUST_MANAGER"></a><h2 class="page-header">TrustManager that accept any certificates  <a href="#WEAK_TRUST_MANAGER" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
 
         
             
@@ -479,7 +479,7 @@ Detailed information for a proper implementation is at:
 <br/>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre>class WeakTrustManager implements X509TrustManager {
+<pre>class TrustAllManager implements X509TrustManager {
 
     @Override
     public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
@@ -494,6 +494,55 @@ Detailed information for a proper implementation is at:
     @Override
     public X509Certificate[] getAcceptedIssuers() {
         return null;
+    }
+}</pre>
+</p>
+<br/>
+<p>
+    <b>Solution (TrustMangager based on a keystore):</b><br/>
+<pre>KeyStore ks = //Load keystore containing the certificates trusted
+
+SSLContext sc = SSLContext.getInstance("TLS");
+
+TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
+tmf.init(ks);
+
+sc.init(kmf.getKeyManagers(), tmf.getTrustManagers(),null);
+</pre>
+</p>
+<br/>
+<p>
+<b>References</b><br/>
+<a href="http://projects.webappsec.org/w/page/13246945/Insufficient%20Transport%20Layer%20Protection">WASC-04: Insufficient Transport Layer Protection</a><br/>
+<a href="http://cwe.mitre.org/data/definitions/295.html">CWE-295: Improper Certificate Validation</a>
+</p>
+
+        
+    </section>
+    
+    <section>
+        <a class="anchor" name="WEAK_HOSTNAME_VERIFIER"></a><h2 class="page-header">HostnameVerifier that accept any signed certificates  <a href="#WEAK_HOSTNAME_VERIFIER" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+
+        
+            
+<p>HostnameVerifier that accept any host are often use because of certificate reuse on many hosts.
+As a consequence, this is vulnerable to
+<a href="http://en.wikipedia.org/wiki/Man-in-the-middle_attack">Man-in-the-middle attacks</a>
+since the client will trust any certificate.
+</p>
+<p>
+A TrustManager allowing specific certificates (based on a truststore for example) should be built.
+Wildcard certificates should be created for reused on multiples subdomains.
+Detailed information for a proper implementation is at:
+<a href="http://stackoverflow.com/a/6378872/89769">[1]</a>
+<a href="http://stackoverflow.com/a/5493452/89769">[2]</a>
+</p>
+<br/>
+<p>
+    <b>Vulnerable Code:</b><br/>
+<pre>public class AllHosts implements HostnameVerifier {
+    public boolean verify(final String hostname, final SSLSession session) {
+        return true;
     }
 }</pre>
 </p>
@@ -687,7 +736,7 @@ mapped in this way are properly validated before they are used.</p>
 <p>
 <b>References</b><br/>
 [1] <a href="http://www.win.tue.nl/hashclash/On%20Collisions%20for%20MD5%20-%20M.M.J.%20Stevens.pdf">On Collisions for MD5</a>: Master Thesis by M.M.J. Stevens<br/>
-[2] <a href="">Chosen-prefix collisions for MD5 and applications</a>: Paper written by Marc Stevens<br/>
+[2] <a href="http://homepages.cwi.nl/~stevens/papers/stJOC%20-%20Chosen-Prefix%20Collisions%20for%20MD5%20and%20Applications.pdf">Chosen-prefix collisions for MD5 and applications</a>: Paper written by Marc Stevens<br/>
 <a href="https://en.wikipedia.org/wiki/MD5">Wikipedia: MD5</a><br/>
 <a href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar1.pdf">NIST: Transitions: Recommendation for Transitioning the Use of Cryptographic Algorithms and Key Lengths</a><br/>
 <a href="http://csrc.nist.gov/publications/nistpubs/800-132/nist-sp800-132.pdf">NIST: Recommendation for Password-Based Key Derivation</a><br/>
@@ -770,8 +819,18 @@ uses. <b>PBKDF2</b> should be use to hash password for example.</p>
         
             
 <p>Implementing a custom MessageDigest is error-prone.</p>
-<p><a href="http://csrc.nist.gov/groups/ST/toolkit/secure_hashing.html">NIST</a> recommends the use of SHA-1, SHA-224*, SHA-256, SHA-384, SHA-512, SHA-512/224, or SHA-512/256.</p>
-<p><small>* SHA-224 algorithm is not provided by <a href="http://docs.oracle.com/javase/6/docs/technotes/guides/security/SunProviders.html#SUNProvider"> SUN provider.</a></small></p>
+<p><a href="http://csrc.nist.gov/groups/ST/toolkit/secure_hashing.html">NIST</a> recommends the use of SHA-224, SHA-256, SHA-384, SHA-512, SHA-512/224, or SHA-512/256.</p>
+<blockquote>
+    "<b>SHA-1 for digital signature generation:</b><br/>
+    SHA-1 may only be used for digital signature generation where specifically allowed by NIST protocol-specific guidance.
+    For all other applications, <u>SHA-1 shall not be used for digital signature generation</u>.<br/>
+    <b>SHA-1 for digital signature verification:</b><br/>
+    For digital signature verification, <u>SHA-1 is allowed for legacy-use</u>.<br/>
+    [...]<br/>
+    <b>SHA-224, SHA-256, SHA-384, SHA-512, SHA-512/224, and SHA-512/256</b>:<br/>
+    The use of these hash functions is acceptable for all hash function applications."<br/>
+    - <a href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar1.pdf">NIST: Transitions: Recommendation for Transitioning the Use of Cryptographic Algorithms and Key Lengths p.15</a>
+</blockquote>
 <p>
     <b>Vulnerable Code:</b><br/>
 <pre>MyProprietaryMessageDigest extends MessageDigest {
@@ -904,9 +963,13 @@ SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
 
 parser.parse(inputStream, customHandler);</pre>
 </p>
+<br/>
+The following snippets show 2 available solutions, you can set one or the two solutions. If you want to be more secure, it is highly recommended to implement the two following snippet code.
+<br/><br/>
 
 <p><b>Solution using "Secure processing" mode:</b></p>
 <p>
+This setting will protect you against Denial of Service attack.
 <pre>
 SAXParserFactory spf = SAXParserFactory.newInstance();
 spf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
@@ -917,6 +980,7 @@ parser.parse(inputStream, customHandler);</pre>
 
 <p><b>Solution disabling DTD:</b></p>
 <p>
+By disabling DTD, almost all XXE attacks will be prevented.
 <pre>
 SAXParserFactory spf = SAXParserFactory.newInstance();
 spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
@@ -988,9 +1052,14 @@ XMLReader reader = XMLReaderFactory.createXMLReader();
 reader.setContentHandler(customHandler);
 reader.parse(new InputSource(inputStream));</pre>
 </p>
+<br/>
+
+The following snippets show 2 available solutions, you can set one or the two solutions. If you want to be more secure, it is highly recommended to implement the two following snippet code.
+<br/><br/>
 
 <p><b>Solution using "Secure processing" mode:</b></p>
 <p>
+This setting will protect you against Denial of Service attack.
 <pre>
 XMLReader reader = XMLReaderFactory.createXMLReader();
 reader.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
@@ -1001,6 +1070,7 @@ reader.parse(new InputSource(inputStream));</pre>
 
 <p><b>Solution disabling DTD:</b></p>
 <p>
+By disabling DTD, almost all XXE attacks will be prevented.
 <pre>
 XMLReader reader = XMLReaderFactory.createXMLReader();
 reader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
@@ -1072,9 +1142,14 @@ DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
 Document doc = db.parse(input);</pre>
 </p>
+<br/>
+
+The following snippets show 2 available solutions, you can set one or the two solutions. If you want to be more secure, it is highly recommended to implement the two following snippet code.
+<br/><br/>
 
 <p><b>Solution using "Secure processing" mode:</b></p>
 <p>
+This setting will protect you against Denial of Service attack.
 <pre>
 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
@@ -1085,6 +1160,7 @@ Document doc = db.parse(input);</pre>
 
 <p><b>Solution disabling DTD:</b></p>
 <p>
+By disabling DTD, almost all XXE attacks will be prevented.
 <pre>
 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
@@ -1764,7 +1840,7 @@ In this situation, the use of toHexString() should be replaced with String.forma
 <p>
 <b>References</b><br/>
 <a href="http://projects.webappsec.org/w/page/13246945/Insufficient%20Transport%20Layer%20Protection">WASC-04: Insufficient Transport Layer Protection</a><br/>
-<a href="http://www.hazelcast.com/documentation.jsp#Encryption">Hazelcast Documentation: Encryption (see second part)</a><br/>
+<a href="http://docs.hazelcast.org/docs/3.5/manual/html/encryption.html">Hazelcast Documentation: Encryption</a><br/>
 <a href="http://cwe.mitre.org/data/definitions/326.html">CWE-326: Inadequate Encryption Strength</a>
 </p>
 
@@ -1996,7 +2072,7 @@ various blog sites. <sup><a href="http://java.dzone.com/articles/stronger-anti-c
 The filtering is weak for a few reasons:
 <ul>
 <li>It covers only parameters not headers and side-channel inputs</li>
-<li>The replace chain can be bypass easily (see example below)</li>
+<li>The replace chain can be bypassed easily (see example below)</li>
 <li>It's a black list of very specific bad patterns (rather than a white list of good/valid input)</li>
 </ul>
 </p>
@@ -2181,7 +2257,8 @@ attacker gets the ability to execute any code.
 
         
             
-<p></p>
+<p>A Spring expression is built with a dynamic value. The source of the value(s) should be verified to avoid that unfiltered values fall into this risky code evaluation.
+</p>
 <p>
     <b>Vulnerable Code:</b>
     <pre>&lt;%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %&gt;
@@ -2201,8 +2278,8 @@ attacker gets the ability to execute any code.
 <br/>
 <p>
 <b>References</b><br/>
-<a href="http://resources.infosecinstitute.com/file-inclusion-attacks/">InfosecInstitute: File Inclusion Attacks</a><br/>
-<a href="http://projects.webappsec.org/w/page/13246955/Remote%20File%20Inclusion">WASC-05: Remote File Inclusion</a><br/>
+    <a href="http://cwe.mitre.org/data/definitions/94.html">CWE-94: Improper Control of Generation of Code ('Code Injection')</a><br/>
+    <a href="http://cwe.mitre.org/data/definitions/95.html">CWE-95: Improper Neutralization of Directives in Dynamically Evaluated Code ('Eval Injection')</a><br/>
 </p>
             
         
@@ -2506,7 +2583,12 @@ byte[] cipherText = c.doFinal(plainText);</pre>
     it is always recommended that you be able to verify the HMAC first, and only if the data is unmodified, do you then perform any cryptographic
     functions on the data.
 </p>
-<p>
+<p>The following modes are vulnerable because they don't provide a HMAC:<br/>
+    - CBC<br/>
+    - OFB<br/>
+    - CTR<br/>
+    - ECB<br/><br/>
+    The following snippets code are some examples of vulnerable code.<br/><br/>
     <b>Code at risk:</b><br/>
     <i>AES in CBC mode</i><br/>
 
@@ -2555,7 +2637,7 @@ In the example solution above, the GCM mode introduces an HMAC into the resultin
     This issue is corrected in ESAPI version 2.1.0. Versions <= 2.0.1 are vulnerable to a MAC bypass (CVE-2013-5679).<br/>
 </p>
 <p>
-    For Maven users, the plugin <a href="http://mojo.codehaus.org/versions-maven-plugin/">versions</a> can called using the 
+    For Maven users, the plugin <a href="http://mojo.codehaus.org/versions-maven-plugin/">versions</a> can be called using the
     following command. The effective version of ESAPI will be available in the output.<br/>
     <pre>$ mvn versions:display-dependency-updates</pre>
     <br/>Output:<br/>
@@ -2845,7 +2927,7 @@ webSettings.setJavaScriptEnabled(true);
 
 <p>
     <b>Code at risk:</b><br/>
-Enabling is JavaScript is not a bad practice. It just means that the backend code need to be audit for potential XSS.
+Enabling JavaScript is not a bad practice. It just means that the backend code need to be audited for potential XSS.
 The XSS can also be introduce client-side with DOM XSS.
 <pre>
 function updateDescription(newDescription) {
@@ -2873,8 +2955,8 @@ function updateDescription(newDescription) {
         
             
 <p>
-    The use JavaScript Interface could expose the WebView to risky API. If an XSS is trigger in the WebView, the class
-    could be call by the malicious JavaScript code.
+    The use of JavaScript Interface could expose the WebView to risky API. If an XSS is triggered in the WebView, the class
+    could be called by the malicious JavaScript code.
 </p>
 
 <p>
@@ -2934,7 +3016,7 @@ response.addCookie(cookie);
 <b>Solution (Specific configuration):</b><br/>
 <pre>
 Cookie cookie = new Cookie("userName",userName);
-cookie.setSecure(true);
+cookie.setSecure(true); // Secure flag
 cookie.setHttpOnly(true);
 </pre>
 </p>
@@ -2967,16 +3049,70 @@ cookie.setHttpOnly(true);
     </section>
     
     <section>
+        <a class="anchor" name="HTTPONLY_COOKIE"></a><h2 class="page-header">Cookie without the HttpOnly flag  <a href="#HTTPONLY_COOKIE" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+
+        
+            
+<p>
+A new cookie is created without the <code>HttpOnly</code> flag set.
+The <code>HttpOnly</code> flag is a directive to the browser to make sure that the cookie can not be red by
+malicious script. When a user is the target of a "Cross-Site Scripting", the attacker would benefit greatly from getting
+the session id for example.
+</p>
+
+<p>
+<b>Code at risk:</b><br/>
+<pre>
+Cookie cookie = new Cookie("email",userName);
+response.addCookie(cookie);
+</pre>
+</p>
+
+<p>
+<b>Solution (Specific configuration):</b><br/>
+<pre>
+Cookie cookie = new Cookie("email",userName);
+cookie.setSecure(true);
+cookie.setHttpOnly(true); //HttpOnly flag
+</pre>
+</p>
+
+<p>
+<b>Solution (Servlet 3.0 configuration):</b><br/>
+<pre>
+&lt;web-app xmlns="http://java.sun.com/xml/ns/javaee" version="3.0"&gt;
+[...]
+&lt;session-config&gt;
+ &lt;cookie-config&gt;
+  &lt;http-only&gt;true&lt;/http-only&gt;
+  &lt;secure&gt;true&lt;/secure&gt;
+ &lt;/cookie-config&gt;
+&lt;/session-config&gt;
+&lt;/web-app&gt;
+</pre>
+</p>
+<br/>
+<p>
+<b>Reference</b><br/>
+<a href="http://blog.codinghorror.com/protecting-your-cookies-httponly/">Coding Horror blog: Protecting Your Cookies: HttpOnly</a><br/>
+<a href="https://www.owasp.org/index.php/HttpOnly">OWASP: HttpOnly</a><br/>
+<a href="https://www.rapid7.com/db/vulnerabilities/http-cookie-http-only-flag">Rapid7: Missing HttpOnly Flag From Cookie</a>
+</p>
+
+        
+    </section>
+    
+    <section>
         <a class="anchor" name="OBJECT_DESERIALIZATION"></a><h2 class="page-header">Object deserialization is used  <a href="#OBJECT_DESERIALIZATION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
 
         
             
 <p>
-    Object deserialization of untrusted data can lead to remote code execution, if there is a class in classpath allow
+    Object deserialization of untrusted data can lead to remote code execution, if there is a class in classpath that allows
     the trigger of malicious operation.
 </p>
 <p>
-    Libraries developers tend to fix class that provided potential malicious trigger. Their are still classes that are
+    Libraries developers tend to fix class that provided potential malicious trigger. There are still classes that are
     known to trigger Denial of Service<sup>[1]</sup>.
 </p>
 <p>
