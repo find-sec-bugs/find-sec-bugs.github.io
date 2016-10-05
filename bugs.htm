@@ -473,6 +473,57 @@ by the user. If that is the case, the reported instance is a false positive.</p>
     </section>
     
     <section>
+        <a class="anchor" name="SCALA_PATH_TRAVERSAL_IN"></a><h2 class="page-header">Potential Path Traversal (file read)  <a href="#SCALA_PATH_TRAVERSAL_IN" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+
+        
+            
+<p>A file is opened to read its content. The filename comes from an <b>input</b> parameter.
+If an unfiltered parameter is passed to this file API, files from an arbitrary filesystem location could be read.</p>
+<p>This rule identifies <b>potential</b> path traversal vulnerabilities. In many cases, the constructed file path cannot be controlled
+by the user. If that is the case, the reported instance is a false positive.</p>
+<br/>
+
+<p>
+    <b>Vulnerable Code:</b><br/>
+<pre>def getWordList(value:String) = Action {
+  if (!Files.exists(Paths.get("public/lists/" + value))) {
+    NotFound("File not found")
+  } else {
+    val result = Source.fromFile("public/lists/" + value).getLines().mkString // Weak point
+    Ok(result)
+  }
+}</pre>
+</p>
+<br/>
+
+<p>
+    <b>Solution:</b><br/>
+<pre>import org.apache.commons.io.FilenameUtils;
+
+def getWordList(value:String) = Action {
+  val filename = "public/lists/" + FilenameUtils.getName(value)
+
+  if (!Files.exists(Paths.get(filename))) {
+    NotFound("File not found")
+  } else {
+    val result = Source.fromFile(filename).getLines().mkString // Weak point
+    Ok(result)
+  }
+}</pre>
+</p>
+<br/>
+<p>
+<b>References</b><br/>
+<a href="http://projects.webappsec.org/w/page/13246952/Path%20Traversal">WASC: Path Traversal</a><br/>
+<a href="https://www.owasp.org/index.php/Path_Traversal">OWASP: Path Traversal</a><br/>
+<a href="http://capec.mitre.org/data/definitions/126.html">CAPEC-126: Path Traversal</a><br/>
+<a href="http://cwe.mitre.org/data/definitions/22.html">CWE-22: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')</a>
+</p>
+
+        
+    </section>
+    
+    <section>
         <a class="anchor" name="COMMAND_INJECTION"></a><h2 class="page-header">Potential Command Injection  <a href="#COMMAND_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
 
         
@@ -506,7 +557,7 @@ r.exec("/bin/sh -c some_tool" + input);</pre>
 <p>
     <b>Vulnerable Code:</b><br/>
 <pre>def executeCommand(value:String) = Action {
-    val result = "".!
+    val result = value.!
     Ok("Result:\n"+result)
 }</pre>
 </p>
@@ -1006,6 +1057,98 @@ regex meant, this new regex can be evaluated quickly, and is not subject to ReDO
     </section>
     
     <section>
+        <a class="anchor" name="XXE_XMLSTREAMREADER"></a><h2 class="page-header">XML parsing vulnerable to XXE (XMLStreamReader)  <a href="#XXE_XMLSTREAMREADER" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+
+        
+            
+<!--XXE_GENERIC_START-->
+<h3>Attack</h3>
+<p>XML External Entity (XXE) attacks can occur when an XML parser supports XML entities while processing XML received
+from an untrusted source.</p>
+<p><b>Risk 1: Expose local file content (XXE: <u>X</u>ML e<u>X</u>ternal <u>E</u>ntity)</b></p>
+<p>
+<pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+&lt;!DOCTYPE foo [
+   &lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot; &gt; ]&gt;
+&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</pre>
+</p>
+<b>Risk 2: Denial of service (XEE: <u>X</u>ml <u>E</u>ntity <u>E</u>xpansion)</b>
+<p>
+<pre>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;!DOCTYPE lolz [
+ &lt;!ENTITY lol &quot;lol&quot;&gt;
+ &lt;!ELEMENT lolz (#PCDATA)&gt;
+ &lt;!ENTITY lol1 &quot;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&quot;&gt;
+ &lt;!ENTITY lol2 &quot;&amp;lol1;&amp;lol1;&amp;lol1;&amp;lol1;&amp;lol1;&amp;lol1;&amp;lol1;&amp;lol1;&amp;lol1;&amp;lol1;&quot;&gt;
+ &lt;!ENTITY lol3 &quot;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&quot;&gt;
+[...]
+ &lt;!ENTITY lol9 &quot;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&quot;&gt;
+]&gt;
+&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;</pre>
+</p>
+
+<h3>Solution</h3>
+<p>
+In order to avoid exposing dangerous feature of the XML parser, you can do the following change to the code.
+</p>
+<!--XXE_GENERIC_END-->
+
+<p><b>Vulnerable Code:</b></p>
+<p>
+<pre>public void parseXML(InputStream input) throws XMLStreamException {
+
+    XMLInputFactory factory = XMLInputFactory.newFactory();
+    XMLStreamReader reader = factory.createXMLStreamReader(input);
+    [...]
+}</pre>
+</p>
+<br/>
+<p>
+The following snippets show two available solutions. You can set one property or both.
+</p>
+
+<p><b>Solution disabling External Entities:</b></p>
+<p>
+<pre>public void parseXML(InputStream input) throws XMLStreamException {
+
+    XMLInputFactory factory = XMLInputFactory.newFactory();
+    factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+    XMLStreamReader reader = factory.createXMLStreamReader(input);
+    [...]
+}</pre>
+</p>
+
+<p><b>Solution disabling DTD:</b></p>
+<p>
+<pre>public void parseXML(InputStream input) throws XMLStreamException {
+
+    XMLInputFactory factory = XMLInputFactory.newFactory();
+    factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+    XMLStreamReader reader = factory.createXMLStreamReader(input);
+    [...]
+}</pre>
+</p>
+<br/>
+<p>
+<b>References</b><br/>
+<!--XXE_GENERIC_START-->
+<a href="http://cwe.mitre.org/data/definitions/611.html">CWE-611: Improper Restriction of XML External Entity Reference ('XXE')</a><br/>
+<a href="https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=61702260">CERT: IDS10-J. Prevent XML external entity attacks</a><br/>
+<a href="https://www.owasp.org/index.php/XML_External_Entity_%28XXE%29_Processing">OWASP.org: XML External Entity (XXE) Processing</a><br/>
+<a href="http://www.ws-attacks.org/index.php/XML_Entity_Expansion">WS-Attacks.org: XML Entity Expansion</a><br/>
+<a href="http://www.ws-attacks.org/index.php/XML_External_Entity_DOS">WS-Attacks.org: XML External Entity DOS</a><br/>
+<a href="http://www.ws-attacks.org/index.php/XML_Entity_Reference_Attack">WS-Attacks.org: XML Entity Reference Attack</a><br/>
+<a href="http://blog.h3xstream.com/2014/06/identifying-xml-external-entity.html">Identifying Xml eXternal Entity vulnerability (XXE)</a><br/>
+<!--XXE_GENERIC_END-->
+<a href="http://openjdk.java.net/jeps/185">JEP 185: Restrict Fetching of External XML Resources</a>
+</p>
+
+        
+    </section>
+    
+    <section>
         <a class="anchor" name="XXE_SAXPARSER"></a><h2 class="page-header">XML parsing vulnerable to XXE (SAXParser)  <a href="#XXE_SAXPARSER" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
 
         
@@ -1052,12 +1195,13 @@ SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
 parser.parse(inputStream, customHandler);</pre>
 </p>
 <br/>
-The following snippets show 2 available solutions, you can set one or the two solutions. If you want to be more secure, it is highly recommended to implement the two following snippet code.
-<br/><br/>
+<p>
+The following snippets show two available solutions. You can set one feature or both.
+</p>
 
 <p><b>Solution using "Secure processing" mode:</b></p>
 <p>
-This setting will protect you against Denial of Service attack.
+This setting will protect you against Denial of Service attack and remote file access.
 <pre>
 SAXParserFactory spf = SAXParserFactory.newInstance();
 spf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
@@ -1141,13 +1285,13 @@ reader.setContentHandler(customHandler);
 reader.parse(new InputSource(inputStream));</pre>
 </p>
 <br/>
-
-The following snippets show 2 available solutions, you can set one or the two solutions. If you want to be more secure, it is highly recommended to implement the two following snippet code.
-<br/><br/>
+<p>
+The following snippets show two available solutions. You can set one property or both.
+</p>
 
 <p><b>Solution using "Secure processing" mode:</b></p>
 <p>
-This setting will protect you against Denial of Service attack.
+This setting will protect you against Denial of Service attack and remote file access.
 <pre>
 XMLReader reader = XMLReaderFactory.createXMLReader();
 reader.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
@@ -1231,13 +1375,13 @@ DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 Document doc = db.parse(input);</pre>
 </p>
 <br/>
-
-The following snippets show 2 available solutions, you can set one or the two solutions. If you want to be more secure, it is highly recommended to implement the two following snippet code.
-<br/><br/>
+<p>
+The following snippets show two available solutions. You can set one feature or both.
+</p>
 
 <p><b>Solution using "Secure processing" mode:</b></p>
 <p>
-This setting will protect you against Denial of Service attack.
+This setting will protect you against Denial of Service attack and remote file access.
 <pre>
 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
@@ -3428,6 +3572,182 @@ Path traversal <sup>[3][4]</sup> are not possible.
 <a href="https://www.w3.org/TR/xslt">w3.org XSL Transformations (XSLT) Version 1.0</a> : w3c specification<br/>
 [3] <a href="http://projects.webappsec.org/w/page/13246952/Path%20Traversal">WASC: Path Traversal</a><br/>
 [4] <a href="https://www.owasp.org/index.php/Path_Traversal">OWASP: Path Traversal</a><br/>
+</p>
+            
+        
+    </section>
+    
+    <section>
+        <a class="anchor" name="SCALA_SENSITIVE_DATA_EXPOSURE"></a><h2 class="page-header">Potential information leakage in Scala Play  <a href="#SCALA_SENSITIVE_DATA_EXPOSURE" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+
+        
+            
+<p>
+    Applications can unintentionally leak information about their configuration, internal workings, or violate privacy through a
+    variety of application problems. <sup>[1]</sup> Pages that provide different responses based on the validity of the data can
+    lead to Information Leakage; specifically when data deemed confidential is being revealed as a result of the web application's
+    design. <sup>[2]</sup>
+</p>
+<p>
+    Examples of sensitive data includes (but is not limited to): API keys, passwords, product versions or environment configurations.
+</p>
+<p>
+<b>Code at risk:</b><br/>
+<pre>def doGet(value:String) = Action {
+  val configElement = configuration.underlying.getString(value)
+
+  Ok("Hello "+ configElement +" !")
+}</pre>
+</p>
+<p>
+    Application configuration elements should not be sent in the response content and users should not be allowed to control which
+    configuration elements will be used by the code.
+</p>
+<b>References</b><br/>
+<a href="https://www.owasp.org/index.php/Top_10_2013-A6-Sensitive_Data_Exposure">OWASP: Top 10 2013-A6-Sensitive Data Exposure</a><br/>
+[1] <a href="https://www.owasp.org/index.php/Top_10_2007-Information_Leakage_and_Improper_Error_Handling">OWASP: Top 10 2007-Information Leakage and Improper Error Handling</a><br/>
+[2] <a href="http://projects.webappsec.org/w/page/13246936/Information%20Leakage">WASC-13: Information Leakage</a><br/>
+<a href="https://cwe.mitre.org/data/definitions/200.html">CWE-200: Information Exposure</a><br/>
+</p>
+            
+        
+    </section>
+    
+    <section>
+        <a class="anchor" name="SCALA_XSS_TWIRL"></a><h2 class="page-header">Potential XSS in Scala Twirl template engine  <a href="#SCALA_XSS_TWIRL" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+
+        
+            
+<p>
+A potential XSS was found. It could be used to execute unwanted JavaScript in a client's browser. (See references)
+</p>
+<p>
+    <b>Vulnerable Code:</b>
+<pre>@(value: Html)
+
+@value</pre>
+</p>
+<p>
+    <b>Solution:</b>
+<pre>@(value: String)
+
+@value</pre>
+</p>
+<p>
+The best defense against XSS is context sensitive output encoding like the example above. There are typically 4 contexts to consider:
+HTML, JavaScript, CSS (styles), and URLs. Please follow the XSS protection rules defined in the OWASP XSS Prevention Cheat Sheet,
+which explains these defenses in significant detail.
+</p>
+<br/>
+<p>
+<b>References</b><br/>
+<a href="http://projects.webappsec.org/w/page/13246920/Cross%20Site%20Scripting">WASC-8: Cross Site Scripting</a><br/>
+<a href="https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet">OWASP: XSS Prevention Cheat Sheet</a><br/>
+<a href="https://www.owasp.org/index.php/Top_10_2013-A3-Cross-Site_Scripting_%28XSS%29">OWASP: Top 10 2013-A3: Cross-Site Scripting (XSS)</a><br/>
+<a href="http://cwe.mitre.org/data/definitions/79.html">CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')</a><br/>
+<a href="https://code.google.com/p/owasp-java-encoder/">OWASP Java Encoder</a><br/>
+</p>
+            
+        
+    </section>
+    
+    <section>
+        <a class="anchor" name="SCALA_XSS_MVC_API"></a><h2 class="page-header">Potential XSS in Scala MVC API engine  <a href="#SCALA_XSS_MVC_API" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+
+        
+            
+<p>
+A potential XSS was found. It could be used to execute unwanted JavaScript in a client's browser. (See references)
+</p>
+<p>
+    <b>Vulnerable Code:</b>
+<pre>def doGet(value:String) = Action {
+    Ok("Hello " + value + " !").as("text/html")
+  }</pre>
+</p>
+<p>
+    <b>Solution:</b>
+<pre>def doGet(value:String) = Action {
+    Ok("Hello " + Encode.forHtml(value) + " !")
+  }</pre>
+</p>
+<p>
+The best defense against XSS is context sensitive output encoding like the example above. There are typically 4 contexts to consider:
+HTML, JavaScript, CSS (styles), and URLs. Please follow the XSS protection rules defined in the OWASP XSS Prevention Cheat Sheet,
+which explains these defenses in significant detail.
+</p>
+<br/>
+<p>
+<b>References</b><br/>
+<a href="http://projects.webappsec.org/w/page/13246920/Cross%20Site%20Scripting">WASC-8: Cross Site Scripting</a><br/>
+<a href="https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet">OWASP: XSS Prevention Cheat Sheet</a><br/>
+<a href="https://www.owasp.org/index.php/Top_10_2013-A3-Cross-Site_Scripting_%28XSS%29">OWASP: Top 10 2013-A3: Cross-Site Scripting (XSS)</a><br/>
+<a href="http://cwe.mitre.org/data/definitions/79.html">CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')</a><br/>
+<a href="https://code.google.com/p/owasp-java-encoder/">OWASP Java Encoder</a><br/>
+</p>
+            
+        
+    </section>
+    
+    <section>
+        <a class="anchor" name="TEMPLATE_INJECTION_VELOCITY"></a><h2 class="page-header">Potential template injection with Velocity  <a href="#TEMPLATE_INJECTION_VELOCITY" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+
+        
+            
+<p>
+Velocity template engine is powerful. It is possible to add logic including condition statements, loops and external calls.
+It is not design to be sandbox to templating operations. A malicious user in control of a template can run malicious code
+on the server-side. Velocity templates should be seen as scripts.
+</p>
+<p>
+    <b>Vulnerable Code:</b>
+<pre>[...]
+
+Velocity.evaluate(context, swOut, "test", userInput);</pre>
+</p>
+<p>
+    <b>Solution:</b>
+<br/>
+Avoid letting end users manipulate templates with Velocity. If you need to expose template editing to your users,
+prefer logic-less template engines such as Handlebars or Moustache (See references).
+</p>
+<br/>
+<p>
+<b>References</b><br/>
+<a href="http://blog.portswigger.net/2015/08/server-side-template-injection.html">PortSwigger: Server-Side Template Injection </a><br/>
+<a href="https://jknack.github.io/handlebars.java/">Handlebars.java</a><br/>
+</p>
+            
+        
+    </section>
+    
+    <section>
+        <a class="anchor" name="TEMPLATE_INJECTION_FREEMARKER"></a><h2 class="page-header">Potential template injection with Freemarker  <a href="#TEMPLATE_INJECTION_FREEMARKER" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+
+        
+            
+<p>
+Freemarker template engine is powerful. It is possible to add logic including condition statements, loops and external calls.
+It is not design to be sandbox to templating operations. A malicious user in control of a template can run malicious code
+on the server-side. Freemarker templates should be seen as scripts.
+</p>
+<p>
+    <b>Vulnerable Code:</b>
+<pre>[...]
+
+Velocity.evaluate(context, swOut, "test", userInput);</pre>
+</p>
+<p>
+    <b>Solution:</b>
+<br/>
+Avoid letting end users manipulate templates with Freemarker. If you need to expose template editing to your users,
+prefer logic-less template engines such as Handlebars or Moustache (See references).
+</p>
+<br/>
+<p>
+<b>References</b><br/>
+<a href="http://blog.portswigger.net/2015/08/server-side-template-injection.html">PortSwigger: Server-Side Template Injection </a><br/>
+<a href="https://jknack.github.io/handlebars.java/">Handlebars.java</a><br/>
 </p>
             
         
