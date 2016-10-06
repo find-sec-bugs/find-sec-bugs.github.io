@@ -3733,9 +3733,9 @@ on the server-side. Freemarker templates should be seen as scripts.
 </p>
 <p>
     <b>Vulnerable Code:</b>
-<pre>[...]
-
-Velocity.evaluate(context, swOut, "test", userInput);</pre>
+<pre>Template template = cfg.getTemplate(inputTemplate);
+[...]
+template.process(data, swOut);</pre>
 </p>
 <p>
     <b>Solution:</b>
@@ -3774,7 +3774,7 @@ prefer logic-less template engines such as Handlebars or Moustache (See referenc
 <footer id="footer" class="footer hidden-print">
     <div class="container text-center">
         <div>
-            Find Security Bugs 1.4.6
+            Find Security Bugs 1.5.0
             <span class="hide-xs">&middot;</span>
             Created by <a target="_blank" href="https://twitter.com/h3xstream">Philippe Arteau</a>
         </div>
