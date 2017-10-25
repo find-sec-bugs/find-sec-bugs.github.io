@@ -82,18 +82,538 @@
     </div>
 </div>
 
-
-
-
-
-
 <div class="container">
+
+
+
     <div class="row">
         <div class="col-md-11" id="mainCol">
 
+
+            <h2>Table of Contents</h2>
+
+            <p>
+                <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    Display / Hide
+                </a>
+            </p>
+            <div class="collapse" id="collapseExample">
+                <div class="card card-block">
+
+                    <ul>
+                        
+                        <li><a href="#PREDICTABLE_RANDOM">
+                            Predictable pseudorandom number generator (PREDICTABLE_RANDOM)
+                        </a></li>
+                        
+                        <li><a href="#PREDICTABLE_RANDOM_SCALA">
+                            Predictable pseudorandom number generator (Scala) (PREDICTABLE_RANDOM_SCALA)
+                        </a></li>
+                        
+                        <li><a href="#SERVLET_PARAMETER">
+                            Untrusted servlet parameter (SERVLET_PARAMETER)
+                        </a></li>
+                        
+                        <li><a href="#SERVLET_CONTENT_TYPE">
+                            Untrusted Content-Type header (SERVLET_CONTENT_TYPE)
+                        </a></li>
+                        
+                        <li><a href="#SERVLET_SERVER_NAME">
+                            Untrusted Hostname header (SERVLET_SERVER_NAME)
+                        </a></li>
+                        
+                        <li><a href="#SERVLET_SESSION_ID">
+                            Untrusted session cookie value (SERVLET_SESSION_ID)
+                        </a></li>
+                        
+                        <li><a href="#SERVLET_QUERY_STRING">
+                            Untrusted query string (SERVLET_QUERY_STRING)
+                        </a></li>
+                        
+                        <li><a href="#SERVLET_HEADER">
+                            HTTP headers untrusted (SERVLET_HEADER)
+                        </a></li>
+                        
+                        <li><a href="#SERVLET_HEADER_REFERER">
+                            Untrusted Referer header (SERVLET_HEADER_REFERER)
+                        </a></li>
+                        
+                        <li><a href="#SERVLET_HEADER_USER_AGENT">
+                            Untrusted User-Agent header (SERVLET_HEADER_USER_AGENT)
+                        </a></li>
+                        
+                        <li><a href="#COOKIE_USAGE">
+                            Potentially sensitive data in a cookie (COOKIE_USAGE)
+                        </a></li>
+                        
+                        <li><a href="#PATH_TRAVERSAL_IN">
+                            Potential Path Traversal (file read) (PATH_TRAVERSAL_IN)
+                        </a></li>
+                        
+                        <li><a href="#PATH_TRAVERSAL_OUT">
+                            Potential Path Traversal (file write) (PATH_TRAVERSAL_OUT)
+                        </a></li>
+                        
+                        <li><a href="#SCALA_PATH_TRAVERSAL_IN">
+                            Potential Path Traversal (file read) (SCALA_PATH_TRAVERSAL_IN)
+                        </a></li>
+                        
+                        <li><a href="#COMMAND_INJECTION">
+                            Potential Command Injection (COMMAND_INJECTION)
+                        </a></li>
+                        
+                        <li><a href="#SCALA_COMMAND_INJECTION">
+                            Potential Command Injection (Scala) (SCALA_COMMAND_INJECTION)
+                        </a></li>
+                        
+                        <li><a href="#WEAK_FILENAMEUTILS">
+                            FilenameUtils not filtering null bytes (WEAK_FILENAMEUTILS)
+                        </a></li>
+                        
+                        <li><a href="#WEAK_TRUST_MANAGER">
+                            TrustManager that accept any certificates (WEAK_TRUST_MANAGER)
+                        </a></li>
+                        
+                        <li><a href="#WEAK_HOSTNAME_VERIFIER">
+                            HostnameVerifier that accept any signed certificates (WEAK_HOSTNAME_VERIFIER)
+                        </a></li>
+                        
+                        <li><a href="#JAXWS_ENDPOINT">
+                            Found JAX-WS SOAP endpoint (JAXWS_ENDPOINT)
+                        </a></li>
+                        
+                        <li><a href="#JAXRS_ENDPOINT">
+                            Found JAX-RS REST endpoint (JAXRS_ENDPOINT)
+                        </a></li>
+                        
+                        <li><a href="#TAPESTRY_ENDPOINT">
+                            Found Tapestry page (TAPESTRY_ENDPOINT)
+                        </a></li>
+                        
+                        <li><a href="#WICKET_ENDPOINT">
+                            Found Wicket WebPage (WICKET_ENDPOINT)
+                        </a></li>
+                        
+                        <li><a href="#WEAK_MESSAGE_DIGEST_MD5">
+                            MD2, MD4 and MD5 are weak hash functions (WEAK_MESSAGE_DIGEST_MD5)
+                        </a></li>
+                        
+                        <li><a href="#WEAK_MESSAGE_DIGEST_SHA1">
+                            SHA-1 is a weak hash function (WEAK_MESSAGE_DIGEST_SHA1)
+                        </a></li>
+                        
+                        <li><a href="#DEFAULT_HTTP_CLIENT">
+                            DefaultHttpClient with default constructor is not compatible with TLS 1.2 (DEFAULT_HTTP_CLIENT)
+                        </a></li>
+                        
+                        <li><a href="#SSL_CONTEXT">
+                            Weak SSLContext (SSL_CONTEXT)
+                        </a></li>
+                        
+                        <li><a href="#CUSTOM_MESSAGE_DIGEST">
+                            Message digest is custom (CUSTOM_MESSAGE_DIGEST)
+                        </a></li>
+                        
+                        <li><a href="#FILE_UPLOAD_FILENAME">
+                            Tainted filename read (FILE_UPLOAD_FILENAME)
+                        </a></li>
+                        
+                        <li><a href="#REDOS">
+                            Regex DOS (ReDOS) (REDOS)
+                        </a></li>
+                        
+                        <li><a href="#XXE_XMLSTREAMREADER">
+                            XML parsing vulnerable to XXE (XMLStreamReader) (XXE_XMLSTREAMREADER)
+                        </a></li>
+                        
+                        <li><a href="#XXE_SAXPARSER">
+                            XML parsing vulnerable to XXE (SAXParser) (XXE_SAXPARSER)
+                        </a></li>
+                        
+                        <li><a href="#XXE_XMLREADER">
+                            XML parsing vulnerable to XXE (XMLReader) (XXE_XMLREADER)
+                        </a></li>
+                        
+                        <li><a href="#XXE_DOCUMENT">
+                            XML parsing vulnerable to XXE (DocumentBuilder) (XXE_DOCUMENT)
+                        </a></li>
+                        
+                        <li><a href="#XXE_DTD_TRANSFORM_FACTORY">
+                            XML parsing vulnerable to XXE (TransformerFactory) (XXE_DTD_TRANSFORM_FACTORY)
+                        </a></li>
+                        
+                        <li><a href="#XXE_XSLT_TRANSFORM_FACTORY">
+                            XSLT parsing vulnerable to XXE (TransformerFactory) (XXE_XSLT_TRANSFORM_FACTORY)
+                        </a></li>
+                        
+                        <li><a href="#XPATH_INJECTION">
+                            Potential XPath Injection (XPATH_INJECTION)
+                        </a></li>
+                        
+                        <li><a href="#STRUTS1_ENDPOINT">
+                            Found Struts 1 endpoint (STRUTS1_ENDPOINT)
+                        </a></li>
+                        
+                        <li><a href="#STRUTS2_ENDPOINT">
+                            Found Struts 2 endpoint (STRUTS2_ENDPOINT)
+                        </a></li>
+                        
+                        <li><a href="#SPRING_ENDPOINT">
+                            Found Spring endpoint (SPRING_ENDPOINT)
+                        </a></li>
+                        
+                        <li><a href="#SPRING_CSRF_PROTECTION_DISABLED">
+                            Spring CSRF protection disabled (SPRING_CSRF_PROTECTION_DISABLED)
+                        </a></li>
+                        
+                        <li><a href="#SPRING_CSRF_UNRESTRICTED_REQUEST_MAPPING">
+                            Spring CSRF unrestricted RequestMapping (SPRING_CSRF_UNRESTRICTED_REQUEST_MAPPING)
+                        </a></li>
+                        
+                        <li><a href="#CUSTOM_INJECTION">
+                            Potential injection (custom) (CUSTOM_INJECTION)
+                        </a></li>
+                        
+                        <li><a href="#SQL_INJECTION">
+                            Potential SQL Injection (SQL_INJECTION)
+                        </a></li>
+                        
+                        <li><a href="#SQL_INJECTION_TURBINE">
+                            Potential SQL Injection with Turbine (SQL_INJECTION_TURBINE)
+                        </a></li>
+                        
+                        <li><a href="#SQL_INJECTION_HIBERNATE">
+                            Potential SQL/HQL Injection (Hibernate) (SQL_INJECTION_HIBERNATE)
+                        </a></li>
+                        
+                        <li><a href="#SQL_INJECTION_JDO">
+                            Potential SQL/JDOQL Injection (JDO) (SQL_INJECTION_JDO)
+                        </a></li>
+                        
+                        <li><a href="#SQL_INJECTION_JPA">
+                            Potential SQL/JPQL Injection (JPA) (SQL_INJECTION_JPA)
+                        </a></li>
+                        
+                        <li><a href="#SQL_INJECTION_SPRING_JDBC">
+                            Potential JDBC Injection (Spring JDBC) (SQL_INJECTION_SPRING_JDBC)
+                        </a></li>
+                        
+                        <li><a href="#SQL_INJECTION_JDBC">
+                            Potential JDBC Injection (SQL_INJECTION_JDBC)
+                        </a></li>
+                        
+                        <li><a href="#SCALA_SQL_INJECTION_SLICK">
+                            Potential Scala Slick Injection (SCALA_SQL_INJECTION_SLICK)
+                        </a></li>
+                        
+                        <li><a href="#SCALA_SQL_INJECTION_ANORM">
+                            Potential Scala Anorm Injection (SCALA_SQL_INJECTION_ANORM)
+                        </a></li>
+                        
+                        <li><a href="#SQL_INJECTION_ANDROID">
+                            Potential Android SQL Injection (SQL_INJECTION_ANDROID)
+                        </a></li>
+                        
+                        <li><a href="#LDAP_INJECTION">
+                            Potential LDAP Injection (LDAP_INJECTION)
+                        </a></li>
+                        
+                        <li><a href="#SCRIPT_ENGINE_INJECTION">
+                            Potential code injection when using Script Engine (SCRIPT_ENGINE_INJECTION)
+                        </a></li>
+                        
+                        <li><a href="#SPEL_INJECTION">
+                            Potential code injection when using Spring Expression (SPEL_INJECTION)
+                        </a></li>
+                        
+                        <li><a href="#EL_INJECTION">
+                            Potential code injection when using Expression Language (EL) (EL_INJECTION)
+                        </a></li>
+                        
+                        <li><a href="#SEAM_LOG_INJECTION">
+                            Potential code injection in Seam logging call (SEAM_LOG_INJECTION)
+                        </a></li>
+                        
+                        <li><a href="#OGNL_INJECTION">
+                            Potential code injection when using OGNL expression (OGNL_INJECTION)
+                        </a></li>
+                        
+                        <li><a href="#HTTP_RESPONSE_SPLITTING">
+                            Potential HTTP Response Splitting (HTTP_RESPONSE_SPLITTING)
+                        </a></li>
+                        
+                        <li><a href="#CRLF_INJECTION_LOGS">
+                            Potential CRLF Injection for logs (CRLF_INJECTION_LOGS)
+                        </a></li>
+                        
+                        <li><a href="#EXTERNAL_CONFIG_CONTROL">
+                            Potential external control of configuration (EXTERNAL_CONFIG_CONTROL)
+                        </a></li>
+                        
+                        <li><a href="#BAD_HEXA_CONVERSION">
+                            Bad hexadecimal concatenation (BAD_HEXA_CONVERSION)
+                        </a></li>
+                        
+                        <li><a href="#HAZELCAST_SYMMETRIC_ENCRYPTION">
+                            Hazelcast symmetric encryption (HAZELCAST_SYMMETRIC_ENCRYPTION)
+                        </a></li>
+                        
+                        <li><a href="#NULL_CIPHER">
+                            NullCipher is insecure (NULL_CIPHER)
+                        </a></li>
+                        
+                        <li><a href="#UNENCRYPTED_SOCKET">
+                            Unencrypted Socket (UNENCRYPTED_SOCKET)
+                        </a></li>
+                        
+                        <li><a href="#UNENCRYPTED_SERVER_SOCKET">
+                            Unencrypted Server Socket (UNENCRYPTED_SERVER_SOCKET)
+                        </a></li>
+                        
+                        <li><a href="#DES_USAGE">
+                            DES is insecure (DES_USAGE)
+                        </a></li>
+                        
+                        <li><a href="#TDES_USAGE">
+                            DESede is insecure (TDES_USAGE)
+                        </a></li>
+                        
+                        <li><a href="#RSA_NO_PADDING">
+                            RSA with no padding is insecure (RSA_NO_PADDING)
+                        </a></li>
+                        
+                        <li><a href="#HARD_CODE_PASSWORD">
+                            Hard Coded Password (HARD_CODE_PASSWORD)
+                        </a></li>
+                        
+                        <li><a href="#HARD_CODE_KEY">
+                            Hard Coded Key (HARD_CODE_KEY)
+                        </a></li>
+                        
+                        <li><a href="#UNSAFE_HASH_EQUALS">
+                            Unsafe hash equals (UNSAFE_HASH_EQUALS)
+                        </a></li>
+                        
+                        <li><a href="#STRUTS_FORM_VALIDATION">
+                            Struts Form without input validation (STRUTS_FORM_VALIDATION)
+                        </a></li>
+                        
+                        <li><a href="#XSS_REQUEST_WRAPPER">
+                            XSSRequestWrapper is a weak XSS protection (XSS_REQUEST_WRAPPER)
+                        </a></li>
+                        
+                        <li><a href="#BLOWFISH_KEY_SIZE">
+                            Blowfish usage with short key (BLOWFISH_KEY_SIZE)
+                        </a></li>
+                        
+                        <li><a href="#RSA_KEY_SIZE">
+                            RSA usage with short key (RSA_KEY_SIZE)
+                        </a></li>
+                        
+                        <li><a href="#UNVALIDATED_REDIRECT">
+                            Unvalidated Redirect (UNVALIDATED_REDIRECT)
+                        </a></li>
+                        
+                        <li><a href="#PLAY_UNVALIDATED_REDIRECT">
+                            Unvalidated Redirect (Play Framework) (PLAY_UNVALIDATED_REDIRECT)
+                        </a></li>
+                        
+                        <li><a href="#SPRING_UNVALIDATED_REDIRECT">
+                            Spring Unvalidated Redirect (SPRING_UNVALIDATED_REDIRECT)
+                        </a></li>
+                        
+                        <li><a href="#JSP_INCLUDE">
+                            Dynamic JSP inclusion (JSP_INCLUDE)
+                        </a></li>
+                        
+                        <li><a href="#JSP_SPRING_EVAL">
+                            Dynamic variable in Spring expression (JSP_SPRING_EVAL)
+                        </a></li>
+                        
+                        <li><a href="#JSP_JSTL_OUT">
+                            Escaping of special XML characters is disabled (JSP_JSTL_OUT)
+                        </a></li>
+                        
+                        <li><a href="#XSS_JSP_PRINT">
+                            Potential XSS in JSP (XSS_JSP_PRINT)
+                        </a></li>
+                        
+                        <li><a href="#XSS_SERVLET">
+                            Potential XSS in Servlet (XSS_SERVLET)
+                        </a></li>
+                        
+                        <li><a href="#XML_DECODER">
+                            XMLDecoder usage (XML_DECODER)
+                        </a></li>
+                        
+                        <li><a href="#STATIC_IV">
+                            Static IV (STATIC_IV)
+                        </a></li>
+                        
+                        <li><a href="#ECB_MODE">
+                            ECB mode is insecure (ECB_MODE)
+                        </a></li>
+                        
+                        <li><a href="#PADDING_ORACLE">
+                            Cipher is susceptible to Padding Oracle (PADDING_ORACLE)
+                        </a></li>
+                        
+                        <li><a href="#CIPHER_INTEGRITY">
+                            Cipher with no integrity (CIPHER_INTEGRITY)
+                        </a></li>
+                        
+                        <li><a href="#ESAPI_ENCRYPTOR">
+                            Use of ESAPI Encryptor (ESAPI_ENCRYPTOR)
+                        </a></li>
+                        
+                        <li><a href="#ANDROID_EXTERNAL_FILE_ACCESS">
+                            External file access (Android) (ANDROID_EXTERNAL_FILE_ACCESS)
+                        </a></li>
+                        
+                        <li><a href="#ANDROID_BROADCAST">
+                            Broadcast (Android) (ANDROID_BROADCAST)
+                        </a></li>
+                        
+                        <li><a href="#ANDROID_WORLD_WRITABLE">
+                            World writable file (Android) (ANDROID_WORLD_WRITABLE)
+                        </a></li>
+                        
+                        <li><a href="#ANDROID_GEOLOCATION">
+                            WebView with geolocation activated (Android) (ANDROID_GEOLOCATION)
+                        </a></li>
+                        
+                        <li><a href="#ANDROID_WEB_VIEW_JAVASCRIPT">
+                            WebView with JavaScript enabled (Android) (ANDROID_WEB_VIEW_JAVASCRIPT)
+                        </a></li>
+                        
+                        <li><a href="#ANDROID_WEB_VIEW_JAVASCRIPT_INTERFACE">
+                            WebView with JavaScript interface (Android) (ANDROID_WEB_VIEW_JAVASCRIPT_INTERFACE)
+                        </a></li>
+                        
+                        <li><a href="#INSECURE_COOKIE">
+                            Cookie without the secure flag (INSECURE_COOKIE)
+                        </a></li>
+                        
+                        <li><a href="#HTTPONLY_COOKIE">
+                            Cookie without the HttpOnly flag (HTTPONLY_COOKIE)
+                        </a></li>
+                        
+                        <li><a href="#OBJECT_DESERIALIZATION">
+                            Object deserialization is used (OBJECT_DESERIALIZATION)
+                        </a></li>
+                        
+                        <li><a href="#JACKSON_UNSAFE_DESERIALIZATION">
+                            Unsafe Jackson deserialization configuration (JACKSON_UNSAFE_DESERIALIZATION)
+                        </a></li>
+                        
+                        <li><a href="#DESERIALIZATION_GADGET">
+                            This class could be used as deserialization gadget (DESERIALIZATION_GADGET)
+                        </a></li>
+                        
+                        <li><a href="#TRUST_BOUNDARY_VIOLATION">
+                            Trust Boundary Violation (TRUST_BOUNDARY_VIOLATION)
+                        </a></li>
+                        
+                        <li><a href="#JSP_XSLT">
+                            A malicious XSLT could be provided (JSP_XSLT)
+                        </a></li>
+                        
+                        <li><a href="#MALICIOUS_XSLT">
+                            A malicious XSLT could be provided (MALICIOUS_XSLT)
+                        </a></li>
+                        
+                        <li><a href="#SCALA_SENSITIVE_DATA_EXPOSURE">
+                            Potential information leakage in Scala Play (SCALA_SENSITIVE_DATA_EXPOSURE)
+                        </a></li>
+                        
+                        <li><a href="#SCALA_PLAY_SSRF">
+                            Scala Play Server-Side Request Forgery (SSRF) (SCALA_PLAY_SSRF)
+                        </a></li>
+                        
+                        <li><a href="#URLCONNECTION_SSRF_FD">
+                            URLConnection Server-Side Request Forgery (SSRF) and File Disclosure (URLCONNECTION_SSRF_FD)
+                        </a></li>
+                        
+                        <li><a href="#SCALA_XSS_TWIRL">
+                            Potential XSS in Scala Twirl template engine (SCALA_XSS_TWIRL)
+                        </a></li>
+                        
+                        <li><a href="#SCALA_XSS_MVC_API">
+                            Potential XSS in Scala MVC API engine (SCALA_XSS_MVC_API)
+                        </a></li>
+                        
+                        <li><a href="#TEMPLATE_INJECTION_VELOCITY">
+                            Potential template injection with Velocity (TEMPLATE_INJECTION_VELOCITY)
+                        </a></li>
+                        
+                        <li><a href="#TEMPLATE_INJECTION_FREEMARKER">
+                            Potential template injection with Freemarker (TEMPLATE_INJECTION_FREEMARKER)
+                        </a></li>
+                        
+                        <li><a href="#PERMISSIVE_CORS">
+                            Overly permissive CORS policy (PERMISSIVE_CORS)
+                        </a></li>
+                        
+                        <li><a href="#LDAP_ANONYMOUS">
+                            Anonymous LDAP bind (LDAP_ANONYMOUS)
+                        </a></li>
+                        
+                        <li><a href="#LDAP_ENTRY_POISONING">
+                            LDAP Entry Poisoning (LDAP_ENTRY_POISONING)
+                        </a></li>
+                        
+                        <li><a href="#COOKIE_PERSISTENT">
+                            Persistent Cookie Usage (COOKIE_PERSISTENT)
+                        </a></li>
+                        
+                        <li><a href="#URL_REWRITING">
+                            URL rewriting method (URL_REWRITING)
+                        </a></li>
+                        
+                        <li><a href="#INSECURE_SMTP_SSL">
+                            Insecure SMTP SSL connection (INSECURE_SMTP_SSL)
+                        </a></li>
+                        
+                        <li><a href="#AWS_QUERY_INJECTION">
+                            AWS Query Injection (AWS_QUERY_INJECTION)
+                        </a></li>
+                        
+                        <li><a href="#BEAN_PROPERTY_INJECTION">
+                            JavaBeans Property Injection (BEAN_PROPERTY_INJECTION)
+                        </a></li>
+                        
+                        <li><a href="#STRUTS_FILE_DISCLOSURE">
+                            Struts File Disclosure (STRUTS_FILE_DISCLOSURE)
+                        </a></li>
+                        
+                        <li><a href="#SPRING_FILE_DISCLOSURE">
+                            Spring File Disclosure (SPRING_FILE_DISCLOSURE)
+                        </a></li>
+                        
+                        <li><a href="#REQUESTDISPATCHER_FILE_DISCLOSURE">
+                            RequestDispatcher File Disclosure (REQUESTDISPATCHER_FILE_DISCLOSURE)
+                        </a></li>
+                        
+                        <li><a href="#FORMAT_STRING_MANIPULATION">
+                            Format String Manipulation (FORMAT_STRING_MANIPULATION)
+                        </a></li>
+                        
+                        <li><a href="#HTTP_PARAMETER_POLLUTION">
+                            HTTP Parameter Pollution (HTTP_PARAMETER_POLLUTION)
+                        </a></li>
+                        
+                    </ul>
+                </div>
+            </div>
+
     
     <section>
-        <a class="anchor" name="PREDICTABLE_RANDOM"></a><h2 class="page-header">Predictable pseudorandom number generator  <a href="#PREDICTABLE_RANDOM" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="PREDICTABLE_RANDOM"></a>
+        <h2 class="page-header">
+            Predictable pseudorandom number generator
+            <a href="#PREDICTABLE_RANDOM" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>PREDICTABLE_RANDOM</tt></p>
 
         
             
@@ -138,7 +658,12 @@ String generateSecretToken() {
     </section>
     
     <section>
-        <a class="anchor" name="PREDICTABLE_RANDOM_SCALA"></a><h2 class="page-header">Predictable pseudorandom number generator (Scala)  <a href="#PREDICTABLE_RANDOM_SCALA" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="PREDICTABLE_RANDOM_SCALA"></a>
+        <h2 class="page-header">
+            Predictable pseudorandom number generator (Scala)
+            <a href="#PREDICTABLE_RANDOM_SCALA" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>PREDICTABLE_RANDOM_SCALA</tt></p>
 
         
             
@@ -195,7 +720,12 @@ def generateSecretToken() {
     </section>
     
     <section>
-        <a class="anchor" name="SERVLET_PARAMETER"></a><h2 class="page-header">Untrusted servlet parameter  <a href="#SERVLET_PARAMETER" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SERVLET_PARAMETER"></a>
+        <h2 class="page-header">
+            Untrusted servlet parameter
+            <a href="#SERVLET_PARAMETER" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SERVLET_PARAMETER</tt></p>
 
         
             
@@ -219,7 +749,12 @@ You may need to validate or sanitize those values before passing them to sensiti
     </section>
     
     <section>
-        <a class="anchor" name="SERVLET_CONTENT_TYPE"></a><h2 class="page-header">Untrusted Content-Type header  <a href="#SERVLET_CONTENT_TYPE" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SERVLET_CONTENT_TYPE"></a>
+        <h2 class="page-header">
+            Untrusted Content-Type header
+            <a href="#SERVLET_CONTENT_TYPE" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SERVLET_CONTENT_TYPE</tt></p>
 
         
             
@@ -236,7 +771,12 @@ The HTTP header Content-Type can be controlled by the client. As such, its value
     </section>
     
     <section>
-        <a class="anchor" name="SERVLET_SERVER_NAME"></a><h2 class="page-header">Untrusted Hostname header  <a href="#SERVLET_SERVER_NAME" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SERVLET_SERVER_NAME"></a>
+        <h2 class="page-header">
+            Untrusted Hostname header
+            <a href="#SERVLET_SERVER_NAME" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SERVLET_SERVER_NAME</tt></p>
 
         
             
@@ -262,7 +802,12 @@ decisions you make with respect to a request.
     </section>
     
     <section>
-        <a class="anchor" name="SERVLET_SESSION_ID"></a><h2 class="page-header">Untrusted session cookie value  <a href="#SERVLET_SESSION_ID" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SERVLET_SESSION_ID"></a>
+        <h2 class="page-header">
+            Untrusted session cookie value
+            <a href="#SERVLET_SESSION_ID" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SERVLET_SESSION_ID</tt></p>
 
         
             
@@ -296,7 +841,12 @@ valid active session IDs, allowing an insider to hijack any sessions whose IDs h
     </section>
     
     <section>
-        <a class="anchor" name="SERVLET_QUERY_STRING"></a><h2 class="page-header">Untrusted query string  <a href="#SERVLET_QUERY_STRING" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SERVLET_QUERY_STRING"></a>
+        <h2 class="page-header">
+            Untrusted query string
+            <a href="#SERVLET_QUERY_STRING" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SERVLET_QUERY_STRING</tt></p>
 
         
             
@@ -317,7 +867,12 @@ You may need to validate or sanitize anything pulled from the query string befor
     </section>
     
     <section>
-        <a class="anchor" name="SERVLET_HEADER"></a><h2 class="page-header">HTTP headers untrusted  <a href="#SERVLET_HEADER" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SERVLET_HEADER"></a>
+        <h2 class="page-header">
+            HTTP headers untrusted
+            <a href="#SERVLET_HEADER" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SERVLET_HEADER</tt></p>
 
         
             
@@ -334,7 +889,12 @@ not trust this value in any security decisions you make with respect to a reques
     </section>
     
     <section>
-        <a class="anchor" name="SERVLET_HEADER_REFERER"></a><h2 class="page-header">Untrusted Referer header  <a href="#SERVLET_HEADER_REFERER" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SERVLET_HEADER_REFERER"></a>
+        <h2 class="page-header">
+            Untrusted Referer header
+            <a href="#SERVLET_HEADER_REFERER" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SERVLET_HEADER_REFERER</tt></p>
 
         
             
@@ -362,7 +922,12 @@ Recommendations:
     </section>
     
     <section>
-        <a class="anchor" name="SERVLET_HEADER_USER_AGENT"></a><h2 class="page-header">Untrusted User-Agent header  <a href="#SERVLET_HEADER_USER_AGENT" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SERVLET_HEADER_USER_AGENT"></a>
+        <h2 class="page-header">
+            Untrusted User-Agent header
+            <a href="#SERVLET_HEADER_USER_AGENT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SERVLET_HEADER_USER_AGENT</tt></p>
 
         
             
@@ -378,7 +943,12 @@ crawler UA) is not recommended.</p>
     </section>
     
     <section>
-        <a class="anchor" name="COOKIE_USAGE"></a><h2 class="page-header">Potentially sensitive data in a cookie  <a href="#COOKIE_USAGE" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="COOKIE_USAGE"></a>
+        <h2 class="page-header">
+            Potentially sensitive data in a cookie
+            <a href="#COOKIE_USAGE" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>COOKIE_USAGE</tt></p>
 
         
             
@@ -395,7 +965,12 @@ and referenced by the user's session cookie. See HttpSession (HttpServletRequest
     </section>
     
     <section>
-        <a class="anchor" name="PATH_TRAVERSAL_IN"></a><h2 class="page-header">Potential Path Traversal (file read)  <a href="#PATH_TRAVERSAL_IN" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="PATH_TRAVERSAL_IN"></a>
+        <h2 class="page-header">
+            Potential Path Traversal (file read)
+            <a href="#PATH_TRAVERSAL_IN" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>PATH_TRAVERSAL_IN</tt></p>
 
         
             
@@ -452,7 +1027,12 @@ public Response getImage(@javax.ws.rs.PathParam("image") String image) {
     </section>
     
     <section>
-        <a class="anchor" name="PATH_TRAVERSAL_OUT"></a><h2 class="page-header">Potential Path Traversal (file write)  <a href="#PATH_TRAVERSAL_OUT" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="PATH_TRAVERSAL_OUT"></a>
+        <h2 class="page-header">
+            Potential Path Traversal (file write)
+            <a href="#PATH_TRAVERSAL_OUT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>PATH_TRAVERSAL_OUT</tt></p>
 
         
             
@@ -473,7 +1053,12 @@ by the user. If that is the case, the reported instance is a false positive.</p>
     </section>
     
     <section>
-        <a class="anchor" name="SCALA_PATH_TRAVERSAL_IN"></a><h2 class="page-header">Potential Path Traversal (file read)  <a href="#SCALA_PATH_TRAVERSAL_IN" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SCALA_PATH_TRAVERSAL_IN"></a>
+        <h2 class="page-header">
+            Potential Path Traversal (file read)
+            <a href="#SCALA_PATH_TRAVERSAL_IN" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SCALA_PATH_TRAVERSAL_IN</tt></p>
 
         
             
@@ -524,7 +1109,12 @@ def getWordList(value:String) = Action {
     </section>
     
     <section>
-        <a class="anchor" name="COMMAND_INJECTION"></a><h2 class="page-header">Potential Command Injection  <a href="#COMMAND_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="COMMAND_INJECTION"></a>
+        <h2 class="page-header">
+            Potential Command Injection
+            <a href="#COMMAND_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>COMMAND_INJECTION</tt></p>
 
         
             
@@ -548,7 +1138,12 @@ r.exec("/bin/sh -c some_tool" + input);</pre>
     </section>
     
     <section>
-        <a class="anchor" name="SCALA_COMMAND_INJECTION"></a><h2 class="page-header">Potential Command Injection (Scala)  <a href="#SCALA_COMMAND_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SCALA_COMMAND_INJECTION"></a>
+        <h2 class="page-header">
+            Potential Command Injection (Scala)
+            <a href="#SCALA_COMMAND_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SCALA_COMMAND_INJECTION</tt></p>
 
         
             
@@ -572,7 +1167,12 @@ r.exec("/bin/sh -c some_tool" + input);</pre>
     </section>
     
     <section>
-        <a class="anchor" name="WEAK_FILENAMEUTILS"></a><h2 class="page-header">FilenameUtils not filtering null bytes  <a href="#WEAK_FILENAMEUTILS" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="WEAK_FILENAMEUTILS"></a>
+        <h2 class="page-header">
+            FilenameUtils not filtering null bytes
+            <a href="#WEAK_FILENAMEUTILS" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>WEAK_FILENAMEUTILS</tt></p>
 
         
             
@@ -600,7 +1200,12 @@ that looks at the end of the filename (e.g., endswith ".log") to make sure its a
     </section>
     
     <section>
-        <a class="anchor" name="WEAK_TRUST_MANAGER"></a><h2 class="page-header">TrustManager that accept any certificates  <a href="#WEAK_TRUST_MANAGER" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="WEAK_TRUST_MANAGER"></a>
+        <h2 class="page-header">
+            TrustManager that accept any certificates
+            <a href="#WEAK_TRUST_MANAGER" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>WEAK_TRUST_MANAGER</tt></p>
 
         
             
@@ -660,7 +1265,12 @@ sc.init(kmf.getKeyManagers(), tmf.getTrustManagers(),null);
     </section>
     
     <section>
-        <a class="anchor" name="WEAK_HOSTNAME_VERIFIER"></a><h2 class="page-header">HostnameVerifier that accept any signed certificates  <a href="#WEAK_HOSTNAME_VERIFIER" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="WEAK_HOSTNAME_VERIFIER"></a>
+        <h2 class="page-header">
+            HostnameVerifier that accept any signed certificates
+            <a href="#WEAK_HOSTNAME_VERIFIER" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>WEAK_HOSTNAME_VERIFIER</tt></p>
 
         
             
@@ -709,7 +1319,12 @@ sc.init(kmf.getKeyManagers(), tmf.getTrustManagers(),null);
     </section>
     
     <section>
-        <a class="anchor" name="JAXWS_ENDPOINT"></a><h2 class="page-header">Found JAX-WS SOAP endpoint  <a href="#JAXWS_ENDPOINT" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="JAXWS_ENDPOINT"></a>
+        <h2 class="page-header">
+            Found JAX-WS SOAP endpoint
+            <a href="#JAXWS_ENDPOINT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>JAXWS_ENDPOINT</tt></p>
 
         
             
@@ -734,7 +1349,12 @@ sc.init(kmf.getKeyManagers(), tmf.getTrustManagers(),null);
     </section>
     
     <section>
-        <a class="anchor" name="JAXRS_ENDPOINT"></a><h2 class="page-header">Found JAX-RS REST endpoint  <a href="#JAXRS_ENDPOINT" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="JAXRS_ENDPOINT"></a>
+        <h2 class="page-header">
+            Found JAX-RS REST endpoint
+            <a href="#JAXRS_ENDPOINT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>JAXRS_ENDPOINT</tt></p>
 
         
             
@@ -764,7 +1384,12 @@ sc.init(kmf.getKeyManagers(), tmf.getTrustManagers(),null);
     </section>
     
     <section>
-        <a class="anchor" name="TAPESTRY_ENDPOINT"></a><h2 class="page-header">Found Tapestry page  <a href="#TAPESTRY_ENDPOINT" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="TAPESTRY_ENDPOINT"></a>
+        <h2 class="page-header">
+            Found Tapestry page
+            <a href="#TAPESTRY_ENDPOINT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>TAPESTRY_ENDPOINT</tt></p>
 
         
             
@@ -801,7 +1426,12 @@ mapped in this way are properly validated before they are used.</p>
     </section>
     
     <section>
-        <a class="anchor" name="WICKET_ENDPOINT"></a><h2 class="page-header">Found Wicket WebPage  <a href="#WICKET_ENDPOINT" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="WICKET_ENDPOINT"></a>
+        <h2 class="page-header">
+            Found Wicket WebPage
+            <a href="#WICKET_ENDPOINT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>WICKET_ENDPOINT</tt></p>
 
         
             
@@ -820,7 +1450,12 @@ mapped in this way are properly validated before they are used.</p>
     </section>
     
     <section>
-        <a class="anchor" name="WEAK_MESSAGE_DIGEST_MD5"></a><h2 class="page-header">MD2, MD4 and MD5 are weak hash functions  <a href="#WEAK_MESSAGE_DIGEST_MD5" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="WEAK_MESSAGE_DIGEST_MD5"></a>
+        <h2 class="page-header">
+            MD2, MD4 and MD5 are weak hash functions
+            <a href="#WEAK_MESSAGE_DIGEST_MD5" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>WEAK_MESSAGE_DIGEST_MD5</tt></p>
 
         
             
@@ -887,7 +1522,12 @@ mapped in this way are properly validated before they are used.</p>
     </section>
     
     <section>
-        <a class="anchor" name="WEAK_MESSAGE_DIGEST_SHA1"></a><h2 class="page-header">SHA-1 is a weak hash function  <a href="#WEAK_MESSAGE_DIGEST_SHA1" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="WEAK_MESSAGE_DIGEST_SHA1"></a>
+        <h2 class="page-header">
+            SHA-1 is a weak hash function
+            <a href="#WEAK_MESSAGE_DIGEST_SHA1" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>WEAK_MESSAGE_DIGEST_SHA1</tt></p>
 
         
             
@@ -953,7 +1593,12 @@ uses. <b>PBKDF2</b> should be used to hash password for example.</p>
     </section>
     
     <section>
-        <a class="anchor" name="DEFAULT_HTTP_CLIENT"></a><h2 class="page-header">DefaultHttpClient with default constructor is not compatible with TLS 1.2  <a href="#DEFAULT_HTTP_CLIENT" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="DEFAULT_HTTP_CLIENT"></a>
+        <h2 class="page-header">
+            DefaultHttpClient with default constructor is not compatible with TLS 1.2
+            <a href="#DEFAULT_HTTP_CLIENT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>DEFAULT_HTTP_CLIENT</tt></p>
 
         
             
@@ -1006,7 +1651,12 @@ Upgrade your implementation to use one of the recommended constructs and configu
     </section>
     
     <section>
-        <a class="anchor" name="SSL_CONTEXT"></a><h2 class="page-header">Weak SSLContext  <a href="#SSL_CONTEXT" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SSL_CONTEXT"></a>
+        <h2 class="page-header">
+            Weak SSLContext
+            <a href="#SSL_CONTEXT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SSL_CONTEXT</tt></p>
 
         
             
@@ -1035,7 +1685,12 @@ Upgrade your implementation to the following, and configure https.protocols JVM 
     </section>
     
     <section>
-        <a class="anchor" name="CUSTOM_MESSAGE_DIGEST"></a><h2 class="page-header">Message digest is custom  <a href="#CUSTOM_MESSAGE_DIGEST" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="CUSTOM_MESSAGE_DIGEST"></a>
+        <h2 class="page-header">
+            Message digest is custom
+            <a href="#CUSTOM_MESSAGE_DIGEST" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>CUSTOM_MESSAGE_DIGEST</tt></p>
 
         
             
@@ -1081,7 +1736,12 @@ sha256Digest.update(password.getBytes());</pre>
     </section>
     
     <section>
-        <a class="anchor" name="FILE_UPLOAD_FILENAME"></a><h2 class="page-header">Tainted filename read  <a href="#FILE_UPLOAD_FILENAME" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="FILE_UPLOAD_FILENAME"></a>
+        <h2 class="page-header">
+            Tainted filename read
+            <a href="#FILE_UPLOAD_FILENAME" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>FILE_UPLOAD_FILENAME</tt></p>
 
         
             
@@ -1109,7 +1769,12 @@ contains no unauthorized path characters (e.g., / \), and refers to an authorize
     </section>
     
     <section>
-        <a class="anchor" name="REDOS"></a><h2 class="page-header">Regex DOS (ReDOS)  <a href="#REDOS" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="REDOS"></a>
+        <h2 class="page-header">
+            Regex DOS (ReDOS)
+            <a href="#REDOS" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>REDOS</tt></p>
 
         
             
@@ -1139,7 +1804,12 @@ regex meant, this new regex can be evaluated quickly, and is not subject to ReDO
     </section>
     
     <section>
-        <a class="anchor" name="XXE_XMLSTREAMREADER"></a><h2 class="page-header">XML parsing vulnerable to XXE (XMLStreamReader)  <a href="#XXE_XMLSTREAMREADER" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="XXE_XMLSTREAMREADER"></a>
+        <h2 class="page-header">
+            XML parsing vulnerable to XXE (XMLStreamReader)
+            <a href="#XXE_XMLSTREAMREADER" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>XXE_XMLSTREAMREADER</tt></p>
 
         
             
@@ -1231,7 +1901,12 @@ The following snippets show two available solutions. You can set one property or
     </section>
     
     <section>
-        <a class="anchor" name="XXE_SAXPARSER"></a><h2 class="page-header">XML parsing vulnerable to XXE (SAXParser)  <a href="#XXE_SAXPARSER" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="XXE_SAXPARSER"></a>
+        <h2 class="page-header">
+            XML parsing vulnerable to XXE (SAXParser)
+            <a href="#XXE_SAXPARSER" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>XXE_SAXPARSER</tt></p>
 
         
             
@@ -1321,7 +1996,12 @@ parser.parse(inputStream, customHandler);</pre>
     </section>
     
     <section>
-        <a class="anchor" name="XXE_XMLREADER"></a><h2 class="page-header">XML parsing vulnerable to XXE (XMLReader)  <a href="#XXE_XMLREADER" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="XXE_XMLREADER"></a>
+        <h2 class="page-header">
+            XML parsing vulnerable to XXE (XMLReader)
+            <a href="#XXE_XMLREADER" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>XXE_XMLREADER</tt></p>
 
         
             
@@ -1411,7 +2091,12 @@ reader.parse(new InputSource(inputStream));</pre>
     </section>
     
     <section>
-        <a class="anchor" name="XXE_DOCUMENT"></a><h2 class="page-header">XML parsing vulnerable to XXE (DocumentBuilder)  <a href="#XXE_DOCUMENT" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="XXE_DOCUMENT"></a>
+        <h2 class="page-header">
+            XML parsing vulnerable to XXE (DocumentBuilder)
+            <a href="#XXE_DOCUMENT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>XXE_DOCUMENT</tt></p>
 
         
             
@@ -1501,7 +2186,193 @@ Document doc = db.parse(input);</pre>
     </section>
     
     <section>
-        <a class="anchor" name="XPATH_INJECTION"></a><h2 class="page-header">Potential XPath Injection  <a href="#XPATH_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="XXE_DTD_TRANSFORM_FACTORY"></a>
+        <h2 class="page-header">
+            XML parsing vulnerable to XXE (TransformerFactory)
+            <a href="#XXE_DTD_TRANSFORM_FACTORY" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>XXE_DTD_TRANSFORM_FACTORY</tt></p>
+
+        
+            
+<!--XXE_GENERIC_START-->
+<h3>Attack</h3>
+<p>XML External Entity (XXE) attacks can occur when an XML parser supports XML entities while processing XML received
+from an untrusted source.</p>
+<p><b>Risk 1: Expose local file content (XXE: <u>X</u>ML e<u>X</u>ternal <u>E</u>ntity)</b></p>
+<p>
+<pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+&lt;!DOCTYPE foo [
+   &lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot; &gt; ]&gt;
+&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</pre>
+</p>
+<b>Risk 2: Denial of service (XEE: <u>X</u>ml <u>E</u>ntity <u>E</u>xpansion)</b>
+<p>
+<pre>
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;!DOCTYPE lolz [
+ &lt;!ENTITY lol &quot;lol&quot;&gt;
+ &lt;!ELEMENT lolz (#PCDATA)&gt;
+ &lt;!ENTITY lol1 &quot;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&quot;&gt;
+ &lt;!ENTITY lol2 &quot;&amp;lol1;&amp;lol1;&amp;lol1;&amp;lol1;&amp;lol1;&amp;lol1;&amp;lol1;&amp;lol1;&amp;lol1;&amp;lol1;&quot;&gt;
+ &lt;!ENTITY lol3 &quot;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&quot;&gt;
+[...]
+ &lt;!ENTITY lol9 &quot;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&quot;&gt;
+]&gt;
+&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;</pre>
+</p>
+
+<h3>Solution</h3>
+<p>
+In order to avoid exposing dangerous feature of the XML parser, you can do the following change to the code.
+</p>
+<!--XXE_GENERIC_END-->
+
+<p><b>Vulnerable Code:</b></p>
+<p>
+<pre>
+Transformer transformer = TransformerFactory.newInstance().newTransformer();
+transformer.transform(input, result);</pre>
+</p>
+<br/>
+<p>
+The following snippets show two available solutions. You can set one feature or both.
+</p>
+
+<p><b>Solution using "Secure processing" mode:</b></p>
+<p>
+This setting will protect you against remote file access but not denial of service.
+<pre>
+TransformerFactory factory = TransformerFactory.newInstance();
+factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "all");
+factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "all");
+
+Transformer transformer = factory.newTransformer();
+transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+transformer.transform(input, result);</pre>
+</p>
+
+<p><b>Solution disabling DTD:</b></p>
+<p>
+This setting will protect you against remote file access but not denial of service.
+<pre>
+TransformerFactory factory = TransformerFactory.newInstance();
+factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+
+Transformer transformer = factory.newTransformer();
+transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+transformer.transform(input, result);</pre>
+</p>
+<br/>
+<p>
+<b>References</b><br/>
+<!--XXE_GENERIC_START-->
+<a href="http://cwe.mitre.org/data/definitions/611.html">CWE-611: Improper Restriction of XML External Entity Reference ('XXE')</a><br/>
+<a href="https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=61702260">CERT: IDS10-J. Prevent XML external entity attacks</a><br/>
+<a href="https://www.owasp.org/index.php/XML_External_Entity_%28XXE%29_Processing">OWASP.org: XML External Entity (XXE) Processing</a><br/>
+<a href="http://www.ws-attacks.org/index.php/XML_Entity_Expansion">WS-Attacks.org: XML Entity Expansion</a><br/>
+<a href="http://www.ws-attacks.org/index.php/XML_External_Entity_DOS">WS-Attacks.org: XML External Entity DOS</a><br/>
+<a href="http://www.ws-attacks.org/index.php/XML_Entity_Reference_Attack">WS-Attacks.org: XML Entity Reference Attack</a><br/>
+<a href="http://blog.h3xstream.com/2014/06/identifying-xml-external-entity.html">Identifying Xml eXternal Entity vulnerability (XXE)</a><br/>
+<!--XXE_GENERIC_END-->
+</p>
+
+        
+    </section>
+    
+    <section>
+        <a class="anchor" name="XXE_XSLT_TRANSFORM_FACTORY"></a>
+        <h2 class="page-header">
+            XSLT parsing vulnerable to XXE (TransformerFactory)
+            <a href="#XXE_XSLT_TRANSFORM_FACTORY" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>XXE_XSLT_TRANSFORM_FACTORY</tt></p>
+
+        
+            
+<!--XXE_GENERIC_START-->
+<h3>Attack</h3>
+<p>XSLT External Entity (XXE) attacks can occur when an XSLT parser supports external entities while processing XSLT received
+from an untrusted source.</p>
+<p><b>Risk: Expose local file content (XXE: <u>X</u>ML e<u>X</u>ternal <u>E</u>ntity)</b></p>
+<p>
+<pre>
+&lt;xsl:stylesheet version=&quot;1.0&quot; xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;&gt;
+   &lt;xsl:template match=&quot;/&quot;&gt;
+       &lt;xsl:value-of select=&quot;document(&apos;/etc/passwd&apos;)&quot;&gt;
+   &lt;/xsl:value-of&gt;&lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;</pre>
+</p>
+
+<h3>Solution</h3>
+<p>
+In order to avoid exposing dangerous feature of the XML parser, you can do the following change to the code.
+</p>
+<!--XXE_GENERIC_END-->
+
+<p><b>Vulnerable Code:</b></p>
+<p>
+<pre>
+Transformer transformer = TransformerFactory.newInstance().newTransformer();
+transformer.transform(input, result);</pre>
+</p>
+<br/>
+<p>
+The following snippets show two available solutions. You can set one feature or both.
+</p>
+<p><b>Solution using "Secure processing" mode:</b></p>
+<p>
+This setting will protect you against remote file access but not denial of service.
+<pre>
+TransformerFactory factory = TransformerFactory.newInstance();
+factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "all");
+factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "all");
+
+Transformer transformer = factory.newTransformer();
+transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+transformer.transform(input, result);</pre>
+</p>
+
+<p><b>Solution disabling DTD:</b></p>
+<p>
+This setting will protect you against remote file access but not denial of service.
+<pre>
+TransformerFactory factory = TransformerFactory.newInstance();
+factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+
+Transformer transformer = factory.newTransformer();
+transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+transformer.transform(input, result);</pre>
+</p>
+<br/>
+<p>
+<b>References</b><br/>
+<!--XXE_GENERIC_START-->
+<a href="http://cwe.mitre.org/data/definitions/611.html">CWE-611: Improper Restriction of XML External Entity Reference ('XXE')</a><br/>
+<a href="https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=61702260">CERT: IDS10-J. Prevent XML external entity attacks</a><br/>
+<a href="https://www.owasp.org/index.php/XML_External_Entity_%28XXE%29_Processing">OWASP.org: XML External Entity (XXE) Processing</a><br/>
+<a href="http://www.ws-attacks.org/index.php/XML_Entity_Expansion">WS-Attacks.org: XML Entity Expansion</a><br/>
+<a href="http://www.ws-attacks.org/index.php/XML_External_Entity_DOS">WS-Attacks.org: XML External Entity DOS</a><br/>
+<a href="http://www.ws-attacks.org/index.php/XML_Entity_Reference_Attack">WS-Attacks.org: XML Entity Reference Attack</a><br/>
+<a href="http://blog.h3xstream.com/2014/06/identifying-xml-external-entity.html">Identifying Xml eXternal Entity vulnerability (XXE)</a><br/>
+<!--XXE_GENERIC_END-->
+</p>
+
+        
+    </section>
+    
+    <section>
+        <a class="anchor" name="XPATH_INJECTION"></a>
+        <h2 class="page-header">
+            Potential XPath Injection
+            <a href="#XPATH_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>XPATH_INJECTION</tt></p>
 
         
             
@@ -1524,7 +2395,12 @@ could be exposed. This could allow an attacker to access unauthorized data or ma
     </section>
     
     <section>
-        <a class="anchor" name="STRUTS1_ENDPOINT"></a><h2 class="page-header">Found Struts 1 endpoint  <a href="#STRUTS1_ENDPOINT" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="STRUTS1_ENDPOINT"></a>
+        <h2 class="page-header">
+            Found Struts 1 endpoint
+            <a href="#STRUTS1_ENDPOINT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>STRUTS1_ENDPOINT</tt></p>
 
         
             
@@ -1536,7 +2412,12 @@ The use of these parameters should be reviewed to make sure they are used safely
     </section>
     
     <section>
-        <a class="anchor" name="STRUTS2_ENDPOINT"></a><h2 class="page-header">Found Struts 2 endpoint  <a href="#STRUTS2_ENDPOINT" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="STRUTS2_ENDPOINT"></a>
+        <h2 class="page-header">
+            Found Struts 2 endpoint
+            <a href="#STRUTS2_ENDPOINT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>STRUTS2_ENDPOINT</tt></p>
 
         
             
@@ -1550,7 +2431,12 @@ such a setter. The use of these parameters should be reviewed to make sure they 
     </section>
     
     <section>
-        <a class="anchor" name="SPRING_ENDPOINT"></a><h2 class="page-header">Found Spring endpoint  <a href="#SPRING_ENDPOINT" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SPRING_ENDPOINT"></a>
+        <h2 class="page-header">
+            Found Spring endpoint
+            <a href="#SPRING_ENDPOINT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SPRING_ENDPOINT</tt></p>
 
         
             
@@ -1561,7 +2447,12 @@ This class should be analyzed to make sure that remotely exposed methods are saf
     </section>
     
     <section>
-        <a class="anchor" name="SPRING_CSRF_PROTECTION_DISABLED"></a><h2 class="page-header">Spring CSRF protection disabled  <a href="#SPRING_CSRF_PROTECTION_DISABLED" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SPRING_CSRF_PROTECTION_DISABLED"></a>
+        <h2 class="page-header">
+            Spring CSRF protection disabled
+            <a href="#SPRING_CSRF_PROTECTION_DISABLED" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SPRING_CSRF_PROTECTION_DISABLED</tt></p>
 
         
             
@@ -1591,7 +2482,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     </section>
     
     <section>
-        <a class="anchor" name="SPRING_CSRF_UNRESTRICTED_REQUEST_MAPPING"></a><h2 class="page-header">Spring CSRF unrestricted RequestMapping  <a href="#SPRING_CSRF_UNRESTRICTED_REQUEST_MAPPING" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SPRING_CSRF_UNRESTRICTED_REQUEST_MAPPING"></a>
+        <h2 class="page-header">
+            Spring CSRF unrestricted RequestMapping
+            <a href="#SPRING_CSRF_UNRESTRICTED_REQUEST_MAPPING" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SPRING_CSRF_UNRESTRICTED_REQUEST_MAPPING</tt></p>
 
         
             
@@ -1673,7 +2569,12 @@ public class SafeController {
     </section>
     
     <section>
-        <a class="anchor" name="CUSTOM_INJECTION"></a><h2 class="page-header">Potential injection (custom)  <a href="#CUSTOM_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="CUSTOM_INJECTION"></a>
+        <h2 class="page-header">
+            Potential injection (custom)
+            <a href="#CUSTOM_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>CUSTOM_INJECTION</tt></p>
 
         
             
@@ -1702,7 +2603,12 @@ The method identified is susceptible to injection. The input should be validated
     </section>
     
     <section>
-        <a class="anchor" name="SQL_INJECTION"></a><h2 class="page-header">Potential SQL Injection  <a href="#SQL_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SQL_INJECTION"></a>
+        <h2 class="page-header">
+            Potential SQL Injection
+            <a href="#SQL_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SQL_INJECTION</tt></p>
 
         
             
@@ -1741,7 +2647,12 @@ createQuery("select * from User where id = '"+Encoder.encodeForSQL(inputId)+"'")
     </section>
     
     <section>
-        <a class="anchor" name="SQL_INJECTION_TURBINE"></a><h2 class="page-header">Potential SQL Injection with Turbine  <a href="#SQL_INJECTION_TURBINE" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SQL_INJECTION_TURBINE"></a>
+        <h2 class="page-header">
+            Potential SQL Injection with Turbine
+            <a href="#SQL_INJECTION_TURBINE" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SQL_INJECTION_TURBINE</tt></p>
 
         
             
@@ -1797,7 +2708,12 @@ BasePeer.executeQuery("select * from Customer where id = '"+Encoder.encodeForSQL
     </section>
     
     <section>
-        <a class="anchor" name="SQL_INJECTION_HIBERNATE"></a><h2 class="page-header">Potential SQL/HQL Injection (Hibernate)  <a href="#SQL_INJECTION_HIBERNATE" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SQL_INJECTION_HIBERNATE"></a>
+        <h2 class="page-header">
+            Potential SQL/HQL Injection (Hibernate)
+            <a href="#SQL_INJECTION_HIBERNATE" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SQL_INJECTION_HIBERNATE</tt></p>
 
         
             
@@ -1849,7 +2765,12 @@ q.execute();</pre>
     </section>
     
     <section>
-        <a class="anchor" name="SQL_INJECTION_JDO"></a><h2 class="page-header">Potential SQL/JDOQL Injection (JDO)  <a href="#SQL_INJECTION_JDO" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SQL_INJECTION_JDO"></a>
+        <h2 class="page-header">
+            Potential SQL/JDOQL Injection (JDO)
+            <a href="#SQL_INJECTION_JDO" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SQL_INJECTION_JDO</tt></p>
 
         
             
@@ -1891,7 +2812,12 @@ q.execute(input);</pre>
     </section>
     
     <section>
-        <a class="anchor" name="SQL_INJECTION_JPA"></a><h2 class="page-header">Potential SQL/JPQL Injection (JPA)  <a href="#SQL_INJECTION_JPA" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SQL_INJECTION_JPA"></a>
+        <h2 class="page-header">
+            Potential SQL/JPQL Injection (JPA)
+            <a href="#SQL_INJECTION_JPA" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SQL_INJECTION_JPA</tt></p>
 
         
             
@@ -1936,7 +2862,12 @@ UserEntity res = q.getSingleResult();</pre>
     </section>
     
     <section>
-        <a class="anchor" name="SQL_INJECTION_SPRING_JDBC"></a><h2 class="page-header">Potential JDBC Injection (Spring JDBC)  <a href="#SQL_INJECTION_SPRING_JDBC" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SQL_INJECTION_SPRING_JDBC"></a>
+        <h2 class="page-header">
+            Potential JDBC Injection (Spring JDBC)
+            <a href="#SQL_INJECTION_SPRING_JDBC" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SQL_INJECTION_SPRING_JDBC</tt></p>
 
         
             
@@ -1973,7 +2904,12 @@ int count = jdbc.queryForObject("select count(*) from Users where name = ?", Int
     </section>
     
     <section>
-        <a class="anchor" name="SQL_INJECTION_JDBC"></a><h2 class="page-header">Potential JDBC Injection  <a href="#SQL_INJECTION_JDBC" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SQL_INJECTION_JDBC"></a>
+        <h2 class="page-header">
+            Potential JDBC Injection
+            <a href="#SQL_INJECTION_JDBC" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SQL_INJECTION_JDBC</tt></p>
 
         
             
@@ -2012,7 +2948,12 @@ updateSales.setString(2, coffeeName);</pre>
     </section>
     
     <section>
-        <a class="anchor" name="SCALA_SQL_INJECTION_SLICK"></a><h2 class="page-header">Potential Scala Slick Injection  <a href="#SCALA_SQL_INJECTION_SLICK" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SCALA_SQL_INJECTION_SLICK"></a>
+        <h2 class="page-header">
+            Potential Scala Slick Injection
+            <a href="#SCALA_SQL_INJECTION_SLICK" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SCALA_SQL_INJECTION_SLICK</tt></p>
 
         
             
@@ -2048,7 +2989,12 @@ Bind variables in prepared statements can be used to easily mitigate the risk of
     </section>
     
     <section>
-        <a class="anchor" name="SCALA_SQL_INJECTION_ANORM"></a><h2 class="page-header">Potential Scala Anorm Injection  <a href="#SCALA_SQL_INJECTION_ANORM" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SCALA_SQL_INJECTION_ANORM"></a>
+        <h2 class="page-header">
+            Potential Scala Anorm Injection
+            <a href="#SCALA_SQL_INJECTION_ANORM" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SCALA_SQL_INJECTION_ANORM</tt></p>
 
         
             
@@ -2088,7 +3034,12 @@ DB.withConnection { implicit c =>
     </section>
     
     <section>
-        <a class="anchor" name="SQL_INJECTION_ANDROID"></a><h2 class="page-header">Potential Android SQL Injection  <a href="#SQL_INJECTION_ANDROID" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SQL_INJECTION_ANDROID"></a>
+        <h2 class="page-header">
+            Potential Android SQL Injection
+            <a href="#SQL_INJECTION_ANDROID" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SQL_INJECTION_ANDROID</tt></p>
 
         
             
@@ -2128,7 +3079,12 @@ Cursor cursor = this.getReadableDatabase().rawQuery(query,new String[] {userInpu
     </section>
     
     <section>
-        <a class="anchor" name="LDAP_INJECTION"></a><h2 class="page-header">Potential LDAP Injection  <a href="#LDAP_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="LDAP_INJECTION"></a>
+        <h2 class="page-header">
+            Potential LDAP Injection
+            <a href="#LDAP_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>LDAP_INJECTION</tt></p>
 
         
             
@@ -2154,7 +3110,12 @@ Therefore, the primary defense against LDAP injection is strong input validation
     </section>
     
     <section>
-        <a class="anchor" name="SCRIPT_ENGINE_INJECTION"></a><h2 class="page-header">Potential code injection when using Script Engine  <a href="#SCRIPT_ENGINE_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SCRIPT_ENGINE_INJECTION"></a>
+        <h2 class="page-header">
+            Potential code injection when using Script Engine
+            <a href="#SCRIPT_ENGINE_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SCRIPT_ENGINE_INJECTION</tt></p>
 
         
             
@@ -2211,7 +3172,12 @@ public void runCustomTrigger(String script) {
     </section>
     
     <section>
-        <a class="anchor" name="SPEL_INJECTION"></a><h2 class="page-header">Potential code injection when using Spring Expression  <a href="#SPEL_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SPEL_INJECTION"></a>
+        <h2 class="page-header">
+            Potential code injection when using Spring Expression
+            <a href="#SPEL_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SPEL_INJECTION</tt></p>
 
         
             
@@ -2248,7 +3214,12 @@ public void parseExpressionInterface(Person personObj,String property) {
     </section>
     
     <section>
-        <a class="anchor" name="EL_INJECTION"></a><h2 class="page-header">Potential code injection when using Expression Language (EL)  <a href="#EL_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="EL_INJECTION"></a>
+        <h2 class="page-header">
+            Potential code injection when using Expression Language (EL)
+            <a href="#EL_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>EL_INJECTION</tt></p>
 
         
             
@@ -2282,7 +3253,12 @@ public void parseExpressionInterface(Person personObj,String property) {
     </section>
     
     <section>
-        <a class="anchor" name="SEAM_LOG_INJECTION"></a><h2 class="page-header">Potential code injection in Seam logging call  <a href="#SEAM_LOG_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SEAM_LOG_INJECTION"></a>
+        <h2 class="page-header">
+            Potential code injection in Seam logging call
+            <a href="#SEAM_LOG_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SEAM_LOG_INJECTION</tt></p>
 
         
             
@@ -2323,7 +3299,12 @@ public void parseExpressionInterface(Person personObj,String property) {
     </section>
     
     <section>
-        <a class="anchor" name="OGNL_INJECTION"></a><h2 class="page-header">Potential code injection when using OGNL expression  <a href="#OGNL_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="OGNL_INJECTION"></a>
+        <h2 class="page-header">
+            Potential code injection when using OGNL expression
+            <a href="#OGNL_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>OGNL_INJECTION</tt></p>
 
         
             
@@ -2358,7 +3339,12 @@ In general, method evaluating OGNL expression should not received user input. It
     </section>
     
     <section>
-        <a class="anchor" name="HTTP_RESPONSE_SPLITTING"></a><h2 class="page-header">Potential HTTP Response Splitting  <a href="#HTTP_RESPONSE_SPLITTING" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="HTTP_RESPONSE_SPLITTING"></a>
+        <h2 class="page-header">
+            Potential HTTP Response Splitting
+            <a href="#HTTP_RESPONSE_SPLITTING" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>HTTP_RESPONSE_SPLITTING</tt></p>
 
         
             
@@ -2393,7 +3379,12 @@ response.addCookie(cookie);</pre>
     </section>
     
     <section>
-        <a class="anchor" name="CRLF_INJECTION_LOGS"></a><h2 class="page-header">Potential CRLF Injection for logs  <a href="#CRLF_INJECTION_LOGS" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="CRLF_INJECTION_LOGS"></a>
+        <h2 class="page-header">
+            Potential CRLF Injection for logs
+            <a href="#CRLF_INJECTION_LOGS" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>CRLF_INJECTION_LOGS</tt></p>
 
         
             
@@ -2452,7 +3443,12 @@ You can also configure your logger service to replace new line for all message e
     </section>
     
     <section>
-        <a class="anchor" name="EXTERNAL_CONFIG_CONTROL"></a><h2 class="page-header">Potential external control of configuration  <a href="#EXTERNAL_CONFIG_CONTROL" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="EXTERNAL_CONFIG_CONTROL"></a>
+        <h2 class="page-header">
+            Potential external control of configuration
+            <a href="#EXTERNAL_CONFIG_CONTROL" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>EXTERNAL_CONFIG_CONTROL</tt></p>
 
         
             
@@ -2477,7 +3473,12 @@ You can also configure your logger service to replace new line for all message e
     </section>
     
     <section>
-        <a class="anchor" name="BAD_HEXA_CONVERSION"></a><h2 class="page-header">Bad hexadecimal concatenation  <a href="#BAD_HEXA_CONVERSION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="BAD_HEXA_CONVERSION"></a>
+        <h2 class="page-header">
+            Bad hexadecimal concatenation
+            <a href="#BAD_HEXA_CONVERSION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>BAD_HEXA_CONVERSION</tt></p>
 
         
             
@@ -2514,7 +3515,12 @@ In this situation, the use of toHexString() should be replaced with String.forma
     </section>
     
     <section>
-        <a class="anchor" name="HAZELCAST_SYMMETRIC_ENCRYPTION"></a><h2 class="page-header">Hazelcast symmetric encryption  <a href="#HAZELCAST_SYMMETRIC_ENCRYPTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="HAZELCAST_SYMMETRIC_ENCRYPTION"></a>
+        <h2 class="page-header">
+            Hazelcast symmetric encryption
+            <a href="#HAZELCAST_SYMMETRIC_ENCRYPTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>HAZELCAST_SYMMETRIC_ENCRYPTION</tt></p>
 
         
             
@@ -2532,7 +3538,12 @@ In this situation, the use of toHexString() should be replaced with String.forma
     </section>
     
     <section>
-        <a class="anchor" name="NULL_CIPHER"></a><h2 class="page-header">NullCipher is insecure  <a href="#NULL_CIPHER" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="NULL_CIPHER"></a>
+        <h2 class="page-header">
+            NullCipher is insecure
+            <a href="#NULL_CIPHER" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>NULL_CIPHER</tt></p>
 
         
             
@@ -2561,7 +3572,12 @@ byte[] cipherText = c.doFinal(plainText);</pre>
     </section>
     
     <section>
-        <a class="anchor" name="UNENCRYPTED_SOCKET"></a><h2 class="page-header">Unencrypted Socket  <a href="#UNENCRYPTED_SOCKET" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="UNENCRYPTED_SOCKET"></a>
+        <h2 class="page-header">
+            Unencrypted Socket
+            <a href="#UNENCRYPTED_SOCKET" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>UNENCRYPTED_SOCKET</tt></p>
 
         
             
@@ -2596,7 +3612,12 @@ to do this correctly.
     </section>
     
     <section>
-        <a class="anchor" name="UNENCRYPTED_SERVER_SOCKET"></a><h2 class="page-header">Unencrypted Server Socket  <a href="#UNENCRYPTED_SERVER_SOCKET" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="UNENCRYPTED_SERVER_SOCKET"></a>
+        <h2 class="page-header">
+            Unencrypted Server Socket
+            <a href="#UNENCRYPTED_SERVER_SOCKET" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>UNENCRYPTED_SERVER_SOCKET</tt></p>
 
         
             
@@ -2631,13 +3652,54 @@ to do this correctly.
     </section>
     
     <section>
-        <a class="anchor" name="DES_USAGE"></a><h2 class="page-header">DES/DESede is insecure  <a href="#DES_USAGE" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="DES_USAGE"></a>
+        <h2 class="page-header">
+            DES is insecure
+            <a href="#DES_USAGE" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>DES_USAGE</tt></p>
 
         
             
 <p>
-DES and DESede (3DES) are not considered strong ciphers for modern applications. Currently, NIST recommends the 
-usage of AES block ciphers instead of DES/3DES.
+DES is considered strong ciphers for modern applications. Currently, NIST recommends the
+usage of AES block ciphers instead of DES.
+</p>
+<p>
+    <b>Example weak code:</b>
+<pre>Cipher c = Cipher.getInstance("DES/ECB/PKCS5Padding");
+c.init(Cipher.ENCRYPT_MODE, k, iv);
+byte[] cipherText = c.doFinal(plainText);</pre>
+</p>
+<p>
+    <b>Example solution:</b>
+    <pre>Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
+c.init(Cipher.ENCRYPT_MODE, k, iv);
+byte[] cipherText = c.doFinal(plainText);</pre>
+</p>
+<br/>
+<p>
+<b>References</b><br/>
+<a href="http://www.nist.gov/itl/fips/060205_des.cfm">NIST Withdraws Outdated Data Encryption Standard</a><br/>
+<a href="http://cwe.mitre.org/data/definitions/326.html">CWE-326: Inadequate Encryption Strength</a>
+</p>
+
+        
+    </section>
+    
+    <section>
+        <a class="anchor" name="TDES_USAGE"></a>
+        <h2 class="page-header">
+            DESede is insecure
+            <a href="#TDES_USAGE" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>TDES_USAGE</tt></p>
+
+        
+            
+<p>
+Triple DES (also known as 3DES or DESede) is considered strong ciphers for modern applications. Currently, NIST recommends the
+usage of AES block ciphers instead of 3DES.
 </p>
 <p>
     <b>Example weak code:</b>
@@ -2662,7 +3724,12 @@ byte[] cipherText = c.doFinal(plainText);</pre>
     </section>
     
     <section>
-        <a class="anchor" name="RSA_NO_PADDING"></a><h2 class="page-header">RSA with no padding is insecure  <a href="#RSA_NO_PADDING" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="RSA_NO_PADDING"></a>
+        <h2 class="page-header">
+            RSA with no padding is insecure
+            <a href="#RSA_NO_PADDING" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>RSA_NO_PADDING</tt></p>
 
         
             
@@ -2689,7 +3756,12 @@ The code should be replaced with:<br/>
     </section>
     
     <section>
-        <a class="anchor" name="HARD_CODE_PASSWORD"></a><h2 class="page-header">Hard Coded Password  <a href="#HARD_CODE_PASSWORD" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="HARD_CODE_PASSWORD"></a>
+        <h2 class="page-header">
+            Hard Coded Password
+            <a href="#HARD_CODE_PASSWORD" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>HARD_CODE_PASSWORD</tt></p>
 
         
             
@@ -2716,7 +3788,12 @@ props.put(Context.SECURITY_CREDENTIALS, "p@ssw0rd");</pre>
     </section>
     
     <section>
-        <a class="anchor" name="HARD_CODE_KEY"></a><h2 class="page-header">Hard Coded Key  <a href="#HARD_CODE_KEY" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="HARD_CODE_KEY"></a>
+        <h2 class="page-header">
+            Hard Coded Key
+            <a href="#HARD_CODE_KEY" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>HARD_CODE_KEY</tt></p>
 
         
             
@@ -2744,7 +3821,55 @@ return aesCipher.doFinal(secretData);</pre>
     </section>
     
     <section>
-        <a class="anchor" name="STRUTS_FORM_VALIDATION"></a><h2 class="page-header">Struts Form without input validation  <a href="#STRUTS_FORM_VALIDATION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="UNSAFE_HASH_EQUALS"></a>
+        <h2 class="page-header">
+            Unsafe hash equals
+            <a href="#UNSAFE_HASH_EQUALS" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>UNSAFE_HASH_EQUALS</tt></p>
+
+        
+            
+<p>
+An attacker might be able to detect the value of the secret hash due to the exposure of comparison timing. When the
+functions <code>Arrays.equals()</code> or <code>String.equals()</code> are called, they will exited earlier if less
+bytes are matched.
+</p>
+<p>
+<p><b>Vulnerable Code:</b><br/>
+
+<pre>
+String actualHash = ...
+
+if(userInput.equals(actualHash)) {
+    ...
+}</pre>
+</p>
+<p><b>Solution:</b><br/>
+
+<pre>
+String actualHash = ...
+
+if(MessageDigest.isEqual(userInput.getBytes(),actualHash.getBytes())) {
+    ...
+}</pre>
+</p>
+<br/>
+<p>
+<b>References</b><br/>
+<a href="https://cwe.mitre.org/data/definitions/203.html">CWE-203: Information Exposure Through DiscrepancyKey</a><br/>
+</p>
+
+        
+    </section>
+    
+    <section>
+        <a class="anchor" name="STRUTS_FORM_VALIDATION"></a>
+        <h2 class="page-header">
+            Struts Form without input validation
+            <a href="#STRUTS_FORM_VALIDATION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>STRUTS_FORM_VALIDATION</tt></p>
 
         
             
@@ -2778,7 +3903,12 @@ public class RegistrationForm extends ValidatorForm {
     </section>
     
     <section>
-        <a class="anchor" name="XSS_REQUEST_WRAPPER"></a><h2 class="page-header">XSSRequestWrapper is a weak XSS protection  <a href="#XSS_REQUEST_WRAPPER" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="XSS_REQUEST_WRAPPER"></a>
+        <h2 class="page-header">
+            XSSRequestWrapper is a weak XSS protection
+            <a href="#XSS_REQUEST_WRAPPER" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>XSS_REQUEST_WRAPPER</tt></p>
 
         
             
@@ -2820,7 +3950,12 @@ the XSS protection rules defined in the OWASP XSS Prevention Cheat Sheet.
     </section>
     
     <section>
-        <a class="anchor" name="BLOWFISH_KEY_SIZE"></a><h2 class="page-header">Blowfish usage with short key  <a href="#BLOWFISH_KEY_SIZE" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="BLOWFISH_KEY_SIZE"></a>
+        <h2 class="page-header">
+            Blowfish usage with short key
+            <a href="#BLOWFISH_KEY_SIZE" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>BLOWFISH_KEY_SIZE</tt></p>
 
         
             
@@ -2852,7 +3987,12 @@ keyGen.init(128);</pre>
     </section>
     
     <section>
-        <a class="anchor" name="RSA_KEY_SIZE"></a><h2 class="page-header">RSA usage with short key  <a href="#RSA_KEY_SIZE" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="RSA_KEY_SIZE"></a>
+        <h2 class="page-header">
+            RSA usage with short key
+            <a href="#RSA_KEY_SIZE" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>RSA_KEY_SIZE</tt></p>
 
         
             
@@ -2894,7 +4034,12 @@ keyGen.initialize(2048);
     </section>
     
     <section>
-        <a class="anchor" name="UNVALIDATED_REDIRECT"></a><h2 class="page-header">Unvalidated Redirect  <a href="#UNVALIDATED_REDIRECT" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="UNVALIDATED_REDIRECT"></a>
+        <h2 class="page-header">
+            Unvalidated Redirect
+            <a href="#UNVALIDATED_REDIRECT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>UNVALIDATED_REDIRECT</tt></p>
 
         
             
@@ -2943,7 +4088,12 @@ keyGen.initialize(2048);
     </section>
     
     <section>
-        <a class="anchor" name="PLAY_UNVALIDATED_REDIRECT"></a><h2 class="page-header">Unvalidated Redirect (Play Framework)  <a href="#PLAY_UNVALIDATED_REDIRECT" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="PLAY_UNVALIDATED_REDIRECT"></a>
+        <h2 class="page-header">
+            Unvalidated Redirect (Play Framework)
+            <a href="#PLAY_UNVALIDATED_REDIRECT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>PLAY_UNVALIDATED_REDIRECT</tt></p>
 
         
             
@@ -2991,7 +4141,12 @@ keyGen.initialize(2048);
     </section>
     
     <section>
-        <a class="anchor" name="SPRING_UNVALIDATED_REDIRECT"></a><h2 class="page-header">Spring Unvalidated Redirect  <a href="#SPRING_UNVALIDATED_REDIRECT" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SPRING_UNVALIDATED_REDIRECT"></a>
+        <h2 class="page-header">
+            Spring Unvalidated Redirect
+            <a href="#SPRING_UNVALIDATED_REDIRECT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SPRING_UNVALIDATED_REDIRECT</tt></p>
 
         
             
@@ -3040,7 +4195,12 @@ public String redirect(@RequestParam("url") String url) {
     </section>
     
     <section>
-        <a class="anchor" name="JSP_INCLUDE"></a><h2 class="page-header">Dynamic JSP inclusion  <a href="#JSP_INCLUDE" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="JSP_INCLUDE"></a>
+        <h2 class="page-header">
+            Dynamic JSP inclusion
+            <a href="#JSP_INCLUDE" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>JSP_INCLUDE</tt></p>
 
         
             
@@ -3069,7 +4229,12 @@ attacker gets the ability to execute any code.
     </section>
     
     <section>
-        <a class="anchor" name="JSP_SPRING_EVAL"></a><h2 class="page-header">Dynamic variable in Spring expression  <a href="#JSP_SPRING_EVAL" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="JSP_SPRING_EVAL"></a>
+        <h2 class="page-header">
+            Dynamic variable in Spring expression
+            <a href="#JSP_SPRING_EVAL" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>JSP_SPRING_EVAL</tt></p>
 
         
             
@@ -3102,7 +4267,12 @@ attacker gets the ability to execute any code.
     </section>
     
     <section>
-        <a class="anchor" name="JSP_JSTL_OUT"></a><h2 class="page-header">Escaping of special XML characters is disabled  <a href="#JSP_JSTL_OUT" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="JSP_JSTL_OUT"></a>
+        <h2 class="page-header">
+            Escaping of special XML characters is disabled
+            <a href="#JSP_JSTL_OUT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>JSP_JSTL_OUT</tt></p>
 
         
             
@@ -3134,7 +4304,12 @@ attacker gets the ability to execute any code.
     </section>
     
     <section>
-        <a class="anchor" name="XSS_JSP_PRINT"></a><h2 class="page-header">Potential XSS in JSP  <a href="#XSS_JSP_PRINT" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="XSS_JSP_PRINT"></a>
+        <h2 class="page-header">
+            Potential XSS in JSP
+            <a href="#XSS_JSP_PRINT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>XSS_JSP_PRINT</tt></p>
 
         
             
@@ -3177,7 +4352,12 @@ which explains these defenses in significant detail.
     </section>
     
     <section>
-        <a class="anchor" name="XSS_SERVLET"></a><h2 class="page-header">Potential XSS in Servlet  <a href="#XSS_SERVLET" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="XSS_SERVLET"></a>
+        <h2 class="page-header">
+            Potential XSS in Servlet
+            <a href="#XSS_SERVLET" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>XSS_SERVLET</tt></p>
 
         
             
@@ -3222,7 +4402,12 @@ which explains these defenses in significant detail.
     </section>
     
     <section>
-        <a class="anchor" name="XML_DECODER"></a><h2 class="page-header">XMLDecoder usage  <a href="#XML_DECODER" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="XML_DECODER"></a>
+        <h2 class="page-header">
+            XMLDecoder usage
+            <a href="#XML_DECODER" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>XML_DECODER</tt></p>
 
         
             
@@ -3273,7 +4458,12 @@ The solution is to avoid using XMLDecoder to parse content from an untrusted sou
     </section>
     
     <section>
-        <a class="anchor" name="STATIC_IV"></a><h2 class="page-header">Static IV  <a href="#STATIC_IV" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="STATIC_IV"></a>
+        <h2 class="page-header">
+            Static IV
+            <a href="#STATIC_IV" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>STATIC_IV</tt></p>
 
         
             
@@ -3314,7 +4504,12 @@ public void encrypt(String message) throws Exception {
     </section>
     
     <section>
-        <a class="anchor" name="ECB_MODE"></a><h2 class="page-header">ECB mode is insecure  <a href="#ECB_MODE" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="ECB_MODE"></a>
+        <h2 class="page-header">
+            ECB mode is insecure
+            <a href="#ECB_MODE" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>ECB_MODE</tt></p>
 
         
             
@@ -3350,7 +4545,12 @@ byte[] cipherText = c.doFinal(plainText);</pre>
     </section>
     
     <section>
-        <a class="anchor" name="PADDING_ORACLE"></a><h2 class="page-header">Cipher is susceptible to Padding Oracle  <a href="#PADDING_ORACLE" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="PADDING_ORACLE"></a>
+        <h2 class="page-header">
+            Cipher is susceptible to Padding Oracle
+            <a href="#PADDING_ORACLE" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>PADDING_ORACLE</tt></p>
 
         
 
@@ -3385,7 +4585,12 @@ byte[] cipherText = c.doFinal(plainText);</pre>
     </section>
     
     <section>
-        <a class="anchor" name="CIPHER_INTEGRITY"></a><h2 class="page-header">Cipher with no integrity  <a href="#CIPHER_INTEGRITY" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="CIPHER_INTEGRITY"></a>
+        <h2 class="page-header">
+            Cipher with no integrity
+            <a href="#CIPHER_INTEGRITY" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>CIPHER_INTEGRITY</tt></p>
 
         
 
@@ -3440,7 +4645,12 @@ In the example solution above, the GCM mode introduces an HMAC into the resultin
     </section>
     
     <section>
-        <a class="anchor" name="ESAPI_ENCRYPTOR"></a><h2 class="page-header">Use of ESAPI Encryptor  <a href="#ESAPI_ENCRYPTOR" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="ESAPI_ENCRYPTOR"></a>
+        <h2 class="page-header">
+            Use of ESAPI Encryptor
+            <a href="#ESAPI_ENCRYPTOR" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>ESAPI_ENCRYPTOR</tt></p>
 
         
 
@@ -3521,7 +4731,12 @@ Encryptor.cipher_modes.additional_allowed=</pre>
     </section>
     
     <section>
-        <a class="anchor" name="ANDROID_EXTERNAL_FILE_ACCESS"></a><h2 class="page-header">External file access (Android)  <a href="#ANDROID_EXTERNAL_FILE_ACCESS" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="ANDROID_EXTERNAL_FILE_ACCESS"></a>
+        <h2 class="page-header">
+            External file access (Android)
+            <a href="#ANDROID_EXTERNAL_FILE_ACCESS" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>ANDROID_EXTERNAL_FILE_ACCESS</tt></p>
 
         
             
@@ -3561,7 +4776,12 @@ fos.write(string.getBytes());
     </section>
     
     <section>
-        <a class="anchor" name="ANDROID_BROADCAST"></a><h2 class="page-header">Broadcast (Android)  <a href="#ANDROID_BROADCAST" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="ANDROID_BROADCAST"></a>
+        <h2 class="page-header">
+            Broadcast (Android)
+            <a href="#ANDROID_BROADCAST" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>ANDROID_BROADCAST</tt></p>
 
         
             
@@ -3639,7 +4859,12 @@ sendBroadcast(v1);
     </section>
     
     <section>
-        <a class="anchor" name="ANDROID_WORLD_WRITABLE"></a><h2 class="page-header">World writable file (Android)  <a href="#ANDROID_WORLD_WRITABLE" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="ANDROID_WORLD_WRITABLE"></a>
+        <h2 class="page-header">
+            World writable file (Android)
+            <a href="#ANDROID_WORLD_WRITABLE" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>ANDROID_WORLD_WRITABLE</tt></p>
 
         
             
@@ -3682,7 +4907,12 @@ create on external storage. See references below for implementation guidelines.
     </section>
     
     <section>
-        <a class="anchor" name="ANDROID_GEOLOCATION"></a><h2 class="page-header">WebView with geolocation activated (Android)  <a href="#ANDROID_GEOLOCATION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="ANDROID_GEOLOCATION"></a>
+        <h2 class="page-header">
+            WebView with geolocation activated (Android)
+            <a href="#ANDROID_GEOLOCATION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>ANDROID_GEOLOCATION</tt></p>
 
         
             
@@ -3727,7 +4957,12 @@ webView.setWebChromeClient(new WebChromeClient() {
     </section>
     
     <section>
-        <a class="anchor" name="ANDROID_WEB_VIEW_JAVASCRIPT"></a><h2 class="page-header">WebView with JavaScript enabled (Android)  <a href="#ANDROID_WEB_VIEW_JAVASCRIPT" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="ANDROID_WEB_VIEW_JAVASCRIPT"></a>
+        <h2 class="page-header">
+            WebView with JavaScript enabled (Android)
+            <a href="#ANDROID_WEB_VIEW_JAVASCRIPT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>ANDROID_WEB_VIEW_JAVASCRIPT</tt></p>
 
         
             
@@ -3766,7 +5001,12 @@ function updateDescription(newDescription) {
     </section>
     
     <section>
-        <a class="anchor" name="ANDROID_WEB_VIEW_JAVASCRIPT_INTERFACE"></a><h2 class="page-header">WebView with JavaScript interface (Android)  <a href="#ANDROID_WEB_VIEW_JAVASCRIPT_INTERFACE" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="ANDROID_WEB_VIEW_JAVASCRIPT_INTERFACE"></a>
+        <h2 class="page-header">
+            WebView with JavaScript interface (Android)
+            <a href="#ANDROID_WEB_VIEW_JAVASCRIPT_INTERFACE" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>ANDROID_WEB_VIEW_JAVASCRIPT_INTERFACE</tt></p>
 
         
             
@@ -3810,7 +5050,12 @@ class FileWriteUtil {
     </section>
     
     <section>
-        <a class="anchor" name="INSECURE_COOKIE"></a><h2 class="page-header">Cookie without the secure flag  <a href="#INSECURE_COOKIE" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="INSECURE_COOKIE"></a>
+        <h2 class="page-header">
+            Cookie without the secure flag
+            <a href="#INSECURE_COOKIE" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>INSECURE_COOKIE</tt></p>
 
         
             
@@ -3865,7 +5110,12 @@ cookie.setHttpOnly(true);
     </section>
     
     <section>
-        <a class="anchor" name="HTTPONLY_COOKIE"></a><h2 class="page-header">Cookie without the HttpOnly flag  <a href="#HTTPONLY_COOKIE" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="HTTPONLY_COOKIE"></a>
+        <h2 class="page-header">
+            Cookie without the HttpOnly flag
+            <a href="#HTTPONLY_COOKIE" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>HTTPONLY_COOKIE</tt></p>
 
         
             
@@ -3919,7 +5169,12 @@ cookie.setHttpOnly(true); //HttpOnly flag
     </section>
     
     <section>
-        <a class="anchor" name="OBJECT_DESERIALIZATION"></a><h2 class="page-header">Object deserialization is used  <a href="#OBJECT_DESERIALIZATION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="OBJECT_DESERIALIZATION"></a>
+        <h2 class="page-header">
+            Object deserialization is used
+            <a href="#OBJECT_DESERIALIZATION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>OBJECT_DESERIALIZATION</tt></p>
 
         
             
@@ -3969,7 +5224,12 @@ Avoid deserializing object provided by remote users.
     </section>
     
     <section>
-        <a class="anchor" name="JACKSON_UNSAFE_DESERIALIZATION"></a><h2 class="page-header">Unsafe Jackson deserialization configuration  <a href="#JACKSON_UNSAFE_DESERIALIZATION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="JACKSON_UNSAFE_DESERIALIZATION"></a>
+        <h2 class="page-header">
+            Unsafe Jackson deserialization configuration
+            <a href="#JACKSON_UNSAFE_DESERIALIZATION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>JACKSON_UNSAFE_DESERIALIZATION</tt></p>
 
         
             
@@ -4021,7 +5281,12 @@ public class Example {
     </section>
     
     <section>
-        <a class="anchor" name="DESERIALIZATION_GADGET"></a><h2 class="page-header">This class could be used as deserialization gadget  <a href="#DESERIALIZATION_GADGET" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="DESERIALIZATION_GADGET"></a>
+        <h2 class="page-header">
+            This class could be used as deserialization gadget
+            <a href="#DESERIALIZATION_GADGET" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>DESERIALIZATION_GADGET</tt></p>
 
         
             
@@ -4049,7 +5314,12 @@ Removing gadget is an hardening practice to reduce the risk of being exploited.
     </section>
     
     <section>
-        <a class="anchor" name="TRUST_BOUNDARY_VIOLATION"></a><h2 class="page-header">Trust Boundary Violation  <a href="#TRUST_BOUNDARY_VIOLATION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="TRUST_BOUNDARY_VIOLATION"></a>
+        <h2 class="page-header">
+            Trust Boundary Violation
+            <a href="#TRUST_BOUNDARY_VIOLATION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>TRUST_BOUNDARY_VIOLATION</tt></p>
 
         
             
@@ -4098,7 +5368,12 @@ safe location rather than using direct user input.
     </section>
     
     <section>
-        <a class="anchor" name="JSP_XSLT"></a><h2 class="page-header">A malicious XSLT could be provided  <a href="#JSP_XSLT" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="JSP_XSLT"></a>
+        <h2 class="page-header">
+            A malicious XSLT could be provided
+            <a href="#JSP_XSLT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>JSP_XSLT</tt></p>
 
         
             
@@ -4135,7 +5410,12 @@ Path traversal <sup>[3][4]</sup> are not possible.
     </section>
     
     <section>
-        <a class="anchor" name="MALICIOUS_XSLT"></a><h2 class="page-header">A malicious XSLT could be provided  <a href="#MALICIOUS_XSLT" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="MALICIOUS_XSLT"></a>
+        <h2 class="page-header">
+            A malicious XSLT could be provided
+            <a href="#MALICIOUS_XSLT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>MALICIOUS_XSLT</tt></p>
 
         
             
@@ -4177,7 +5457,12 @@ Path traversal <sup>[3][4]</sup> are not possible.
     </section>
     
     <section>
-        <a class="anchor" name="SCALA_SENSITIVE_DATA_EXPOSURE"></a><h2 class="page-header">Potential information leakage in Scala Play  <a href="#SCALA_SENSITIVE_DATA_EXPOSURE" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SCALA_SENSITIVE_DATA_EXPOSURE"></a>
+        <h2 class="page-header">
+            Potential information leakage in Scala Play
+            <a href="#SCALA_SENSITIVE_DATA_EXPOSURE" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SCALA_SENSITIVE_DATA_EXPOSURE</tt></p>
 
         
             
@@ -4213,7 +5498,12 @@ Path traversal <sup>[3][4]</sup> are not possible.
     </section>
     
     <section>
-        <a class="anchor" name="SCALA_PLAY_SSRF"></a><h2 class="page-header">Scala Play Server-Side Request Forgery (SSRF)  <a href="#SCALA_PLAY_SSRF" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SCALA_PLAY_SSRF"></a>
+        <h2 class="page-header">
+            Scala Play Server-Side Request Forgery (SSRF)
+            <a href="#SCALA_PLAY_SSRF" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SCALA_PLAY_SSRF</tt></p>
 
         
             
@@ -4249,7 +5539,12 @@ Path traversal <sup>[3][4]</sup> are not possible.
     </section>
     
     <section>
-        <a class="anchor" name="URLCONNECTION_SSRF_FD"></a><h2 class="page-header">URLConnection Server-Side Request Forgery (SSRF) and File Disclosure  <a href="#URLCONNECTION_SSRF_FD" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="URLCONNECTION_SSRF_FD"></a>
+        <h2 class="page-header">
+            URLConnection Server-Side Request Forgery (SSRF) and File Disclosure
+            <a href="#URLCONNECTION_SSRF_FD" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>URLCONNECTION_SSRF_FD</tt></p>
 
         
             
@@ -4289,7 +5584,12 @@ new URL(String url).getContent()
     </section>
     
     <section>
-        <a class="anchor" name="SCALA_XSS_TWIRL"></a><h2 class="page-header">Potential XSS in Scala Twirl template engine  <a href="#SCALA_XSS_TWIRL" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SCALA_XSS_TWIRL"></a>
+        <h2 class="page-header">
+            Potential XSS in Scala Twirl template engine
+            <a href="#SCALA_XSS_TWIRL" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SCALA_XSS_TWIRL</tt></p>
 
         
             
@@ -4327,7 +5627,12 @@ which explains these defenses in significant detail.
     </section>
     
     <section>
-        <a class="anchor" name="SCALA_XSS_MVC_API"></a><h2 class="page-header">Potential XSS in Scala MVC API engine  <a href="#SCALA_XSS_MVC_API" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SCALA_XSS_MVC_API"></a>
+        <h2 class="page-header">
+            Potential XSS in Scala MVC API engine
+            <a href="#SCALA_XSS_MVC_API" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SCALA_XSS_MVC_API</tt></p>
 
         
             
@@ -4365,7 +5670,12 @@ which explains these defenses in significant detail.
     </section>
     
     <section>
-        <a class="anchor" name="TEMPLATE_INJECTION_VELOCITY"></a><h2 class="page-header">Potential template injection with Velocity  <a href="#TEMPLATE_INJECTION_VELOCITY" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="TEMPLATE_INJECTION_VELOCITY"></a>
+        <h2 class="page-header">
+            Potential template injection with Velocity
+            <a href="#TEMPLATE_INJECTION_VELOCITY" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>TEMPLATE_INJECTION_VELOCITY</tt></p>
 
         
             
@@ -4397,7 +5707,12 @@ prefer logic-less template engines such as Handlebars or Moustache (See referenc
     </section>
     
     <section>
-        <a class="anchor" name="TEMPLATE_INJECTION_FREEMARKER"></a><h2 class="page-header">Potential template injection with Freemarker  <a href="#TEMPLATE_INJECTION_FREEMARKER" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="TEMPLATE_INJECTION_FREEMARKER"></a>
+        <h2 class="page-header">
+            Potential template injection with Freemarker
+            <a href="#TEMPLATE_INJECTION_FREEMARKER" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>TEMPLATE_INJECTION_FREEMARKER</tt></p>
 
         
             
@@ -4429,7 +5744,12 @@ prefer logic-less template engines such as Handlebars or Moustache (See referenc
     </section>
     
     <section>
-        <a class="anchor" name="PERMISSIVE_CORS"></a><h2 class="page-header">Overly permissive CORS policy  <a href="#PERMISSIVE_CORS" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="PERMISSIVE_CORS"></a>
+        <h2 class="page-header">
+            Overly permissive CORS policy
+            <a href="#PERMISSIVE_CORS" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>PERMISSIVE_CORS</tt></p>
 
         
             
@@ -4455,7 +5775,12 @@ Avoid using * as the value of the Access-Control-Allow-Origin header, which indi
     </section>
     
     <section>
-        <a class="anchor" name="LDAP_ANONYMOUS"></a><h2 class="page-header">Anonymous LDAP bind  <a href="#LDAP_ANONYMOUS" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="LDAP_ANONYMOUS"></a>
+        <h2 class="page-header">
+            Anonymous LDAP bind
+            <a href="#LDAP_ANONYMOUS" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>LDAP_ANONYMOUS</tt></p>
 
         
             
@@ -4485,7 +5810,12 @@ Consider other modes of authentication to LDAP and ensure proper access control 
     </section>
     
     <section>
-        <a class="anchor" name="LDAP_ENTRY_POISONING"></a><h2 class="page-header">LDAP Entry Poisoning  <a href="#LDAP_ENTRY_POISONING" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="LDAP_ENTRY_POISONING"></a>
+        <h2 class="page-header">
+            LDAP Entry Poisoning
+            <a href="#LDAP_ENTRY_POISONING" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>LDAP_ENTRY_POISONING</tt></p>
 
         
             
@@ -4535,7 +5865,12 @@ ctx.search(query, filter,
     </section>
     
     <section>
-        <a class="anchor" name="COOKIE_PERSISTENT"></a><h2 class="page-header">Persistent Cookie Usage  <a href="#COOKIE_PERSISTENT" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="COOKIE_PERSISTENT"></a>
+        <h2 class="page-header">
+            Persistent Cookie Usage
+            <a href="#COOKIE_PERSISTENT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>COOKIE_PERSISTENT</tt></p>
 
         
             
@@ -4572,7 +5907,12 @@ cookie.setMaxAge(60*60*24*365);
     </section>
     
     <section>
-        <a class="anchor" name="URL_REWRITING"></a><h2 class="page-header">URL rewriting method  <a href="#URL_REWRITING" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="URL_REWRITING"></a>
+        <h2 class="page-header">
+            URL rewriting method
+            <a href="#URL_REWRITING" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>URL_REWRITING</tt></p>
 
         
             
@@ -4588,13 +5928,9 @@ URL rewriting has significant security risks. Since session ID appears in the UR
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre>
-public void doGet(HttpServletResponse resp, [...])  {
-
-[...]
-out.println("Click &lt;a href='" + resp.encodeURL(HttpUtils.getRequestURL(req).toString()) + "'&gt;here&lt;/a&gt;");
-
-}</pre>
+<pre>out.println("Click &lt;a href=" + 
+                res.encodeURL(HttpUtils.getRequestURL(req).toString()) + 
+                "&gt;here&lt;/a&gt;");</pre>
 </p>
 <p>
     <b>Solution:</b><br/>
@@ -4604,14 +5940,18 @@ Avoid using those methods. If you are looking to encode a URL String or form par
 <p>
 <b>References</b><br/>
 <a href="https://www.owasp.org/index.php/Top_10_2010-A3-Broken_Authentication_and_Session_Management">OWASP Top 10 2010-A3-Broken Authentication and Session Management</a><br/>
-<a href="https://security.stackexchange.com/a/14094/24973">InfoSec StackExchange: Why is passing the session id as url parameter insecure?</a>
 </p>
             
         
     </section>
     
     <section>
-        <a class="anchor" name="INSECURE_SMTP_SSL"></a><h2 class="page-header">Insecure SMTP SSL connection  <a href="#INSECURE_SMTP_SSL" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="INSECURE_SMTP_SSL"></a>
+        <h2 class="page-header">
+            Insecure SMTP SSL connection
+            <a href="#INSECURE_SMTP_SSL" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>INSECURE_SMTP_SSL</tt></p>
 
         
             
@@ -4642,14 +5982,18 @@ Please add the following check to verify the server cerfiticate:
 <p>
 <b>References</b><br/>
 <a href="https://cwe.mitre.org/data/definitions/297.html">CWE-297: Improper Validation of Certificate with Host Mismatch</a><br/>
-<a href="https://github.com/ssllabs/research/wiki/SSL-and-TLS-Deployment-Best-Practices">SSLLabs: SSL and TLS Deployment Best Practices</a>
 </p>
             
         
     </section>
     
     <section>
-        <a class="anchor" name="AWS_QUERY_INJECTION"></a><h2 class="page-header">AWS Query Injection  <a href="#AWS_QUERY_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="AWS_QUERY_INJECTION"></a>
+        <h2 class="page-header">
+            AWS Query Injection
+            <a href="#AWS_QUERY_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>AWS_QUERY_INJECTION</tt></p>
 
         
             
@@ -4679,14 +6023,18 @@ This issue is analogical to SQL Injection. Sanitize user input before using it i
 <p>
 <b>References</b><br/>
 <a href="https://cwe.mitre.org/data/definitions/943.html">CWE-943: Improper Neutralization of Special Elements in Data Query Logic</a><br/>
-<a href="http://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/com/amazonaws/services/simpledb/AmazonSimpleDBClient.html">Official documentation of the class AmazonSimpleDBClient</a>
 </p>
             
         
     </section>
     
     <section>
-        <a class="anchor" name="BEAN_PROPERTY_INJECTION"></a><h2 class="page-header">JavaBeans Property Injection  <a href="#BEAN_PROPERTY_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="BEAN_PROPERTY_INJECTION"></a>
+        <h2 class="page-header">
+            JavaBeans Property Injection
+            <a href="#BEAN_PROPERTY_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>BEAN_PROPERTY_INJECTION</tt></p>
 
         
             
@@ -4712,20 +6060,24 @@ Avoid using user controlled values to populate Bean property names.
 <p>
 <b>References</b><br/>
 <a href="https://cwe.mitre.org/data/definitions/15.html">CWE-15: External Control of System or Configuration Setting</a><br/>
-<a href="http://struts.apache.org/docs/s2-020.html">CVE-2014-0094: Struts2 ClassLoader manipulation (Example of vulnerability)</a><br/>
 </p>
             
         
     </section>
     
     <section>
-        <a class="anchor" name="STRUTS_FILE_DISCLOSURE"></a><h2 class="page-header">Struts File Disclosure  <a href="#STRUTS_FILE_DISCLOSURE" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="STRUTS_FILE_DISCLOSURE"></a>
+        <h2 class="page-header">
+            Struts File Disclosure
+            <a href="#STRUTS_FILE_DISCLOSURE" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>STRUTS_FILE_DISCLOSURE</tt></p>
 
         
             
 <p>
 Constructing a server-side redirect path with user input could allow an attacker to download application binaries (including application classes or jar files) or view arbitrary files within protected directories.<br/>
-An attacker may be able to forge a request parameter to match sensitive file locations. For example, requesting <code>http://example.com/?returnURL=WEB-INF/applicationContext.xml</code> would display the application's <code>applicationContext.xml</code> file. The attacker would be able to locate and download the <code>applicationContext.xml</code> referenced in the other configuration files, and even class files or jar files, obtaining sensitive information and launching other types of attacks.
+An attacker may be able to forge a request parameter to match sensitive file locations. For example, requesting "http://example.com/?returnURL=WEB-INF/applicationContext.xml" would display the application's applicationContext.xml file. The attacker would be able to locate and download the applicationContext.xml referenced in the other configuration files, and even class files or jar files, obtaining sensitive information and launching other types of attacks.
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
@@ -4748,13 +6100,18 @@ Avoid constructing server-side redirects using user controlled input.
     </section>
     
     <section>
-        <a class="anchor" name="SPRING_FILE_DISCLOSURE"></a><h2 class="page-header">Spring File Disclosure  <a href="#SPRING_FILE_DISCLOSURE" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="SPRING_FILE_DISCLOSURE"></a>
+        <h2 class="page-header">
+            Spring File Disclosure
+            <a href="#SPRING_FILE_DISCLOSURE" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SPRING_FILE_DISCLOSURE</tt></p>
 
         
             
 <p>
 Constructing a server-side redirect path with user input could allow an attacker to download application binaries (including application classes or jar files) or view arbitrary files within protected directories.<br/>
-An attacker may be able to forge a request parameter to match sensitive file locations. For example, requesting <code>http://example.com/?returnURL=WEB-INF/applicationContext.xml</code> would display the application's <code>applicationContext.xml</code> file. The attacker would be able to locate and download the <code>applicationContext.xml</code> referenced in the other configuration files, and even class files or jar files, obtaining sensitive information and launching other types of attacks.
+An attacker may be able to forge a request parameter to match sensitive file locations. For example, requesting "http://example.com/?returnURL=WEB-INF/applicationContext.xml" would display the application's applicationContext.xml file. The attacker would be able to locate and download the applicationContext.xml referenced in the other configuration files, and even class files or jar files, obtaining sensitive information and launching other types of attacks.
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
@@ -4777,13 +6134,18 @@ Avoid constructing server-side redirects using user controlled input.
     </section>
     
     <section>
-        <a class="anchor" name="REQUESTDISPATCHER_FILE_DISCLOSURE"></a><h2 class="page-header">RequestDispatcher File Disclosure  <a href="#REQUESTDISPATCHER_FILE_DISCLOSURE" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="REQUESTDISPATCHER_FILE_DISCLOSURE"></a>
+        <h2 class="page-header">
+            RequestDispatcher File Disclosure
+            <a href="#REQUESTDISPATCHER_FILE_DISCLOSURE" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>REQUESTDISPATCHER_FILE_DISCLOSURE</tt></p>
 
         
             
 <p>
 Constructing a server-side redirect path with user input could allow an attacker to download application binaries (including application classes or jar files) or view arbitrary files within protected directories.<br/>
-An attacker may be able to forge a request parameter to match sensitive file locations. For example, requesting <code>http://example.com/?jspFile=../applicationContext.xml%3F</code> would display the application's <code>applicationContext.xml</code> file. The attacker would be able to locate and download the <code>applicationContext.xml</code> referenced in the other configuration files, and even class files or jar files, obtaining sensitive information and launching other types of attacks.
+An attacker may be able to forge a request parameter to match sensitive file locations. For example, requesting "http://example.com/?jspFile=../applicationContext.xml%3F" would display the application's applicationContext.xml file. The attacker would be able to locate and download the applicationContext.xml referenced in the other configuration files, and even class files or jar files, obtaining sensitive information and launching other types of attacks.
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
@@ -4806,14 +6168,19 @@ Avoid constructing server-side redirects using user controlled input.
     </section>
     
     <section>
-        <a class="anchor" name="FORMAT_STRING_MANIPULATION"></a><h2 class="page-header">Format String Manipulation  <a href="#FORMAT_STRING_MANIPULATION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="FORMAT_STRING_MANIPULATION"></a>
+        <h2 class="page-header">
+            Format String Manipulation
+            <a href="#FORMAT_STRING_MANIPULATION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>FORMAT_STRING_MANIPULATION</tt></p>
 
         
             
 <p>
 Allowing user input to control format parameters could enable an attacker to cause exceptions to be thrown or leak information.<br/>
 Attackers may be able to modify the format string argument, such that an exception is thrown. If this exception is left uncaught, it may crash the application. Alternatively, if sensitive information is used within the unused arguments, attackers may change the format string to reveal this information.<br/>
-The example code below lets the user specify the decimal points to which it shows the balance. The user can in fact specify anything causing an exception to be thrown which could lead to application failure. Even more critical within this example, if an attacker can specify the user input <code>"2f %3$s %4$.2"</code>, the format string would be <code>"The customer: %s %s has the balance %4$.2f %3$s %4$.2"</code>. This would then lead to the sensitive accountNo to be included within the resulting string.
+The example code below lets the user specify the decimal points to which it shows the balance. The user can in fact specify anything causing an exception to be thrown which could lead to application failure. Even more critical within this example, if an attacker can specify the user input "2f %3$s %4$.2", the format string would be "The customer: %s %s has the balance %4$.2f %3$s %4$.2". This would then lead to the sensitive accountNo to be included within the resulting string.
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
@@ -4829,14 +6196,18 @@ Avoid using user controlled values in the format string argument.
 <p>
 <b>References</b><br/>
 <a href="http://cwe.mitre.org/data/definitions/134.html">CWE-134: Use of Externally-Controlled Format String</a><br/>
-<a href="https://www.securecoding.cert.org/confluence/display/java/IDS06-J.+Exclude+unsanitized+user+input+from+format+strings">CERT: IDS06-J. Exclude unsanitized user input from format strings</a>
 </p>
             
         
     </section>
     
     <section>
-        <a class="anchor" name="HTTP_PARAMETER_POLLUTION"></a><h2 class="page-header">HTTP Parameter Pollution  <a href="#HTTP_PARAMETER_POLLUTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a></h2>
+        <a class="anchor" name="HTTP_PARAMETER_POLLUTION"></a>
+        <h2 class="page-header">
+            HTTP Parameter Pollution
+            <a href="#HTTP_PARAMETER_POLLUTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>HTTP_PARAMETER_POLLUTION</tt></p>
 
         
             
