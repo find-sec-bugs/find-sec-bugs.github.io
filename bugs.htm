@@ -602,6 +602,14 @@
                             HTTP Parameter Pollution (HTTP_PARAMETER_POLLUTION)
                         </a></li>
                         
+                        <li><a href="#INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE">
+                            Information Exposure Through An Error Message (INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE)
+                        </a></li>
+                        
+                        <li><a href="#SMTP_HEADER_INJECTION">
+                            SMTP Header Injection (SMTP_HEADER_INJECTION)
+                        </a></li>
+                        
                     </ul>
                 </div>
             </div>
@@ -1217,7 +1225,7 @@ since the client will trust any certificate.
 <p>
 A TrustManager allowing specific certificates (based on a truststore for example) should be built.
 Detailed information for a proper implementation is available at:
-<a href="http://stackoverflow.com/a/6378872/89769">[1]</a> 
+<a href="http://stackoverflow.com/a/6378872/89769">[1]</a>
 <a href="http://stackoverflow.com/a/5493452/89769">[2]</a>
 </p>
 <br/>
@@ -1514,7 +1522,7 @@ mapped in this way are properly validated before they are used.</p>
 <a href="https://en.wikipedia.org/wiki/MD5">Wikipedia: MD5</a><br/>
 <a href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar1.pdf">NIST: Transitions: Recommendation for Transitioning the Use of Cryptographic Algorithms and Key Lengths</a><br/>
 <a href="http://csrc.nist.gov/publications/nistpubs/800-132/nist-sp800-132.pdf">NIST: Recommendation for Password-Based Key Derivation</a><br/>
-<a href="http://stackoverflow.com/questions/22580853/reliable-implementation-of-pbkdf2-hmac-sha256-for-java">Stackoverflow: Reliable implementation of PBKDF2-HMAC-SHA256 for Java</a><br/>
+<a href="https://stackoverflow.com/q/22580853/89769">Stackoverflow: Reliable implementation of PBKDF2-HMAC-SHA256 for Java</a><br/>
 <a href="http://cwe.mitre.org/data/definitions/327.html">CWE-327: Use of a Broken or Risky Cryptographic Algorithm</a>
 </p>
 
@@ -1585,7 +1593,7 @@ uses. <b>PBKDF2</b> should be used to hash password for example.</p>
 <a href="https://googleonlinesecurity.blogspot.ca/2014/09/gradually-sunsetting-sha-1.html">Google Online Security Blog: Gradually sunsetting SHA-1</a><br/>
 <a href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar1.pdf">NIST: Transitions: Recommendation for Transitioning the Use of Cryptographic Algorithms and Key Lengths</a><br/>
 <a href="http://csrc.nist.gov/publications/nistpubs/800-132/nist-sp800-132.pdf">NIST: Recommendation for Password-Based Key Derivation</a><br/>
-<a href="http://stackoverflow.com/questions/22580853/reliable-implementation-of-pbkdf2-hmac-sha256-for-java">Stackoverflow: Reliable implementation of PBKDF2-HMAC-SHA256 for Java</a><br/>
+<a href="https://stackoverflow.com/q/22580853/89769">Stackoverflow: Reliable implementation of PBKDF2-HMAC-SHA256 for Java</a><br/>
 <a href="http://cwe.mitre.org/data/definitions/327.html">CWE-327: Use of a Broken or Risky Cryptographic Algorithm</a>
 </p>
 
@@ -3430,12 +3438,18 @@ You can also configure your logger service to replace new line for all message e
 </pre>
 </p>
 
+<p>
+Finally, you can use a logger implementation that replace new line by spaces.
+The project <a href="https://github.com/javabeanz/owasp-security-logging">OWASP Security Logging</a> has an implementation for Logback and Log4j.
+</p>
+
 <br/>
 <p>
     <b>References</b><br/>
     <a href="http://cwe.mitre.org/data/definitions/117.html">CWE-117: Improper Output Neutralization for Logs</a><br/>
     <a href="http://cwe.mitre.org/data/definitions/93.html">CWE-93: Improper Neutralization of CRLF Sequences ('CRLF Injection')</a><br/>
     <a href="https://logback.qos.ch/manual/layouts.html#replace">CWE-93: Improper Neutralization of CRLF Sequences ('CRLF Injection')</a><br/>
+    <a href="https://github.com/javabeanz/owasp-security-logging">OWASP Security Logging</a><br/>
 </p>
 
 
@@ -4553,7 +4567,7 @@ byte[] cipherText = c.doFinal(plainText);</pre>
         <p><b>Bug Pattern:</b> <tt>PADDING_ORACLE</tt></p>
 
         
-
+            
 <p>
     This specific mode of CBC with PKCS5Padding is susceptible to padding oracle attacks. An adversary could potentially decrypt the
     message if the system exposed the difference between plaintext with invalid padding or valid padding. The distinction between
@@ -4593,7 +4607,7 @@ byte[] cipherText = c.doFinal(plainText);</pre>
         <p><b>Bug Pattern:</b> <tt>CIPHER_INTEGRITY</tt></p>
 
         
-
+            
 <p>
     The ciphertext produced is susceptible to alteration by an adversary. This mean that the cipher provides no way to detect that the 
     data has been tampered with. If the ciphertext can be controlled by an attacker, it could be altered without detection.
@@ -4653,7 +4667,7 @@ In the example solution above, the GCM mode introduces an HMAC into the resultin
         <p><b>Bug Pattern:</b> <tt>ESAPI_ENCRYPTOR</tt></p>
 
         
-
+            
 <p>
     The ESAPI has a small history of vulnerabilities within the cryptography component. Here is a quick validation list to
     make sure the Authenticated Encryption is working as expected.
@@ -6229,6 +6243,80 @@ Sanitize user input before using it in HTTP parameters.
 <p>
 <b>References</b><br/>
 <a href="https://capec.mitre.org/data/definitions/460.html">CAPEC-460: HTTP Parameter Pollution (HPP)</a>
+</p>
+            
+        
+    </section>
+    
+    <section>
+        <a class="anchor" name="INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE"></a>
+        <h2 class="page-header">
+            Information Exposure Through An Error Message
+            <a href="#INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE</tt></p>
+
+        
+            
+<p>
+The sensitive information may be valuable information on its own (such as a password), or it may be useful for launching other, more deadly attacks. If an attack fails, an attacker may use error information provided by the server to launch another more focused attack. For example, an attempt to exploit a path traversal weakness (CWE-22) might yield the full pathname of the installed application. In turn, this could be used to select the proper number of ".." sequences to navigate to the targeted file. An attack using SQL injection (CWE-89) might not initially succeed, but an error message could reveal the malformed query, which would expose query logic and possibly even passwords or other sensitive information used within the query.
+</p>
+<p>
+    <b>Vulnerable Code:</b><br/>
+<pre>try {
+  out = httpResponse.getOutputStream()
+} catch (Exception e) {
+  e.printStackTrace(out);
+}</pre>
+
+<p>
+<b>References</b><br/>
+<a href="https://cwe.mitre.org/data/definitions/209.html">CWE-209: Information Exposure Through an Error Message</a>
+</p>
+            
+        
+    </section>
+    
+    <section>
+        <a class="anchor" name="SMTP_HEADER_INJECTION"></a>
+        <h2 class="page-header">
+            SMTP Header Injection
+            <a href="#SMTP_HEADER_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p><b>Bug Pattern:</b> <tt>SMTP_HEADER_INJECTION</tt></p>
+
+        
+            
+<p>
+Simple Mail Transfer Protocol (SMTP) is a the text based protocol used for email delivery.
+Like with HTTP, headers are separate by new line separator.
+If user input is place in a header line, the application should remove
+or replace new line characters (CR / LF).
+You should use a safe wrapper such as <a href="https://commons.apache.org/proper/commons-email/userguide.html">Apache Common Email</a>
+and <a href="http://www.simplejavamail.org">Simple Java Mail</a> which filter special characters that can lead to header injection.
+
+</p>
+    <b>Vulnerable Code:</b><br/>
+<p>
+<pre>
+Message message = new MimeMessage(session);
+message.setFrom(new InternetAddress("noreply@your-organisation.com"));
+message.setRecipients(Message.RecipientType.TO, new InternetAddress[] {new InternetAddress("target@gmail.com")});
+message.setSubject(usernameDisplay + " has sent you notification"); //Injectable API
+message.setText("Visit your ACME Corp profile for more info.");
+Transport.send(message);
+</pre>
+</p>
+    <b>Solution</b><br/>
+<p>Use <a href="https://commons.apache.org/proper/commons-email/userguide.html">Apache Common Email</a> or <a href="http://www.simplejavamail.org">Simple Java Mail</a>.</p>
+
+<p>
+<b>References</b><br/>
+<a href="https://www.owasp.org/index.php/Testing_for_IMAP/SMTP_Injection_(OTG-INPVAL-011)">OWASP SMTP Injection</a><br/>
+<a href="https://cwe.mitre.org/data/definitions/93.html">CWE-93: Improper Neutralization of CRLF Sequences ('CRLF Injection')</a><br/>
+<a href="https://commons.apache.org/proper/commons-email/userguide.html">Commons Email: User Guide</a><br/>
+<a href="http://www.simplejavamail.org">Simple Java Mail Website</a><br/>
+<a href="https://security.stackexchange.com/a/54100/24973">StackExchange InfoSec: What threats come from CRLF in email generation?</a><br/>
 </p>
             
         
