@@ -14,6 +14,7 @@
     <link href="css/font-awesome.css" rel="stylesheet" media="screen">
     <link href="css/fsb-custom-theme.css" rel="stylesheet" media="screen">
     <link href="css/agency.css" rel="stylesheet" media="screen">
+    <link href="css/prism.css" rel="stylesheet" media="screen">
 
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -641,14 +642,14 @@ A quick fix could be to replace the use of <code>java.util.Random</code> with so
 </p>
 <p>
 <b>Vulnerable Code:</b><br/>
-<pre>String generateSecretToken() {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>String generateSecretToken() {
     Random r = new Random();
     return Long.toHexString(r.nextLong());
-}</pre>
+}</code></pre>
 </p>
 <p>
 <b>Solution:</b>
-<pre>import org.apache.commons.codec.binary.Hex;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>import org.apache.commons.codec.binary.Hex;
 
 String generateSecretToken() {
     SecureRandom secRandom = new SecureRandom();
@@ -656,7 +657,7 @@ String generateSecretToken() {
     byte[] result = new byte[32];
     secRandom.nextBytes(result);
     return Hex.encodeHexString(result);
-}</pre>
+}</code></pre>
 </p>
 <br/>
 <p>
@@ -694,34 +695,34 @@ A quick fix could be to replace the use of <code>java.util.Random</code> with so
 </p>
 <p>
 <b>Vulnerable Code:</b><br/>
-<pre>import scala.util.Random
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>import scala.util.Random
 
 def generateSecretToken() {
     val result = Seq.fill(16)(Random.nextInt)
     return result.map("%02x" format _).mkString
-}</pre>
+}</code></pre>
 </p>
 <p>
     <b>Solution:</b>
-<pre>import java.security.SecureRandom
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>import java.security.SecureRandom
 
 def generateSecretToken() {
     val rand = new SecureRandom()
     val value = Array.ofDim[Byte](16)
     rand.nextBytes(value)
     return value.map("%02x" format _).mkString
-}</pre>
+}</code></pre>
 </p>
 <!--<p>
 <b>Solution:</b>
-<pre>import java.security.SecureRandom
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>import java.security.SecureRandom
 import scala.util.Random._
 
 def generateSecretToken() {
     val secRandom = javaRandomToRandom(new SecureRandom())
     val result = Seq.fill(16)(secRandom.nextInt)
     return result.map("%02x" format _).mkString
-}</pre>
+}</code></pre>
 </p>-->
 <br/>
 <p>
@@ -808,10 +809,9 @@ The HTTP header Content-Type can be controlled by the client. As such, its value
 <p>The hostname header can be controlled by the client. As such, its value should not be used in any security critical decisions. 
 Both <code>ServletRequest.getServerName()</code> and <code>HttpServletRequest.getHeader("Host")</code> have the same 
 behavior which is to extract the <code>Host</code> header.</p>
-<pre>
-GET /testpage HTTP/1.1
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>GET /testpage HTTP/1.1
 Host: www.example.com
-[...]</pre>
+[...]</code></pre>
 <p>
 The web container serving your application may redirect requests to your application by default. This would allow
 a malicious user to place any value in the Host header. It is recommended that you do not trust this value in any security
@@ -846,12 +846,11 @@ typically returns the value of the cookie <code>JSESSIONID</code>. This value is
 <p>
 The value passed to the client is generally an alphanumeric value (e.g., <code>JSESSIONID=jp6q31lq2myn</code>). However, the value can be altered by the client. 
 The following HTTP request illustrates the potential modification.
-<pre>
-GET /somePage HTTP/1.1
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>GET /somePage HTTP/1.1
 Host: yourwebsite.com
 User-Agent: Mozilla/5.0
 Cookie: JSESSIONID=Any value of the user&#39;s choice!!??'''&quot;&gt;
-</pre>
+</code></pre>
 </p>
 <p>As such, the JSESSIONID should only be used to see if its value matches an existing session ID. If it does not, the user should be 
 considered an unauthenticated user. In addition, the session ID value should never be logged. If it is, then the log file could contain 
@@ -1028,7 +1027,7 @@ by the user. If that is the case, the reported instance is a false positive.</p>
 
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre>@GET
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@GET
 @Path("/images/{image}")
 @Produces("images/*")
 public Response getImage(@javax.ws.rs.PathParam("image") String image) {
@@ -1039,13 +1038,13 @@ public Response getImage(@javax.ws.rs.PathParam("image") String image) {
     }
 
     return Response.ok().entity(new FileInputStream(file)).build();
-}</pre>
+}</code></pre>
 </p>
 <br/>
 
 <p>
     <b>Solution:</b><br/>
-<pre>import org.apache.commons.io.FilenameUtils;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>import org.apache.commons.io.FilenameUtils;
 
 @GET
 @Path("/images/{image}")
@@ -1058,7 +1057,7 @@ public Response getImage(@javax.ws.rs.PathParam("image") String image) {
     }
 
     return Response.ok().entity(new FileInputStream(file)).build();
-}</pre>
+}</code></pre>
 </p>
 <br/>
 <p>
@@ -1122,20 +1121,20 @@ by the user. If that is the case, the reported instance is a false positive.</p>
 
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre>def getWordList(value:String) = Action {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>def getWordList(value:String) = Action {
   if (!Files.exists(Paths.get("public/lists/" + value))) {
     NotFound("File not found")
   } else {
     val result = Source.fromFile("public/lists/" + value).getLines().mkString // Weak point
     Ok(result)
   }
-}</pre>
+}</code></pre>
 </p>
 <br/>
 
 <p>
     <b>Solution:</b><br/>
-<pre>import org.apache.commons.io.FilenameUtils;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>import org.apache.commons.io.FilenameUtils;
 
 def getWordList(value:String) = Action {
   val filename = "public/lists/" + FilenameUtils.getName(value)
@@ -1146,7 +1145,7 @@ def getWordList(value:String) = Action {
     val result = Source.fromFile(filename).getLines().mkString // Fix
     Ok(result)
   }
-}</pre>
+}</code></pre>
 </p>
 <br/>
 <p>
@@ -1177,10 +1176,10 @@ def getWordList(value:String) = Action {
 <br/>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre>import java.lang.Runtime;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>import java.lang.Runtime;
 
 Runtime r = Runtime.getRuntime();
-r.exec("/bin/sh -c some_tool" + input);</pre>
+r.exec("/bin/sh -c some_tool" + input);</code></pre>
 </p>
 <p>
 <b>References</b><br/>
@@ -1209,10 +1208,10 @@ r.exec("/bin/sh -c some_tool" + input);</pre>
 <br/>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre>def executeCommand(value:String) = Action {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>def executeCommand(value:String) = Action {
     val result = value.!
     Ok("Result:\n"+result)
-}</pre>
+}</code></pre>
 </p>
 <p>
 <b>References</b><br/>
@@ -1287,7 +1286,7 @@ Detailed information for a proper implementation is available at:
 <br/>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre>class TrustAllManager implements X509TrustManager {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>class TrustAllManager implements X509TrustManager {
 
     @Override
     public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
@@ -1303,12 +1302,12 @@ Detailed information for a proper implementation is available at:
     public X509Certificate[] getAcceptedIssuers() {
         return null;
     }
-}</pre>
+}</code></pre>
 </p>
 <br/>
 <p>
     <b>Solution (TrustMangager based on a keystore):</b><br/>
-<pre>KeyStore ks = //Load keystore containing the certificates trusted
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>KeyStore ks = //Load keystore containing the certificates trusted
 
 SSLContext sc = SSLContext.getInstance("TLS");
 
@@ -1316,7 +1315,7 @@ TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
 tmf.init(ks);
 
 sc.init(kmf.getKeyManagers(), tmf.getTrustManagers(),null);
-</pre>
+</code></pre>
 </p>
 <br/>
 <p>
@@ -1356,16 +1355,16 @@ Detailed information for a proper implementation is available at:
 <br/>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre>public class AllHosts implements HostnameVerifier {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public class AllHosts implements HostnameVerifier {
     public boolean verify(final String hostname, final SSLSession session) {
         return true;
     }
-}</pre>
+}</code></pre>
 </p>
 <br/>
 <p>
     <b>Solution (TrustMangager based on a keystore):</b><br/>
-<pre>KeyStore ks = //Load keystore containing the certificates trusted
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>KeyStore ks = //Load keystore containing the certificates trusted
 
 SSLContext sc = SSLContext.getInstance("TLS");
 
@@ -1373,7 +1372,7 @@ TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
 tmf.init(ks);
 
 sc.init(kmf.getKeyManagers(), tmf.getTrustManagers(),null);
-</pre>
+</code></pre>
 </p>
 <br/>
 <p>
@@ -1472,14 +1471,14 @@ sc.init(kmf.getKeyManagers(), tmf.getTrustManagers(),null);
 <p>A Tapestry endpoint was discovered at application startup. Tapestry apps are structured with a backing Java class and a corresponding 
 Tapestry Markup Language page (a <code>.tml</code> file) for each page. When a request is received, the GET/POST parameters are mapped to specific
 inputs in the backing Java class. The mapping is either done with field name:</p>
-<pre><code>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'><code>
     [...]
     protected String input;
     [...]
-</code></pre>
+</code></code></pre>
 <p>or the definition of an explicit annotation:
 </p>
-<pre><code>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'><code>
     [...]
     @org.apache.tapestry5.annotations.Parameter
     protected String parameter1;
@@ -1487,7 +1486,7 @@ inputs in the backing Java class. The mapping is either done with field name:</p
     @org.apache.tapestry5.annotations.Component(id = "password")
     private PasswordField passwordField;
     [...]
-</code></pre>
+</code></code></pre>
 <p>The page is mapped to the view <code>/resources/package/PageName.tml</code>.</p>
 <p>Each Tapestry page in this application should be researched to make sure all inputs that are automatically 
 mapped in this way are properly validated before they are used.</p>
@@ -1566,27 +1565,27 @@ mapped in this way are properly validated before they are used.</p>
 <br/>
 <p>
     <b>Vulnerable Code:</b><br/>
-    <pre>MessageDigest md5Digest = MessageDigest.getInstance("MD5");
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>MessageDigest md5Digest = MessageDigest.getInstance("MD5");
     md5Digest.update(password.getBytes());
-    byte[] hashValue = md5Digest.digest();</pre>
+    byte[] hashValue = md5Digest.digest();</code></pre>
     <br/>
-    <pre>byte[] hashValue = DigestUtils.getMd5Digest().digest(password.getBytes());</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>byte[] hashValue = DigestUtils.getMd5Digest().digest(password.getBytes());</code></pre>
 </p>
 <br/>
 <p>
     <b>Solution (Using bouncy castle):</b><br/>
-    <pre>public static byte[] getEncryptedPassword(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public static byte[] getEncryptedPassword(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
     PKCS5S2ParametersGenerator gen = new PKCS5S2ParametersGenerator(new SHA256Digest());
     gen.init(password.getBytes("UTF-8"), salt.getBytes(), 4096);
     return ((KeyParameter) gen.generateDerivedParameters(256)).getKey();
-}</pre>
+}</code></pre>
     <br/>
     <b>Solution (Java 8 and later):</b><br/>
-    <pre>public static byte[] getEncryptedPassword(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public static byte[] getEncryptedPassword(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
     KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 4096, 256 * 8);
     SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
     return f.generateSecret(spec).getEncoded();
-}</pre>
+}</code></pre>
 </p>
 <br/>
 <p>
@@ -1641,27 +1640,27 @@ uses. <b>PBKDF2</b> should be used to hash password for example.</p>
 <br/>
 <p>
     <b>Vulnerable Code:</b><br/>
-    <pre>MessageDigest sha1Digest = MessageDigest.getInstance("SHA1");
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>MessageDigest sha1Digest = MessageDigest.getInstance("SHA1");
     sha1Digest.update(password.getBytes());
-    byte[] hashValue = sha1Digest.digest();</pre>
+    byte[] hashValue = sha1Digest.digest();</code></pre>
     <br/>
-    <pre>byte[] hashValue = DigestUtils.getSha1Digest().digest(password.getBytes());</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>byte[] hashValue = DigestUtils.getSha1Digest().digest(password.getBytes());</code></pre>
 </p>
 <br/>
 <p>
     <b>Solution (Using bouncy castle):</b><br/>
-    <pre>public static byte[] getEncryptedPassword(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public static byte[] getEncryptedPassword(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
     PKCS5S2ParametersGenerator gen = new PKCS5S2ParametersGenerator(new SHA256Digest());
     gen.init(password.getBytes("UTF-8"), salt.getBytes(), 4096);
     return ((KeyParameter) gen.generateDerivedParameters(256)).getKey();
-}</pre>
+}</code></pre>
     <br/>
     <b>Solution (Java 8 and later):</b><br/>
-    <pre>public static byte[] getEncryptedPassword(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public static byte[] getEncryptedPassword(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
     KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 4096, 256 * 8);
     SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
     return f.generateSecret(spec).getEncoded();
-}</pre>
+}</code></pre>
 </p>
 <br/>
 <p>
@@ -1692,7 +1691,7 @@ uses. <b>PBKDF2</b> should be used to hash password for example.</p>
             
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre>HttpClient client = new DefaultHttpClient();</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>HttpClient client = new DefaultHttpClient();</code></pre>
 </p>
 <p>
 <p><b>Solution:</b><br/>
@@ -1704,19 +1703,19 @@ Upgrade your implementation to use one of the recommended constructs and configu
   <li>Use <a href="http://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/impl/client/SystemDefaultHttpClient.html">SystemDefaultHttpClient</a> instead</li>
 <p>
     <b>Sample Code:</b><br/>
-<pre>HttpClient client = new SystemDefaultHttpClient();</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>HttpClient client = new SystemDefaultHttpClient();</code></pre>
 </p>
   <li>Create an HttpClient based on SSLSocketFactory - get an SSLScoketFactory instance with <a href="https://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/conn/ssl/SSLSocketFactory.html#getSystemSocketFactory()"><code>getSystemSocketFactory()</code></a> and use this instance for HttpClient creation</li>
   <li>Create an HttpClient based on SSLConnectionSocketFactory - get an instance with <a href="https://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/conn/ssl/SSLConnectionSocketFactory.html#getSystemSocketFactory()"><code>getSystemSocketFactory()</code></a> and use this instance for HttpClient creation</li>
   <li>Use HttpClientBuilder - call <a href="http://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/impl/client/HttpClientBuilder.html#useSystemProperties()"><code>useSystemProperties()</code></a> before calling <code>build()</code></li>
 <p>
     <b>Sample Code:</b><br/>
-<pre>HttpClient client = HttpClientBuilder.create().useSystemProperties().build();</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>HttpClient client = HttpClientBuilder.create().useSystemProperties().build();</code></pre>
 </p>
   <li>HttpClients - call <a href="https://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/impl/client/HttpClients.html#createSystem()"><code>createSystem()</code></a> to create an instance</li>
 <p>
     <b>Sample Code:</b><br/>
-<pre>HttpClient client = HttpClients.createSystem();</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>HttpClient client = HttpClients.createSystem();</code></pre>
 </p>
 </ul>
 </p>
@@ -1746,13 +1745,13 @@ Upgrade your implementation to use one of the recommended constructs and configu
 <p>
     <b>Vulnerable Code:</b><br/>
 
-    <pre>SSLContext.getInstance("SSL");</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>SSLContext.getInstance("SSL");</code></pre>
 </p>
 <p>
 <p><b>Solution:</b><br/>
 
 Upgrade your implementation to the following, and configure <code>https.protocols</code> JVM option to include TLSv1.2:</p>
-<pre>SSLContext.getInstance("TLS");</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>SSLContext.getInstance("TLS");</code></pre>
 <p>
 </p>
 <br/>
@@ -1792,21 +1791,21 @@ Upgrade your implementation to the following, and configure <code>https.protocol
 </blockquote>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre>MyProprietaryMessageDigest extends MessageDigest {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>class MyProprietaryMessageDigest extends MessageDigest {
     @Override
     protected byte[] engineDigest() {
         [...]
         //Creativity is a bad idea
         return [...];
     }
-}</pre>
+}</code></pre>
 </p>
 <p>
 <p>Upgrade your implementation to use one of the approved algorithms. Use an algorithm that is sufficiently strong for your specific security needs.</p>
 <p>
     <b>Example Solution:</b><br/>
-<pre>MessageDigest sha256Digest = MessageDigest.getInstance("SHA256");
-sha256Digest.update(password.getBytes());</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>MessageDigest sha256Digest = MessageDigest.getInstance("SHA256");
+sha256Digest.update(password.getBytes());</code></pre>
 </p>
 <br/>
 <p>
@@ -1911,16 +1910,14 @@ regex meant, this new regex can be evaluated quickly, and is not subject to ReDO
 from an untrusted source.</p>
 <p><b>Risk 1: Expose local file content (XXE: <u>X</u>ML E<u>x</u>ternal <u>E</u>ntity)</b></p>
 <p>
-<pre>
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
 &lt;!DOCTYPE foo [
    &lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot; &gt; ]&gt;
-&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</pre>
+&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</code></pre>
 </p>
 <b>Risk 2: Denial of service (XEE: <u>X</u>ML <u>E</u>ntity <u>E</u>xpansion)</b>
 <p>
-<pre>
-&lt;?xml version=&quot;1.0&quot;?&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot;?&gt;
 &lt;!DOCTYPE lolz [
  &lt;!ENTITY lol &quot;lol&quot;&gt;
  &lt;!ELEMENT lolz (#PCDATA)&gt;
@@ -1930,7 +1927,7 @@ from an untrusted source.</p>
 [...]
  &lt;!ENTITY lol9 &quot;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&quot;&gt;
 ]&gt;
-&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;</pre>
+&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;</code></pre>
 </p>
 
 <h3>Solution</h3>
@@ -1941,12 +1938,12 @@ In order to avoid exposing dangerous feature of the XML parser, you can do the f
 
 <p><b>Vulnerable Code:</b></p>
 <p>
-<pre>public void parseXML(InputStream input) throws XMLStreamException {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void parseXML(InputStream input) throws XMLStreamException {
 
     XMLInputFactory factory = XMLInputFactory.newFactory();
     XMLStreamReader reader = factory.createXMLStreamReader(input);
     [...]
-}</pre>
+}</code></pre>
 </p>
 <br/>
 <p>
@@ -1955,24 +1952,24 @@ The following snippets show two available solutions. You can set one property or
 
 <p><b>Solution disabling External Entities:</b></p>
 <p>
-<pre>public void parseXML(InputStream input) throws XMLStreamException {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void parseXML(InputStream input) throws XMLStreamException {
 
     XMLInputFactory factory = XMLInputFactory.newFactory();
     factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
     XMLStreamReader reader = factory.createXMLStreamReader(input);
     [...]
-}</pre>
+}</code></pre>
 </p>
 
 <p><b>Solution disabling DTD:</b></p>
 <p>
-<pre>public void parseXML(InputStream input) throws XMLStreamException {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void parseXML(InputStream input) throws XMLStreamException {
 
     XMLInputFactory factory = XMLInputFactory.newFactory();
     factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
     XMLStreamReader reader = factory.createXMLStreamReader(input);
     [...]
-}</pre>
+}</code></pre>
 </p>
 <br/>
 <p>
@@ -2011,16 +2008,14 @@ The following snippets show two available solutions. You can set one property or
 from an untrusted source.</p>
 <p><b>Risk 1: Expose local file content (XXE: <u>X</u>ML E<u>x</u>ternal <u>E</u>ntity)</b></p>
 <p>
-<pre>
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
 &lt;!DOCTYPE foo [
    &lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot; &gt; ]&gt;
-&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</pre>
+&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</code></pre>
 </p>
 <b>Risk 2: Denial of service (XEE: <u>X</u>ML <u>E</u>ntity <u>E</u>xpansion)</b>
 <p>
-<pre>
-&lt;?xml version=&quot;1.0&quot;?&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot;?&gt;
 &lt;!DOCTYPE lolz [
  &lt;!ENTITY lol &quot;lol&quot;&gt;
  &lt;!ELEMENT lolz (#PCDATA)&gt;
@@ -2030,7 +2025,7 @@ from an untrusted source.</p>
 [...]
  &lt;!ENTITY lol9 &quot;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&quot;&gt;
 ]&gt;
-&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;</pre>
+&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;</code></pre>
 </p>
 
 <h3>Solution</h3>
@@ -2041,13 +2036,13 @@ In order to avoid exposing dangerous feature of the XML parser, you can do the f
 
 <p><b>Vulnerable Code:</b></p>
 <p>
-<pre>DocumentBuilder builder = df.newDocumentBuilder();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>DocumentBuilder builder = df.newDocumentBuilder();
 
 XPathFactory xPathFactory = XPathFactory.newInstance();
 XPath xpath = xPathFactory.newXPath();
 XPathExpression xPathExpr = xpath.compile("/somepath/text()");
 
-xPathExpr.evaluate(new InputSource(inputStream));</pre>
+xPathExpr.evaluate(new InputSource(inputStream));</code></pre>
 </p>
 <br/>
 <p>
@@ -2057,27 +2052,25 @@ The following snippets show two available solutions. You can set one feature or 
 <p><b>Solution using "Secure processing" mode:</b></p>
 <p>
 This setting will protect you against Denial of Service attack and remote file access.
-<pre>
-DocumentBuilderFactory df = DocumentBuilderFactory.newInstance();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>DocumentBuilderFactory df = DocumentBuilderFactory.newInstance();
 df.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 DocumentBuilder builder = df.newDocumentBuilder();
 
 [...]
 
-xPathExpr.evaluate( builder.parse(inputStream) );</pre>
+xPathExpr.evaluate( builder.parse(inputStream) );</code></pre>
 </p>
 
 <p><b>Solution disabling DTD:</b></p>
 <p>
 By disabling DTD, almost all XXE attacks will be prevented.
-<pre>
-DocumentBuilderFactory df = DocumentBuilderFactory.newInstance();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>DocumentBuilderFactory df = DocumentBuilderFactory.newInstance();
 spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
 DocumentBuilder builder = df.newDocumentBuilder();
 
 [...]
 
-xPathExpr.evaluate( builder.parse(inputStream) );</pre>
+xPathExpr.evaluate( builder.parse(inputStream) );</code></pre>
 </p>
 <br/>
 <p>
@@ -2116,16 +2109,14 @@ xPathExpr.evaluate( builder.parse(inputStream) );</pre>
 from an untrusted source.</p>
 <p><b>Risk 1: Expose local file content (XXE: <u>X</u>ML E<u>x</u>ternal <u>E</u>ntity)</b></p>
 <p>
-<pre>
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
 &lt;!DOCTYPE foo [
    &lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot; &gt; ]&gt;
-&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</pre>
+&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</code></pre>
 </p>
 <b>Risk 2: Denial of service (XEE: <u>X</u>ML <u>E</u>ntity <u>E</u>xpansion)</b>
 <p>
-<pre>
-&lt;?xml version=&quot;1.0&quot;?&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot;?&gt;
 &lt;!DOCTYPE lolz [
  &lt;!ENTITY lol &quot;lol&quot;&gt;
  &lt;!ELEMENT lolz (#PCDATA)&gt;
@@ -2135,7 +2126,7 @@ from an untrusted source.</p>
 [...]
  &lt;!ENTITY lol9 &quot;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&quot;&gt;
 ]&gt;
-&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;</pre>
+&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;</code></pre>
 </p>
 
 <h3>Solution</h3>
@@ -2146,10 +2137,9 @@ In order to avoid exposing dangerous feature of the XML parser, you can do the f
 
 <p><b>Vulnerable Code:</b></p>
 <p>
-<pre>
-SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
 
-parser.parse(inputStream, customHandler);</pre>
+parser.parse(inputStream, customHandler);</code></pre>
 </p>
 <br/>
 <p>
@@ -2159,23 +2149,21 @@ The following snippets show two available solutions. You can set one feature or 
 <p><b>Solution using "Secure processing" mode:</b></p>
 <p>
 This setting will protect you against Denial of Service attack and remote file access.
-<pre>
-SAXParserFactory spf = SAXParserFactory.newInstance();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>SAXParserFactory spf = SAXParserFactory.newInstance();
 spf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 SAXParser parser = spf.newSAXParser();
 
-parser.parse(inputStream, customHandler);</pre>
+parser.parse(inputStream, customHandler);</code></pre>
 </p>
 
 <p><b>Solution disabling DTD:</b></p>
 <p>
 By disabling DTD, almost all XXE attacks will be prevented.
-<pre>
-SAXParserFactory spf = SAXParserFactory.newInstance();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>SAXParserFactory spf = SAXParserFactory.newInstance();
 spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
 SAXParser parser = spf.newSAXParser();
 
-parser.parse(inputStream, customHandler);</pre>
+parser.parse(inputStream, customHandler);</code></pre>
 </p>
 <br/>
 <p>
@@ -2214,16 +2202,14 @@ parser.parse(inputStream, customHandler);</pre>
 from an untrusted source.</p>
 <p><b>Risk 1: Expose local file content (XXE: <u>X</u>ML E<u>x</u>ternal <u>E</u>ntity)</b></p>
 <p>
-<pre>
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
 &lt;!DOCTYPE foo [
    &lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot; &gt; ]&gt;
-&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</pre>
+&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</code></pre>
 </p>
 <b>Risk 2: Denial of service (XEE: <u>X</u>ML <u>E</u>ntity <u>E</u>xpansion)</b>
 <p>
-<pre>
-&lt;?xml version=&quot;1.0&quot;?&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot;?&gt;
 &lt;!DOCTYPE lolz [
  &lt;!ENTITY lol &quot;lol&quot;&gt;
  &lt;!ELEMENT lolz (#PCDATA)&gt;
@@ -2233,7 +2219,7 @@ from an untrusted source.</p>
 [...]
  &lt;!ENTITY lol9 &quot;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&quot;&gt;
 ]&gt;
-&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;</pre>
+&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;</code></pre>
 </p>
 
 <h3>Solution</h3>
@@ -2244,10 +2230,9 @@ In order to avoid exposing dangerous feature of the XML parser, you can do the f
 
 <p><b>Vulnerable Code:</b></p>
 <p>
-<pre>
-XMLReader reader = XMLReaderFactory.createXMLReader();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>XMLReader reader = XMLReaderFactory.createXMLReader();
 reader.setContentHandler(customHandler);
-reader.parse(new InputSource(inputStream));</pre>
+reader.parse(new InputSource(inputStream));</code></pre>
 </p>
 <br/>
 <p>
@@ -2257,23 +2242,21 @@ The following snippets show two available solutions. You can set one property or
 <p><b>Solution using "Secure processing" mode:</b></p>
 <p>
 This setting will protect you against Denial of Service attack and remote file access.
-<pre>
-XMLReader reader = XMLReaderFactory.createXMLReader();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>XMLReader reader = XMLReaderFactory.createXMLReader();
 reader.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 reader.setContentHandler(customHandler);
 
-reader.parse(new InputSource(inputStream));</pre>
+reader.parse(new InputSource(inputStream));</code></pre>
 </p>
 
 <p><b>Solution disabling DTD:</b></p>
 <p>
 By disabling DTD, almost all XXE attacks will be prevented.
-<pre>
-XMLReader reader = XMLReaderFactory.createXMLReader();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>XMLReader reader = XMLReaderFactory.createXMLReader();
 reader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
 reader.setContentHandler(customHandler);
 
-reader.parse(new InputSource(inputStream));</pre>
+reader.parse(new InputSource(inputStream));</code></pre>
 </p>
 <br/>
 <p>
@@ -2312,16 +2295,14 @@ reader.parse(new InputSource(inputStream));</pre>
 from an untrusted source.</p>
 <p><b>Risk 1: Expose local file content (XXE: <u>X</u>ML E<u>x</u>ternal <u>E</u>ntity)</b></p>
 <p>
-<pre>
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
 &lt;!DOCTYPE foo [
    &lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot; &gt; ]&gt;
-&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</pre>
+&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</code></pre>
 </p>
 <b>Risk 2: Denial of service (XEE: <u>X</u>ML <u>E</u>ntity <u>E</u>xpansion)</b>
 <p>
-<pre>
-&lt;?xml version=&quot;1.0&quot;?&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot;?&gt;
 &lt;!DOCTYPE lolz [
  &lt;!ENTITY lol &quot;lol&quot;&gt;
  &lt;!ELEMENT lolz (#PCDATA)&gt;
@@ -2331,7 +2312,7 @@ from an untrusted source.</p>
 [...]
  &lt;!ENTITY lol9 &quot;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&quot;&gt;
 ]&gt;
-&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;</pre>
+&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;</code></pre>
 </p>
 
 <h3>Solution</h3>
@@ -2342,10 +2323,9 @@ In order to avoid exposing dangerous feature of the XML parser, you can do the f
 
 <p><b>Vulnerable Code:</b></p>
 <p>
-<pre>
-DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
-Document doc = db.parse(input);</pre>
+Document doc = db.parse(input);</code></pre>
 </p>
 <br/>
 <p>
@@ -2355,23 +2335,21 @@ The following snippets show two available solutions. You can set one feature or 
 <p><b>Solution using "Secure processing" mode:</b></p>
 <p>
 This setting will protect you against Denial of Service attack and remote file access.
-<pre>
-DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 DocumentBuilder db = dbf.newDocumentBuilder();
 
-Document doc = db.parse(input);</pre>
+Document doc = db.parse(input);</code></pre>
 </p>
 
 <p><b>Solution disabling DTD:</b></p>
 <p>
 By disabling DTD, almost all XXE attacks will be prevented.
-<pre>
-DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
 DocumentBuilder db = dbf.newDocumentBuilder();
 
-Document doc = db.parse(input);</pre>
+Document doc = db.parse(input);</code></pre>
 </p>
 <br/>
 <p>
@@ -2410,16 +2388,14 @@ Document doc = db.parse(input);</pre>
 from an untrusted source.</p>
 <p><b>Risk 1: Expose local file content (XXE: <u>X</u>ML E<u>x</u>ternal <u>E</u>ntity)</b></p>
 <p>
-<pre>
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
 &lt;!DOCTYPE foo [
    &lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot; &gt; ]&gt;
-&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</pre>
+&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</code></pre>
 </p>
 <b>Risk 2: Denial of service (XEE: <u>X</u>ML <u>E</u>ntity <u>E</u>xpansion)</b>
 <p>
-<pre>
-&lt;?xml version=&quot;1.0&quot;?&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot;?&gt;
 &lt;!DOCTYPE lolz [
  &lt;!ENTITY lol &quot;lol&quot;&gt;
  &lt;!ELEMENT lolz (#PCDATA)&gt;
@@ -2429,7 +2405,7 @@ from an untrusted source.</p>
 [...]
  &lt;!ENTITY lol9 &quot;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&quot;&gt;
 ]&gt;
-&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;</pre>
+&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;</code></pre>
 </p>
 
 <h3>Solution</h3>
@@ -2440,9 +2416,8 @@ In order to avoid exposing dangerous feature of the XML parser, you can do the f
 
 <p><b>Vulnerable Code:</b></p>
 <p>
-<pre>
-Transformer transformer = TransformerFactory.newInstance().newTransformer();
-transformer.transform(input, result);</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Transformer transformer = TransformerFactory.newInstance().newTransformer();
+transformer.transform(input, result);</code></pre>
 </p>
 <br/>
 <p>
@@ -2452,28 +2427,26 @@ The following snippets show two available solutions. You can set one feature or 
 <p><b>Solution using "Secure processing" mode:</b></p>
 <p>
 This setting will protect you against remote file access but not denial of service.
-<pre>
-TransformerFactory factory = TransformerFactory.newInstance();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>TransformerFactory factory = TransformerFactory.newInstance();
 factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "all");
 factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "all");
 
 Transformer transformer = factory.newTransformer();
 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-transformer.transform(input, result);</pre>
+transformer.transform(input, result);</code></pre>
 </p>
 
 <p><b>Solution disabling DTD:</b></p>
 <p>
 This setting will protect you against remote file access but not denial of service.
-<pre>
-TransformerFactory factory = TransformerFactory.newInstance();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>TransformerFactory factory = TransformerFactory.newInstance();
 factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 
 Transformer transformer = factory.newTransformer();
 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-transformer.transform(input, result);</pre>
+transformer.transform(input, result);</code></pre>
 </p>
 <br/>
 <p>
@@ -2511,12 +2484,11 @@ transformer.transform(input, result);</pre>
 from an untrusted source.</p>
 <p><b>Risk: Expose local file content (XXE: <u>X</u>ML E<u>x</u>ternal <u>E</u>ntity)</b></p>
 <p>
-<pre>
-&lt;xsl:stylesheet version=&quot;1.0&quot; xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;xsl:stylesheet version=&quot;1.0&quot; xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;&gt;
    &lt;xsl:template match=&quot;/&quot;&gt;
        &lt;xsl:value-of select=&quot;document(&apos;/etc/passwd&apos;)&quot;&gt;
    &lt;/xsl:value-of&gt;&lt;/xsl:template&gt;
-&lt;/xsl:stylesheet&gt;</pre>
+&lt;/xsl:stylesheet&gt;</code></pre>
 </p>
 
 <h3>Solution</h3>
@@ -2527,9 +2499,8 @@ In order to avoid exposing dangerous feature of the XML parser, you can do the f
 
 <p><b>Vulnerable Code:</b></p>
 <p>
-<pre>
-Transformer transformer = TransformerFactory.newInstance().newTransformer();
-transformer.transform(input, result);</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Transformer transformer = TransformerFactory.newInstance().newTransformer();
+transformer.transform(input, result);</code></pre>
 </p>
 <br/>
 <p>
@@ -2538,28 +2509,26 @@ The following snippets show two available solutions. You can set one feature or 
 <p><b>Solution using "Secure processing" mode:</b></p>
 <p>
 This setting will protect you against remote file access but not denial of service.
-<pre>
-TransformerFactory factory = TransformerFactory.newInstance();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>TransformerFactory factory = TransformerFactory.newInstance();
 factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "all");
 factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "all");
 
 Transformer transformer = factory.newTransformer();
 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-transformer.transform(input, result);</pre>
+transformer.transform(input, result);</code></pre>
 </p>
 
 <p><b>Solution disabling DTD:</b></p>
 <p>
 This setting will protect you against remote file access but not denial of service.
-<pre>
-TransformerFactory factory = TransformerFactory.newInstance();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>TransformerFactory factory = TransformerFactory.newInstance();
 factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 
 Transformer transformer = factory.newTransformer();
 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-transformer.transform(input, result);</pre>
+transformer.transform(input, result);</code></pre>
 </p>
 <br/>
 <p>
@@ -2688,14 +2657,14 @@ This class should be analyzed to make sure that remotely exposed methods are saf
 that is guaranteed to be used only by non-browser clients.</p>
 <p>
     <b>Insecure configuration:</b><br/>
-<pre>@EnableWebSecurity
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
     }
-}</pre>
+}</code></pre>
 </p>
 <p>
 <b>References</b><br/>
@@ -2730,18 +2699,18 @@ to the HTTP request methods <code>POST</code>, <code>PUT</code>, <code>DELETE</c
 are vulnerable to CSRF attacks.</p>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre>@Controller
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@Controller
 public class UnsafeController {
 
     @RequestMapping("/path")
     public void writeData() {
         // State-changing operations performed within this method.
     }
-}</pre>
+}</code></pre>
 </p>
 <p>
     <b>Solution (Spring Framework 4.3 and later):</b><br/>
-<pre>@Controller
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@Controller
 public class SafeController {
 
     /**
@@ -2760,11 +2729,11 @@ public class SafeController {
     public void writeData() {
         // State-changing operations performed within this method.
     }
-}</pre>
+}</code></pre>
 </p>
 <p>
     <b>Solution (Before Spring Framework 4.3):</b><br/>
-<pre>@Controller
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@Controller
 public class SafeController {
 
     /**
@@ -2785,7 +2754,7 @@ public class SafeController {
     public void writeData() {
         // State-changing operations performed within this method.
     }
-}</pre>
+}</code></pre>
 </p>
 <p>
 <b>References</b><br/>
@@ -2817,7 +2786,7 @@ The method identified is susceptible to injection. The input should be validated
 
 <p>
     <b>Vulnerable code samples:</b><br/>
-    <pre>SqlUtil.execQuery("select * from UserEntity t where id = " + parameterInput);</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>SqlUtil.execQuery("select * from UserEntity t where id = " + parameterInput);</code></pre>
 </p>
 <p>
     Refer to the online wiki for detailed instructions on <a href="https://github.com/find-sec-bugs/find-sec-bugs/wiki/Custom-signatures">how to configure custom signatures</a>.
@@ -2855,18 +2824,16 @@ Alternatively to prepare statements, each parameter can be escaped manually.
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
-    <pre>
-createQuery("select * from User where id = '"+inputId+"'");
-</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>createQuery("select * from User where id = '"+inputId+"'");
+</code></pre>
 </p>
 <p>
     <b>Solution:</b><br/>
 
-    <pre>
-import org.owasp.esapi.Encoder;
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>import org.owasp.esapi.Encoder;
 
 createQuery("select * from User where id = '"+Encoder.encodeForSQL(inputId)+"'");
-</pre>
+</code></pre>
 </p>
 <br/>
 <p>
@@ -2902,33 +2869,29 @@ Turbine API provide a DSL to build query with Java code.
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
-    <pre>
-List&lt;Record&gt; BasePeer.executeQuery( "select * from Customer where id=" + inputId );
-</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>List&lt;Record&gt; BasePeer.executeQuery( "select * from Customer where id=" + inputId );
+</code></pre>
 </p>
 <p>
     <b>Solution (using Criteria DSL):</b><br/>
 
-    <pre>
-Criteria c = new Criteria();
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Criteria c = new Criteria();
 c.add( CustomerPeer.ID, inputId );
 
 List&lt;Customer&gt; customers = CustomerPeer.doSelect( c );
-</pre>
+</code></pre>
 
     <b>Solution (using specialized method):</b><br/>
 
-<pre>
-Customer customer = CustomerPeer.retrieveByPK( new NumberKey( inputId ) );
-</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Customer customer = CustomerPeer.retrieveByPK( new NumberKey( inputId ) );
+</code></pre>
 
     <b>Solution (using OWASP Encoder):</b><br/>
 
-    <pre>
-import org.owasp.esapi.Encoder;
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>import org.owasp.esapi.Encoder;
 
 BasePeer.executeQuery("select * from Customer where id = '"+Encoder.encodeForSQL(inputId)+"'");
-</pre>
+</code></pre>
 </p>
 <br/>
 <p>
@@ -2966,27 +2929,24 @@ Alternatively to prepare statements, Hibernate Criteria can be used.
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
-    <pre>
-Session session = sessionFactory.openSession();
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Session session = sessionFactory.openSession();
 Query q = session.createQuery("select t from UserEntity t where id = " + input);
-q.execute();</pre>
+q.execute();</code></pre>
 </p>
 <p>
     <b>Solution:</b><br/>
-    <pre>
-Session session = sessionFactory.openSession();
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Session session = sessionFactory.openSession();
 Query q = session.createQuery("select t from UserEntity t where id = :userId");
 q.setString("userId",input);
-q.execute();</pre>
+q.execute();</code></pre>
 </p>
 <p>
     <b>Solution for dynamic queries (with Hibernate Criteria):</b><br/>
-    <pre>
-Session session = sessionFactory.openSession();
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Session session = sessionFactory.openSession();
 Query q = session.createCriteria(UserEntity.class)
     .add( Restrictions.like("id", input) )
     .list();
-q.execute();</pre>
+q.execute();</code></pre>
 </p>
 <br/>
 <p>
@@ -3025,20 +2985,18 @@ Bind variables in prepared statements can be used to easily mitigate the risk of
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
-    <pre>
-PersistenceManager pm = getPM();
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>PersistenceManager pm = getPM();
 
 Query q = pm.newQuery("select * from Users where name = " + input);
-q.execute();</pre>
+q.execute();</code></pre>
 </p>
 <p>
     <b>Solution:</b><br/>
-    <pre>
-PersistenceManager pm = getPM();
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>PersistenceManager pm = getPM();
 
 Query q = pm.newQuery("select * from Users where name = nameParam");
 q.declareParameters("String nameParam");
-q.execute(input);</pre>
+q.execute(input);</code></pre>
 </p>
 <br/>
 <p>
@@ -3075,23 +3033,21 @@ Bind variables in prepared statements can be used to easily mitigate the risk of
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
-    <pre>
-EntityManager pm = getEM();
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>EntityManager pm = getEM();
 
 TypedQuery&lt;UserEntity&gt; q = em.createQuery(
     String.format("select * from Users where name = %s", username),
     UserEntity.class);
 
-UserEntity res = q.getSingleResult();</pre>
+UserEntity res = q.getSingleResult();</code></pre>
 </p>
 <p>
     <b>Solution:</b><br/>
-    <pre>
-TypedQuery&lt;UserEntity&gt; q = em.createQuery(
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>TypedQuery&lt;UserEntity&gt; q = em.createQuery(
     "select * from Users where name = usernameParam",UserEntity.class)
     .setParameter("usernameParam", username);
 
-UserEntity res = q.getSingleResult();</pre>
+UserEntity res = q.getSingleResult();</code></pre>
 </p>
 <br/>
 <p>
@@ -3129,14 +3085,14 @@ Bind variables in prepared statements can be used to easily mitigate the risk of
 
 <p>
     <b>Vulnerable Code:</b><br/>
-    <pre>JdbcTemplate jdbc = new JdbcTemplate();
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>JdbcTemplate jdbc = new JdbcTemplate();
 int count = jdbc.queryForObject("select count(*) from Users where name = '"+paramName+"'", Integer.class);
-</pre>
+</code></pre>
 </p>
 <p>
     <b>Solution:</b><br/>
-    <pre>JdbcTemplate jdbc = new JdbcTemplate();
-int count = jdbc.queryForObject("select count(*) from Users where name = ?", Integer.class, paramName);</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>JdbcTemplate jdbc = new JdbcTemplate();
+int count = jdbc.queryForObject("select count(*) from Users where name = ?", Integer.class, paramName);</code></pre>
 </p>
 <br/>
 
@@ -3174,16 +3130,16 @@ Bind variables in prepared statements can be used to easily mitigate the risk of
 
 <p>
     <b>Vulnerable Code:</b><br/>
-    <pre>Connection conn = [...];
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Connection conn = [...];
 Statement stmt = con.createStatement();
-ResultSet rs = stmt.executeQuery("update COFFEES set SALES = "+nbSales+" where COF_NAME = '"+coffeeName+"'");</pre>
+ResultSet rs = stmt.executeQuery("update COFFEES set SALES = "+nbSales+" where COF_NAME = '"+coffeeName+"'");</code></pre>
 </p>
 <p>
     <b>Solution:</b><br/>
-    <pre>Connection conn = [...];
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Connection conn = [...];
 conn.prepareStatement("update COFFEES set SALES = ? where COF_NAME = ?");
 updateSales.setInt(1, nbSales);
-updateSales.setString(2, coffeeName);</pre>
+updateSales.setString(2, coffeeName);</code></pre>
 </p>
 <br/>
 
@@ -3221,15 +3177,15 @@ Bind variables in prepared statements can be used to easily mitigate the risk of
 
 <p>
     <b>Vulnerable Code:</b><br/>
-    <pre>db.run {
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>db.run {
   sql"select * from people where name = '#$value'".as[Person]
-}</pre>
+}</code></pre>
 </p>
 <p>
     <b>Solution:</b><br/>
-    <pre>db.run {
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>db.run {
   sql"select * from people where name = $value".as[Person]
-}</pre>
+}</code></pre>
 </p>
 <br/>
 
@@ -3265,19 +3221,19 @@ Bind variables in prepared statements can be used to easily mitigate the risk of
 
 <p>
     <b>Vulnerable Code:</b><br/>
-    <pre>val peopleParser = Macro.parser[Person]("id", "name", "age")
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>val peopleParser = Macro.parser[Person]("id", "name", "age")
 
 DB.withConnection { implicit c =>
   val people: List[Person] = SQL("select * from people where name = '" + value + "'").as(peopleParser.*)
-}</pre>
+}</code></pre>
 </p>
 <p>
     <b>Solution:</b><br/>
-    <pre>val peopleParser = Macro.parser[Person]("id", "name", "age")
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>val peopleParser = Macro.parser[Person]("id", "name", "age")
 
 DB.withConnection { implicit c =>
   val people: List[Person] = SQL"select * from people where name = $value".as(peopleParser.*)
-}</pre>
+}</code></pre>
 </p>
 <br/>
 
@@ -3313,13 +3269,13 @@ Bind variables in prepared statements can be used to easily mitigate the risk of
 
 <p>
     <b>Vulnerable Code:</b><br/>
-    <pre>String query = "SELECT * FROM  messages WHERE uid= '"+userInput+"'" ;
-Cursor cursor = this.getReadableDatabase().rawQuery(query,null);</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>String query = "SELECT * FROM  messages WHERE uid= '"+userInput+"'" ;
+Cursor cursor = this.getReadableDatabase().rawQuery(query,null);</code></pre>
 </p>
 <p>
     <b>Solution:</b><br/>
-    <pre>String query = "SELECT * FROM  messages WHERE uid= ?" ;
-Cursor cursor = this.getReadableDatabase().rawQuery(query,new String[] {userInput});</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>String query = "SELECT * FROM  messages WHERE uid= ?" ;
+Cursor cursor = this.getReadableDatabase().rawQuery(query,new String[] {userInput});</code></pre>
 </p>
 <br/>
 
@@ -3360,8 +3316,8 @@ Therefore, the primary defense against LDAP injection is strong input validation
 </p>
 <p>
     <b>Code at risk:</b><br/>
-    <pre>NamingEnumeration&lt;SearchResult&gt; answers = context.search("dc=People,dc=example,dc=com",
-        "(uid=" + username + ")", ctrls);</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>NamingEnumeration&lt;SearchResult&gt; answers = context.search("dc=People,dc=example,dc=com",
+        "(uid=" + username + ")", ctrls);</code></pre>
 </p>
 <br/>
 <p>
@@ -3398,20 +3354,18 @@ Therefore, the primary defense against LDAP injection is strong input validation
 
 <p><b>Code at risk:</b></p>
 <p>
-<pre>
-public void runCustomTrigger(String script) {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void runCustomTrigger(String script) {
     ScriptEngineManager factory = new ScriptEngineManager();
     ScriptEngine engine = factory.getEngineByName("JavaScript");
 
     engine.eval(script); //Bad things can happen here.
-}</pre>
+}</code></pre>
 </p>
 
 <p><b>Solution:</b></p>
 <p>
 Safe evaluation of JavaScript code using "Cloudbees Rhino Sandbox" library.<br/>
-<pre>
-public void runCustomTrigger(String script) {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void runCustomTrigger(String script) {
     SandboxContextFactory contextFactory = new SandboxContextFactory();
     Context context = contextFactory.makeContext();
     contextFactory.enterContext(context);
@@ -3425,7 +3379,7 @@ public void runCustomTrigger(String script) {
     } finally {
         context.exit();
     }
-}</pre>
+}</code></pre>
 </p>
 <br/>
 <p>
@@ -3459,8 +3413,7 @@ public void runCustomTrigger(String script) {
 </p>
 <p><b>Code at risk:</b></p>
 <p>
-<pre>
-public void parseExpressionInterface(Person personObj,String property) {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void parseExpressionInterface(Person personObj,String property) {
 
         ExpressionParser parser = new SpelExpressionParser();
 
@@ -3469,7 +3422,7 @@ public void parseExpressionInterface(Person personObj,String property) {
 
         StandardEvaluationContext testContext = new StandardEvaluationContext(personObj);
         boolean result = exp.getValue(testContext, Boolean.class);
-[...]</pre>
+[...]</code></pre>
 </p>
 <br/>
 <p>
@@ -3506,13 +3459,13 @@ public void parseExpressionInterface(Person personObj,String property) {
 </p>
 <p><b>Code at risk:</b></p>
 <p>
-<pre>public void evaluateExpression(String expression) {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void evaluateExpression(String expression) {
     FacesContext context = FacesContext.getCurrentInstance();
     ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
     ELContext elContext = context.getELContext();
     ValueExpression vex = expressionFactory.createValueExpression(elContext, expression, String.class);
     return (String) vex.getValue(elContext);
-}</pre>
+}</code></pre>
 </p>
 <br/>
 <p>
@@ -3552,17 +3505,17 @@ public void parseExpressionInterface(Person personObj,String property) {
 </p>
 <p><b>Code at risk:</b></p>
 <p>
-<pre>public void logUser(User user) {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void logUser(User user) {
     log.info("Current logged in user : " + user.getUsername());
     //...
-}</pre>
+}</code></pre>
 </p>
 <p><b>Solution:</b></p>
 <p>
-<pre>public void logUser(User user) {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void logUser(User user) {
     log.info("Current logged in user : #0", user.getUsername());
     //...
-}</pre>
+}</code></pre>
 </p>
 <br/>
 <p>
@@ -3597,13 +3550,12 @@ public void parseExpressionInterface(Person personObj,String property) {
 </p>
 <p><b>Code at risk:</b></p>
 <p>
-<pre>
-public void getUserProperty(String property) {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void getUserProperty(String property) {
   [...]
   //The first argument is the dynamic expression.
   return ognlUtil.getValue("user."+property, ctx, root, String.class);
 }
-</pre>
+</code></pre>
 </p>
 <p><b>Solution:</b></p>
 <p>
@@ -3646,10 +3598,10 @@ In general, method evaluating OGNL expression should not receive user input. It 
 <br/>
 <p>
 <b>Code at risk:</b><br/>
-<pre>String author = request.getParameter(AUTHOR_PARAMETER);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>String author = request.getParameter(AUTHOR_PARAMETER);
 // ...
 Cookie cookie = new Cookie("author", author);
-response.addCookie(cookie);</pre>
+response.addCookie(cookie);</code></pre>
 </p>
 <br/>
 <p>
@@ -3689,7 +3641,7 @@ response.addCookie(cookie);</pre>
 <br/>
 <p>
 <b>Code at risk:</b><br/>
-<pre>String val = request.getParameter("user");
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>String val = request.getParameter("user");
 String metadata = request.getParameter("metadata");
 [...]
 if(authenticated) {
@@ -3698,7 +3650,7 @@ if(authenticated) {
 else {
     log.info("User " + val + " (" + metadata + ") was not authenticated");
 }
-</pre>
+</code></pre>
 
 A malicious user could send the metadata parameter with the value: <code>"Firefox) was authenticated successfully\r\n[INFO] User bbb (Internet Explorer"</code>.
 </p>
@@ -3706,16 +3658,14 @@ A malicious user could send the metadata parameter with the value: <code>"Firefo
 <b>Solution:</b><br/>
 <p>
 You can manually sanitize each parameter.
-<pre>
-log.info("User " + val.replaceAll("[\r\n]","") + " (" + userAgent.replaceAll("[\r\n]","") + ") was not authenticated");
-</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>log.info("User " + val.replaceAll("[\r\n]","") + " (" + userAgent.replaceAll("[\r\n]","") + ") was not authenticated");
+</code></pre>
 </p>
 
 <p>
 You can also configure your logger service to replace new line for all message events. Here is sample configuration for LogBack <a href="https://logback.qos.ch/manual/layouts.html#replace">using the <code>replace</code> function</a>.
-<pre>
-&lt;pattern&gt;%-5level - %replace(%msg){'[\r\n]', ''}%n&lt;/pattern&gt;
-</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;pattern&gt;%-5level - %replace(%msg){'[\r\n]', ''}%n&lt;/pattern&gt;
+</code></pre>
 </p>
 
 <p>
@@ -3758,7 +3708,7 @@ The project <a href="https://github.com/javabeanz/owasp-security-logging">OWASP 
 <br/>
 <p>
 <b>Code at risk:</b><br/>
-<pre>conn.setCatalog(request.getParameter("catalog"));</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>conn.setCatalog(request.getParameter("catalog"));</code></pre>
 </p>
 <br/>
 <p>
@@ -3785,8 +3735,7 @@ The project <a href="https://github.com/javabeanz/owasp-security-logging">OWASP 
 <p>When converting a byte array containing a hash signature to a human readable string, a conversion mistake can be made if 
 the array is read byte by byte. The following sample illustrates the use of the method <code>Integer.toHexString()</code> which will trim any leading zeroes
 from each byte of the computed hash value.
-<pre>
-MessageDigest md = MessageDigest.getInstance("SHA-256");
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>MessageDigest md = MessageDigest.getInstance("SHA-256");
 byte[] resultBytes = md.digest(password.getBytes("UTF-8"));
 
 StringBuilder stringBuilder = new StringBuilder();
@@ -3794,7 +3743,7 @@ for(byte b :resultBytes) {
     stringBuilder.append( Integer.toHexString( b & 0xFF ) );
 }
 
-return stringBuilder.toString();</pre>
+return stringBuilder.toString();</code></pre>
 </p>
 <p>
 This mistake weakens the hash value computed since it introduces more collisions. 
@@ -3803,7 +3752,7 @@ For example, the hash values "0x0679" and "0x6709" would both output as "679" fo
 
 <p>
 In this situation, the method <code>Integer.toHexString()</code> should be replaced with <code>String.format()</code> as follows:
-<pre>stringBuilder.append( String.format( "%02X", b ) );</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>stringBuilder.append( String.format( "%02X", b ) );</code></pre>
 </p>
 <br/>
 <p>
@@ -3859,10 +3808,10 @@ identical to the supplied plaintext. In a few contexts, such as testing, a NullC
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre>Cipher doNothingCihper = new NullCipher();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher doNothingCihper = new NullCipher();
 [...]
 //The ciphertext produced will be identical to the plaintext.
-byte[] cipherText = c.doFinal(plainText);</pre>
+byte[] cipherText = c.doFinal(plainText);</code></pre>
 </p>
 <p>
     <b>Solution:</b><br/>
@@ -3896,12 +3845,12 @@ The communication channel used is not encrypted. The traffic could be read by an
 <p>
 <b>Vulnerable Code:</b><br/>
 Plain socket (Cleartext communication):
-<pre>Socket soc = new Socket("www.google.com",80);</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Socket soc = new Socket("www.google.com",80);</code></pre>
 </p>
 <p>
 <b>Solution:</b><br/>
 SSL Socket (Secure communication):
-<pre>Socket soc = SSLSocketFactory.getDefault().createSocket("www.google.com", 443);</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Socket soc = SSLSocketFactory.getDefault().createSocket("www.google.com", 443);</code></pre>
 </p>
 <p>Beyond using an SSL socket, you need to make sure your use of SSLSocketFactory does all the appropriate certificate validation checks to
 make sure you are not subject to man-in-the-middle attacks. Please read the OWASP Transport Layer Protection Cheat Sheet for details on how
@@ -3939,12 +3888,12 @@ The communication channel used is not encrypted. The traffic could be read by an
 <p>
 <b>Vulnerable Code:</b><br/>
 Plain server socket (Cleartext communication):
-<pre>ServerSocket soc = new ServerSocket(1234);</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>ServerSocket soc = new ServerSocket(1234);</code></pre>
 </p>
 <p>
 <b>Solution:</b><br/>
 SSL Server Socket (Secure communication):
-<pre>ServerSocket soc = SSLServerSocketFactory.getDefault().createServerSocket(1234);</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>ServerSocket soc = SSLServerSocketFactory.getDefault().createServerSocket(1234);</code></pre>
 </p>
 <p>Beyond using an SSL server socket, you need to make sure your use of SSLServerSocketFactory does all the appropriate certificate validation checks to
 make sure you are not subject to man-in-the-middle attacks. Please read the OWASP Transport Layer Protection Cheat Sheet for details on how
@@ -3982,15 +3931,15 @@ usage of AES block ciphers instead of DES.
 </p>
 <p>
     <b>Example weak code:</b>
-<pre>Cipher c = Cipher.getInstance("DES/ECB/PKCS5Padding");
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher c = Cipher.getInstance("DES/ECB/PKCS5Padding");
 c.init(Cipher.ENCRYPT_MODE, k, iv);
-byte[] cipherText = c.doFinal(plainText);</pre>
+byte[] cipherText = c.doFinal(plainText);</code></pre>
 </p>
 <p>
     <b>Example solution:</b>
-    <pre>Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
 c.init(Cipher.ENCRYPT_MODE, k, iv);
-byte[] cipherText = c.doFinal(plainText);</pre>
+byte[] cipherText = c.doFinal(plainText);</code></pre>
 </p>
 <br/>
 <p>
@@ -4021,15 +3970,15 @@ usage of AES block ciphers instead of 3DES.
 </p>
 <p>
     <b>Example weak code:</b>
-<pre>Cipher c = Cipher.getInstance("DESede/ECB/PKCS5Padding");
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher c = Cipher.getInstance("DESede/ECB/PKCS5Padding");
 c.init(Cipher.ENCRYPT_MODE, k, iv);
-byte[] cipherText = c.doFinal(plainText);</pre>
+byte[] cipherText = c.doFinal(plainText);</code></pre>
 </p>
 <p>
     <b>Example solution:</b>
-    <pre>Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
 c.init(Cipher.ENCRYPT_MODE, k, iv);
-byte[] cipherText = c.doFinal(plainText);</pre>
+byte[] cipherText = c.doFinal(plainText);</code></pre>
 </p>
 <br/>
 <p>
@@ -4059,12 +4008,12 @@ The software uses the RSA algorithm but does not incorporate Optimal Asymmetric 
 </p>
 <p>
 <b>Vulnerable Code:</b><br/>
-<pre>Cipher.getInstance("RSA/NONE/NoPadding")</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher.getInstance("RSA/NONE/NoPadding")</code></pre>
 </p>
 <p>
 <b>Solution:</b><br/>
 The code should be replaced with:<br/>
-<pre>Cipher.getInstance("RSA/ECB/OAEPWithMD5AndMGF1Padding")</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher.getInstance("RSA/ECB/OAEPWithMD5AndMGF1Padding")</code></pre>
 </p>
 <br/>
 <p>
@@ -4097,10 +4046,10 @@ certainly shared in open source. To be managed safely, passwords and secret keys
 <p>
 <p><b>Vulnerable Code:</b><br/>
 
-<pre>private String SECRET_PASSWORD = "letMeIn!";
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>private String SECRET_PASSWORD = "letMeIn!";
 
 Properties props = new Properties();
-props.put(Context.SECURITY_CREDENTIALS, "p@ssw0rd");</pre>
+props.put(Context.SECURITY_CREDENTIALS, "p@ssw0rd");</code></pre>
 </p>
 <br/>
 <p>
@@ -4132,11 +4081,11 @@ certainly shared in open source. To be managed safely, passwords and secret keys
 <p>
 <p><b>Vulnerable Code:</b><br/>
 
-<pre>byte[] key = {1, 2, 3, 4, 5, 6, 7, 8};
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>byte[] key = {1, 2, 3, 4, 5, 6, 7, 8};
 SecretKeySpec spec = new SecretKeySpec(key, "AES");
 Cipher aes = Cipher.getInstance("AES");
 aes.init(Cipher.ENCRYPT_MODE, spec);
-return aesCipher.doFinal(secretData);</pre> 
+return aesCipher.doFinal(secretData);</code></pre> 
 </p>
 <br/>
 <p>
@@ -4168,21 +4117,19 @@ bytes are matched.
 <p>
 <p><b>Vulnerable Code:</b><br/>
 
-<pre>
-String actualHash = ...
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>String actualHash = ...
 
 if(userInput.equals(actualHash)) {
     ...
-}</pre>
+}</code></pre>
 </p>
 <p><b>Solution:</b><br/>
 
-<pre>
-String actualHash = ...
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>String actualHash = ...
 
 if(MessageDigest.isEqual(userInput.getBytes(),actualHash.getBytes())) {
     ...
-}</pre>
+}</code></pre>
 </p>
 <br/>
 <p>
@@ -4211,8 +4158,7 @@ Form inputs should have minimal input validation. Preventive validation helps pr
 </p>
 <p>
 Validation can be introduced by implementing a <code>validate</code> method.
-<pre>
-public class RegistrationForm extends ValidatorForm {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public class RegistrationForm extends ValidatorForm {
 
     private String name;
     private String email;
@@ -4223,7 +4169,7 @@ public class RegistrationForm extends ValidatorForm {
         //Validation code for name and email parameters passed in via the HttpRequest goes here
     }
 }
-</pre>
+</code></pre>
 </p>
 <br/>
 <p>
@@ -4264,7 +4210,7 @@ The filtering is weak for a few reasons:
 <p>
 <b>Example of bypass:</b><br/>
 </p>
-<pre>&lt;scrivbscript:pt&gt;alert(1)&lt;/scrivbscript:pt&gt;</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;scrivbscript:pt&gt;alert(1)&lt;/scrivbscript:pt&gt;</code></pre>
 <p>
 The previous input will be transformed into <b><code>"&lt;script&gt;alert(1)&lt;/script&gt;"</code></b>.
 The removal of <code>"vbscript:"</code> is after the replacement of <code>"&lt;script&gt;.*&lt;/script&gt;"</code>.
@@ -4307,13 +4253,13 @@ If the algorithm can be changed, the AES block cipher should be used instead.
 </p>
 
 <p><b>Vulnerable Code:</b><br/>
-<pre>KeyGenerator keyGen = KeyGenerator.getInstance("Blowfish");
-keyGen.init(64);</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>KeyGenerator keyGen = KeyGenerator.getInstance("Blowfish");
+keyGen.init(64);</code></pre>
 </p>
 
 <p><b>Solution:</b><br/>
-<pre>KeyGenerator keyGen = KeyGenerator.getInstance("Blowfish");
-keyGen.init(128);</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>KeyGenerator keyGen = KeyGenerator.getInstance("Blowfish");
+keyGen.init(128);</code></pre>
 </p>
 <br/>
 <p>
@@ -4348,18 +4294,16 @@ keyGen.init(128);</pre>
 </blockquote>
 
 <p><b>Vulnerable Code:</b><br/>
-<pre>
-KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
 keyGen.initialize(512);
-</pre>
+</code></pre>
 </p>
 
 <p><b>Solution:</b><br/>
 The KeyPairGenerator creation should be as follows with at least 2048 bit key size.<br/>
-<pre>
-KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
 keyGen.initialize(2048);
-</pre>
+</code></pre>
 </p>
 <br/>
 <p>
@@ -4404,11 +4348,11 @@ keyGen.initialize(2048);
 </p>
 <p>
     <b>Vulnerable Code:</b></br/>
-    <pre>protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     [...]
     resp.sendRedirect(req.getParameter("redirectUrl"));
     [...]
-}</pre>
+}</code></pre>
 </p>
 <p>
     <b>Solution/Countermeasures:</b><br/>
@@ -4461,10 +4405,10 @@ keyGen.initialize(2048);
 </p>
 <p>
     <b>Vulnerable Code:</b></br/>
-    <pre>def login(redirectUrl:String) = Action {
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>def login(redirectUrl:String) = Action {
     [...]
     Redirect(url)
-}</pre>
+}</code></pre>
 </p>
 <p>
     <b>Solution/Countermeasures:</b><br/>
@@ -4517,11 +4461,11 @@ keyGen.initialize(2048);
 </p>
 <p>
     <b>Vulnerable Code:</b></br/>
-    <pre>@RequestMapping("/redirect")
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@RequestMapping("/redirect")
 public String redirect(@RequestParam("url") String url) {
     [...]
     return "redirect:" + url;
-}</pre>
+}</code></pre>
 </p>
 <p>
     <b>Solution/Countermeasures:</b><br/>
@@ -4564,13 +4508,13 @@ attacker gets the ability to execute any code.
 </p>
 <p>
     <b>Vulnerable Code:</b>
-    <pre>&lt;jsp:include page="${param.secret_param}" /&gt;</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;jsp:include page="${param.secret_param}" /&gt;</code></pre>
 </p>
 <p>
     <b>Solution:</b>
-    <pre>&lt;c:if test="${param.secret_param == 'page1'}"&gt;
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;c:if test="${param.secret_param == 'page1'}"&gt;
     &lt;jsp:include page="page1.jsp" /&gt;
-&lt;/c:if&gt;</pre>
+&lt;/c:if&gt;</code></pre>
 </p>
 <br/>
 <p>
@@ -4599,19 +4543,19 @@ attacker gets the ability to execute any code.
 </p>
 <p>
     <b>Vulnerable Code:</b>
-    <pre>&lt;%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %&gt;
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %&gt;
 
-&lt;spring:eval expression="${param.lang}" var="lang" /&gt;</pre>
+&lt;spring:eval expression="${param.lang}" var="lang" /&gt;</code></pre>
     <br>
-    <pre>&lt;%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %&gt;
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %&gt;
 
-&lt;spring:eval expression="'${param.lang}'=='fr'" var="languageIsFrench" /&gt;</pre>
+&lt;spring:eval expression="'${param.lang}'=='fr'" var="languageIsFrench" /&gt;</code></pre>
 </p>
 <p>
     <b>Solution:</b>
-    <pre>&lt;c:set var="lang" value="${param.lang}"/&gt;</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;c:set var="lang" value="${param.lang}"/&gt;</code></pre>
     <br/>
-    <pre>&lt;c:set var="languageIsFrench" value="${param.lang == 'fr'}"/&gt;</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;c:set var="languageIsFrench" value="${param.lang == 'fr'}"/&gt;</code></pre>
 </p>
 <br/>
 <p>
@@ -4640,15 +4584,15 @@ attacker gets the ability to execute any code.
 </p>
 <p>
     <b>Vulnerable Code:</b>
-    <pre>&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
 
-&lt;c:out value="${param.test_param}" escapeXml="false"/&gt;</pre>
+&lt;c:out value="${param.test_param}" escapeXml="false"/&gt;</code></pre>
 </p>
 <p>
     <b>Solution:</b>
-    <pre>&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
 
-&lt;c:out value="${param.test_param}"/&gt;</pre>
+&lt;c:out value="${param.test_param}"/&gt;</code></pre>
 </p>
 <br/>
 <p>
@@ -4680,21 +4624,20 @@ attacker gets the ability to execute any code.
 </p>
 <p>
     <b>Vulnerable Code:</b>
-    <pre><%
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'><%
 String taintedInput = (String) request.getAttribute("input");
 %>
 [...]
-&lt;%= taintedInput %&gt;</pre>
+&lt;%= taintedInput %&gt;</code></pre>
 </p>
 <p>
     <b>Solution:</b>
-    <pre>
-&lt;%
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;%
 String taintedInput = (String) request.getAttribute("input");
 %&gt;
 [...]
 &lt;%= Encode.forHtml(taintedInput) %&gt;
-    </pre>
+    </code></pre>
 </p>
 <p>
 The best defense against XSS is context sensitive output encoding like the example above. There are typically 4 contexts to consider: 
@@ -4732,19 +4675,19 @@ A potential XSS was found. It could be used to execute unwanted JavaScript in a 
 </p>
 <p>
     <b>Vulnerable Code:</b>
-<pre>protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     String input1 = req.getParameter("input1");
     [...]
     resp.getWriter().write(input1);
-}</pre>
+}</code></pre>
 </p>
 <p>
     <b>Solution:</b>
-<pre>protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     String input1 = req.getParameter("input1");
     [...]
     resp.getWriter().write(Encode.forHtml(input1));
-}</pre>
+}</code></pre>
 </p>
 <p>
 The best defense against XSS is context sensitive output encoding like the example above. There are typically 4 contexts to consider: 
@@ -4788,8 +4731,7 @@ which explains these defenses in significant detail.
 <p>
     <b>Malicious XML example:</b>
 </p>
-<pre>
-&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
 &lt;java version="1.4.0" class="java.beans.XMLDecoder"&gt;
   &lt;object class="java.io.PrintWriter"&gt;
     &lt;string>/tmp/Hacked.txt&lt;/string&gt;
@@ -4799,17 +4741,17 @@ which explains these defenses in significant detail.
     &lt;void method="close"/&gt;
   &lt;/object&gt;
 &lt;/java&gt;
-</pre>
+</code></pre>
 <p>
 The XML code above will cause the creation of a file with the content "Hello World!".
 </p>
 <p>
     <b>Vulnerable Code:</b></br/>
-    <pre>XMLDecoder d = new XMLDecoder(in);
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>XMLDecoder d = new XMLDecoder(in);
 try {
     Object result = d.readObject();
 }
-[...]</pre>
+[...]</code></pre>
 </p>
 <p>
 <b>Solution:</b></br/>
@@ -4844,25 +4786,23 @@ The solution is to avoid using XMLDecoder to parse content from an untrusted sou
 </p>
 <p><b>Vulnerable Code:</b></p>
 <p>
-<pre>
-private static byte[] IV = new byte[16] {(byte)0,(byte)1,(byte)2,[...]};
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>private static byte[] IV = new byte[16] {(byte)0,(byte)1,(byte)2,[...]};
 
 public void encrypt(String message) throws Exception {
 
     IvParameterSpec ivSpec = new IvParameterSpec(IV);
 [...]
-</pre>
+</code></pre>
 <p><b>Solution:</b></p>
 <p>
-<pre>
-public void encrypt(String message) throws Exception {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void encrypt(String message) throws Exception {
 
     byte[] iv = new byte[16];
     new SecureRandom().nextBytes(iv);
 
     IvParameterSpec ivSpec = new IvParameterSpec(iv);
 [...]
-</pre>
+</code></pre>
 </p>
 <br/>
 <p>
@@ -4897,15 +4837,15 @@ To fix this, something like Galois/Counter Mode (GCM) should be used instead.
 </p>
 <p>
 <b>Code at risk:</b>
-    <pre>Cipher c = Cipher.getInstance("AES/ECB/NoPadding");
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher c = Cipher.getInstance("AES/ECB/NoPadding");
 c.init(Cipher.ENCRYPT_MODE, k, iv);
-byte[] cipherText = c.doFinal(plainText);</pre>
+byte[] cipherText = c.doFinal(plainText);</code></pre>
 </p>
 <p>
     <b>Solution:</b>
-    <pre>Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
 c.init(Cipher.ENCRYPT_MODE, k, iv);
-byte[] cipherText = c.doFinal(plainText);</pre>
+byte[] cipherText = c.doFinal(plainText);</code></pre>
 </p>
 <br/>
 <p>
@@ -4939,15 +4879,15 @@ byte[] cipherText = c.doFinal(plainText);</pre>
 </p>
 <p>
     <b>Code at risk:</b>
-    <pre>Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
 c.init(Cipher.ENCRYPT_MODE, k, iv);
-byte[] cipherText = c.doFinal(plainText);</pre>
+byte[] cipherText = c.doFinal(plainText);</code></pre>
 </p>
 <p>
     <b>Solution:</b>
-    <pre>Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
 c.init(Cipher.ENCRYPT_MODE, k, iv);
-byte[] cipherText = c.doFinal(plainText);</pre>
+byte[] cipherText = c.doFinal(plainText);</code></pre>
 </p>
 <br/>
 <p>
@@ -4994,21 +4934,21 @@ byte[] cipherText = c.doFinal(plainText);</pre>
     <b>Code at risk:</b><br/>
     <i>AES in CBC mode</i><br/>
 
-    <pre>Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
 c.init(Cipher.ENCRYPT_MODE, k, iv);
-byte[] cipherText = c.doFinal(plainText);</pre>
+byte[] cipherText = c.doFinal(plainText);</code></pre>
     <br/>
     <i>Triple DES with ECB mode</i><br/>
 
-<pre>Cipher c = Cipher.getInstance("DESede/ECB/PKCS5Padding");
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher c = Cipher.getInstance("DESede/ECB/PKCS5Padding");
 c.init(Cipher.ENCRYPT_MODE, k, iv);
-byte[] cipherText = c.doFinal(plainText);</pre>
+byte[] cipherText = c.doFinal(plainText);</code></pre>
 </p>
 <p>
     <b>Solution:</b>
-    <pre>Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
 c.init(Cipher.ENCRYPT_MODE, k, iv);
-byte[] cipherText = c.doFinal(plainText);</pre>
+byte[] cipherText = c.doFinal(plainText);</code></pre>
 </p>
 <p>
 In the example solution above, the GCM mode introduces an HMAC into the resulting encrypted data, providing integrity of the result.
@@ -5049,24 +4989,22 @@ In the example solution above, the GCM mode introduces an HMAC into the resultin
 <p>
     For Maven users, the plugin <a href="http://mojo.codehaus.org/versions-maven-plugin/">versions</a> can be called using the
     following command. The effective version of ESAPI will be available in the output.<br/>
-    <pre>$ mvn versions:display-dependency-updates</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>$ mvn versions:display-dependency-updates</code></pre>
     <br/>Output:<br/>
-    <pre>
-[...]
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>[...]
 [INFO] The following dependencies in Dependencies have newer versions:
 [INFO]   org.slf4j:slf4j-api ................................... 1.6.4 -> 1.7.7
 [INFO]   org.owasp.esapi:esapi ................................. 2.0.1 -> 2.1.0
 [...]
-    </pre>
+    </code></pre>
 </p>
 <p>
     or by looking at the configuration directly.<br/>
-    <pre>
-&lt;dependency&gt;
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;dependency&gt;
     &lt;groupId&gt;org.owasp.esapi&lt;/groupId&gt;
     &lt;artifactId&gt;esapi&lt;/artifactId&gt;
     &lt;version&gt;2.1.0&lt;/version&gt;
-&lt;/dependency&gt;</pre>
+&lt;/dependency&gt;</code></pre>
 </p>
 <p>
     For Ant users, the jar used should be <a href="http://repo1.maven.org/maven2/org/owasp/esapi/esapi/2.1.0/esapi-2.1.0.jar">esapi-2.1.0.jar</a>.
@@ -5077,20 +5015,18 @@ In the example solution above, the GCM mode introduces an HMAC into the resultin
     <br/>
     <div><b>The cryptographic configuration of ESAPI can also be vulnerable if any of these elements are present:</b><br/>
     <b>Insecure configuration:</b><br/>
-    <pre>
-Encryptor.CipherText.useMAC=false
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Encryptor.CipherText.useMAC=false
 
 Encryptor.EncryptionAlgorithm=AES
 Encryptor.CipherTransformation=AES/CBC/PKCS5Padding
 
-Encryptor.cipher_modes.additional_allowed=CBC</pre>
+Encryptor.cipher_modes.additional_allowed=CBC</code></pre>
     </div>
 </p>
 <p>
     <div>
     <b>Secure configuration:</b><br/>
-    <pre>
-#Needed
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>#Needed
 Encryptor.CipherText.useMAC=true
 
 #Needed to have a solid auth. encryption
@@ -5098,7 +5034,7 @@ Encryptor.EncryptionAlgorithm=AES
 Encryptor.CipherTransformation=AES/GCM/NoPadding
 
 #CBC mode should be removed to avoid padding oracle
-Encryptor.cipher_modes.additional_allowed=</pre>
+Encryptor.cipher_modes.additional_allowed=</code></pre>
     </div>
 </p>
 <br/>
@@ -5135,19 +5071,17 @@ Encryptor.cipher_modes.additional_allowed=</pre>
 </p>
 <p>
     <b>Code at risk:</b><br/>
-<pre>
-file file = new File(getExternalFilesDir(TARGET_TYPE), filename);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>file file = new File(getExternalFilesDir(TARGET_TYPE), filename);
 fos = new FileOutputStream(file);
 fos.write(confidentialData.getBytes());
 fos.flush();
-</pre>
+</code></pre>
 </p>
 <p>
     <b>Better alternative:</b><br/>
-<pre>
-fos = openFileOutput(filename, Context.MODE_PRIVATE);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>fos = openFileOutput(filename, Context.MODE_PRIVATE);
 fos.write(string.getBytes());
-</pre>
+</code></pre>
 </p>
 <br/>
 <p>
@@ -5181,31 +5115,28 @@ fos.write(string.getBytes());
 </p>
 <p>
     <b>Code at risk:</b><br/>
-<pre>
-Intent i = new Intent();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Intent i = new Intent();
 i.setAction("com.insecure.action.UserConnected");
 i.putExtra("username", user);
 i.putExtra("email", email);
 i.putExtra("session", newSessionId);
 
 this.sendBroadcast(v1);
-</pre>
+</code></pre>
 </p>
 <br/>
 <p>
     <b>Solution (if possible):</b><br/>
-<pre>
-Intent i = new Intent();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Intent i = new Intent();
 i.setAction("com.secure.action.UserConnected");
 
 sendBroadcast(v1);
-</pre>
+</code></pre>
 </p>
 <br/>
 <p>
     <b>Configuration (receiver)<sup>[1] Source: StackOverflow</sup>:</b><br/>
-<pre>
-&lt;manifest ...&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;manifest ...&gt;
 
     &lt;!-- Permission declaration --&gt;
     &lt;permission android:name="my.app.PERMISSION" /&gt;
@@ -5220,19 +5151,18 @@ sendBroadcast(v1);
 
     ...
 &lt;/manifest>
-</pre>
+</code></pre>
 </p>
 <p>
     <b>Configuration (sender)<sup>[1] Source: StackOverflow</sup>:</b><br/>
-<pre>
-&lt;manifest&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;manifest&gt;
     &lt;!-- We declare we own the permission to send broadcast to the above receiver --&gt;
     &lt;uses-permission android:name="my.app.PERMISSION"/&gt;
 
     &lt;!-- With the following configuration, both the sender and the receiver apps need to be signed by the same developer certificate. --&gt;
     &lt;permission android:name="my.app.PERMISSION" android:protectionLevel="signature"/&gt;
 &lt;/manifest&gt;
-</pre>
+</code></pre>
 </p>
 <br/>
 <p>
@@ -5267,17 +5197,15 @@ sendBroadcast(v1);
 </p>
 <p>
     <b>Code at risk:</b><br/>
-<pre>
-fos = openFileOutput(filename, MODE_WORLD_READABLE);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>fos = openFileOutput(filename, MODE_WORLD_READABLE);
 fos.write(userInfo.getBytes());
-</pre>
+</code></pre>
 </p>
 <br/>
 <p>
     <b>Solution (using MODE_PRIVATE):</b><br/>
-<pre>
-fos = openFileOutput(filename, MODE_PRIVATE);
-</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>fos = openFileOutput(filename, MODE_PRIVATE);
+</code></pre>
 </p>
 <p>
     <b>Solution (using local SQLite Database):</b><br/>
@@ -5317,21 +5245,19 @@ create on external storage. See references below for implementation guidelines.
 </p>
 <p>
     <b>Code at risk:</b><br/>
-<pre>
-webView.setWebChromeClient(new WebChromeClient() {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>webView.setWebChromeClient(new WebChromeClient() {
     @Override
     public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
         callback.invoke(origin, true, false);
     }
 });
-</pre>
+</code></pre>
 </p>
 <p>
     <b>Suggested code:</b><br/>
 
     Limit the sampling of geolocation and ask the user for confirmation.
-<pre>
-webView.setWebChromeClient(new WebChromeClient() {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>webView.setWebChromeClient(new WebChromeClient() {
     @Override
     public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
         callback.invoke(origin, true, false);
@@ -5339,7 +5265,7 @@ webView.setWebChromeClient(new WebChromeClient() {
         //Ask the user for confirmation
     }
 });
-</pre>
+</code></pre>
 </p>
 <br/>
 <p>
@@ -5368,22 +5294,20 @@ webView.setWebChromeClient(new WebChromeClient() {
 <p>
     Enabling JavaScript for the WebView means that it is now susceptible to XSS. The page render should be inspected
     for potential reflected XSS, stored XSS and DOM XSS.<br/>
-<pre>
-WebView myWebView = (WebView) findViewById(R.id.webView);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>WebView myWebView = (WebView) findViewById(R.id.webView);
 WebSettings webSettings = myWebView.getSettings();
 webSettings.setJavaScriptEnabled(true);
-</pre>
+</code></pre>
 </p>
 
 <p>
     <b>Code at risk:</b><br/>
 Enabling JavaScript is not a bad practice. It just means that the backend code need to be audited for potential XSS.
 The XSS can also be introduced client-side with DOM XSS.
-<pre>
-function updateDescription(newDescription) {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>function updateDescription(newDescription) {
     $("#userDescription").html("&lt;p&gt;"+newDescription+"&lt;/p&gt;");
 }
-</pre>
+</code></pre>
 </p>
 <br/>
 <p>
@@ -5419,8 +5343,7 @@ function updateDescription(newDescription) {
 
 <p>
     <b>Code at risk:</b><br/>
-    <pre>
-WebView myWebView = (WebView) findViewById(R.id.webView);
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>WebView myWebView = (WebView) findViewById(R.id.webView);
 
 myWebView.addJavascriptInterface(new FileWriteUtil(this), "fileWriteUtil");
 
@@ -5439,7 +5362,7 @@ class FileWriteUtil {
         [...]
     }
 }
-    </pre>
+    </code></pre>
 </p>
 <br/>
 <p>
@@ -5472,25 +5395,22 @@ communication (<code>http://</code>).
 
 <p>
 <b>Code at risk:</b><br/>
-<pre>
-Cookie cookie = new Cookie("userName",userName);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cookie cookie = new Cookie("userName",userName);
 response.addCookie(cookie);
-</pre>
+</code></pre>
 </p>
 
 <p>
 <b>Solution (Specific configuration):</b><br/>
-<pre>
-Cookie cookie = new Cookie("userName",userName);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cookie cookie = new Cookie("userName",userName);
 cookie.setSecure(true); // Secure flag
 cookie.setHttpOnly(true);
-</pre>
+</code></pre>
 </p>
 
 <p>
 <b>Solution (Servlet 3.0 configuration):</b><br/>
-<pre>
-&lt;web-app xmlns="http://java.sun.com/xml/ns/javaee" version="3.0"&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;web-app xmlns="http://java.sun.com/xml/ns/javaee" version="3.0"&gt;
 [...]
 &lt;session-config&gt;
  &lt;cookie-config&gt;
@@ -5499,7 +5419,7 @@ cookie.setHttpOnly(true);
  &lt;/cookie-config&gt;
 &lt;/session-config&gt;
 &lt;/web-app&gt;
-</pre>
+</code></pre>
 </p>
 <br/>
 <p>
@@ -5536,25 +5456,22 @@ the session id for example.
 
 <p>
 <b>Code at risk:</b><br/>
-<pre>
-Cookie cookie = new Cookie("email",userName);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cookie cookie = new Cookie("email",userName);
 response.addCookie(cookie);
-</pre>
+</code></pre>
 </p>
 
 <p>
 <b>Solution (Specific configuration):</b><br/>
-<pre>
-Cookie cookie = new Cookie("email",userName);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cookie cookie = new Cookie("email",userName);
 cookie.setSecure(true);
 cookie.setHttpOnly(true); //HttpOnly flag
-</pre>
+</code></pre>
 </p>
 
 <p>
 <b>Solution (Servlet 3.0 configuration):</b><br/>
-<pre>
-&lt;web-app xmlns="http://java.sun.com/xml/ns/javaee" version="3.0"&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;web-app xmlns="http://java.sun.com/xml/ns/javaee" version="3.0"&gt;
 [...]
 &lt;session-config&gt;
  &lt;cookie-config&gt;
@@ -5563,7 +5480,7 @@ cookie.setHttpOnly(true); //HttpOnly flag
  &lt;/cookie-config&gt;
 &lt;/session-config&gt;
 &lt;/web-app&gt;
-</pre>
+</code></pre>
 </p>
 <br/>
 <p>
@@ -5604,14 +5521,13 @@ cookie.setHttpOnly(true); //HttpOnly flag
 
 <p>
 <b>Code at risk:</b><br/>
-<pre>
-public UserData deserializeObject(InputStream receivedFile) throws IOException, ClassNotFoundException {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public UserData deserializeObject(InputStream receivedFile) throws IOException, ClassNotFoundException {
 
     try (ObjectInputStream in = new ObjectInputStream(receivedFile)) {
         return (UserData) in.readObject();
     }
 }
-</pre>
+</code></pre>
 </p>
 
 <p>
@@ -5658,8 +5574,7 @@ Also, never call <code>ObjectMapper.enableDefaultTyping</code> (and then <code>r
 
 <p>
 <b>Code at risk:</b><br/>
-<pre>
-public class Example {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public class Example {
     static class ABean {
         public int id;
         public Object obj;
@@ -5682,7 +5597,7 @@ public class Example {
     }
 
 }
-</pre>
+</code></pre>
 </p>
 
 <p>
@@ -5753,22 +5668,20 @@ Removing gadget is a hardening practice to reduce the risk of being exploited.
 
 <p>
 <b>Code at risk:</b><br/>
-<pre>
-public void doSomething(HttpServletRequest req, String activateProperty) {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void doSomething(HttpServletRequest req, String activateProperty) {
     //..
 
     req.getSession().setAttribute(activateProperty,"true");
 
 }
-</pre>
+</code></pre>
 <br/>
-<pre>
-public void loginEvent(HttpServletRequest req, String userSubmitted) {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void loginEvent(HttpServletRequest req, String userSubmitted) {
     //..
 
     req.getSession().setAttribute("user",userSubmitted);
 }
-</pre>
+</code></pre>
 </p>
 
 <p>
@@ -5807,9 +5720,8 @@ safe location rather than using direct user input.
 </p>
 <p>
 <b>Code at risk:</b><br/>
-<pre>
-&#x3C;x:transform xml=&#x22;${xmlData}&#x22; xslt=&#x22;${xsltControlledByUser}&#x22; /&#x3E;
-</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&#x3C;x:transform xml=&#x22;${xmlData}&#x22; xslt=&#x22;${xsltControlledByUser}&#x22; /&#x3E;
+</code></pre>
 </p>
 <p>
 <b>Solution:</b><br/>
@@ -5852,27 +5764,25 @@ Path traversal <sup>[3][4]</sup> are not possible.
 </p>
 <p>
 <b>Code at risk:</b><br/>
-<pre>
-Source xslt = new StreamSource(new FileInputStream(inputUserFile)); //Dangerous source
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Source xslt = new StreamSource(new FileInputStream(inputUserFile)); //Dangerous source
 
 Transformer transformer = TransformerFactory.newInstance().newTransformer(xslt);
 
 Source text = new StreamSource(new FileInputStream("/data_2_process.xml"));
 transformer.transform(text, new StreamResult(...));
-</pre>
+</code></pre>
 </p>
 <p>
 <b>Solution:</b><br/>
 
 <p>The solution is to enable the secure processing mode which will block potential reference to Java classes such as <code>java.lang.Runtime</code>.</p>
 
-<pre>
-TransformerFactory factory = TransformerFactory.newInstance();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>TransformerFactory factory = TransformerFactory.newInstance();
 factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 Source xslt  = new StreamSource(new FileInputStream(inputUserFile));
 
 Transformer transformer = factory.newTransformer(xslt);
-</pre>
+</code></pre>
 
 <p>
 Alternatively, make sure the style sheet is loaded from a safe sources and make sure that vulnerabilities such as
@@ -5917,11 +5827,11 @@ Path traversal <sup>[3][4]</sup> are not possible.
 </p>
 <p>
 <b>Code at risk:</b><br/>
-<pre>def doGet(value:String) = Action {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>def doGet(value:String) = Action {
   val configElement = configuration.underlying.getString(value)
 
   Ok("Hello "+ configElement +" !")
-}</pre>
+}</code></pre>
 </p>
 <p>
     Application configuration elements should not be sent in the response content and users should not be allowed to control which
@@ -5957,11 +5867,11 @@ Path traversal <sup>[3][4]</sup> are not possible.
 </p>
 <p>
     <b>Vulnerable Code:</b>
-<pre>def doGet(value:String) = Action {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>def doGet(value:String) = Action {
     WS.url(value).get().map { response =>
         Ok(response.body)
     }
-}</pre>
+}</code></pre>
 </p>
 <p>
     <b>Solution/Countermeasures:</b><br/>
@@ -6003,11 +5913,10 @@ Path traversal <sup>[3][4]</sup> are not possible.
     URLConnection can be used with file:// protocol or other protocols to access local filesystem and potentially other services.
 <p>
     <b>Vulnerable Code:</b>
-<pre>
-new URL(String url).openConnection()
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>new URL(String url).openConnection()
 new URL(String url).openStream()
 new URL(String url).getContent()
-</pre>
+</code></pre>
 </p>
 <p>
     <b>Solution/Countermeasures:</b><br/>
@@ -6047,15 +5956,15 @@ A potential XSS was found. It could be used to execute unwanted JavaScript in a 
 </p>
 <p>
     <b>Vulnerable Code:</b>
-<pre>@(value: Html)
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@(value: Html)
 
-@value</pre>
+@value</code></pre>
 </p>
 <p>
     <b>Solution:</b>
-<pre>@(value: String)
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@(value: String)
 
-@value</pre>
+@value</code></pre>
 </p>
 <p>
 The best defense against XSS is context sensitive output encoding like the example above. There are typically 4 contexts to consider:
@@ -6093,15 +6002,15 @@ A potential XSS was found. It could be used to execute unwanted JavaScript in a 
 </p>
 <p>
     <b>Vulnerable Code:</b>
-<pre>def doGet(value:String) = Action {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>def doGet(value:String) = Action {
     Ok("Hello " + value + " !").as("text/html")
-  }</pre>
+  }</code></pre>
 </p>
 <p>
     <b>Solution:</b>
-<pre>def doGet(value:String) = Action {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>def doGet(value:String) = Action {
     Ok("Hello " + Encode.forHtml(value) + " !")
-  }</pre>
+  }</code></pre>
 </p>
 <p>
 The best defense against XSS is context sensitive output encoding like the example above. There are typically 4 contexts to consider:
@@ -6141,9 +6050,9 @@ on the server-side. Velocity templates should be seen as scripts.
 </p>
 <p>
     <b>Vulnerable Code:</b>
-<pre>[...]
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>[...]
 
-Velocity.evaluate(context, swOut, "test", userInput);</pre>
+Velocity.evaluate(context, swOut, "test", userInput);</code></pre>
 </p>
 <p>
     <b>Solution:</b>
@@ -6181,9 +6090,9 @@ on the server-side. Freemarker templates should be seen as scripts.
 </p>
 <p>
     <b>Vulnerable Code:</b>
-<pre>Template template = cfg.getTemplate(inputTemplate);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Template template = cfg.getTemplate(inputTemplate);
 [...]
-template.process(data, swOut);</pre>
+template.process(data, swOut);</code></pre>
 </p>
 <p>
     <b>Solution:</b>
@@ -6219,7 +6128,7 @@ Prior to HTML5, Web browsers enforced the Same Origin Policy which ensures that 
 </p>
 <p>
     <b>Vulnerable Code:</b>
-<pre>response.addHeader("Access-Control-Allow-Origin", "*");</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>response.addHeader("Access-Control-Allow-Origin", "*");</code></pre>
 </p>
 <p>
     <b>Solution:</b>
@@ -6255,10 +6164,10 @@ An attacker may be able to manipulate one of these queries in an unexpected way 
 </p>
 <p>
     <b>Vulnerable Code:</b>
-<pre>...
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>...
 env.put(Context.SECURITY_AUTHENTICATION, "none");
 DirContext ctx = new InitialDirContext(env);
-...</pre>
+...</code></pre>
 </p>
 <p>
     <b>Solution:</b>
@@ -6299,27 +6208,25 @@ attributes to an existing LDAP entry or by configuring the application to use a 
 </p>
 <p>
     <b>Vulnerable Code:</b>
-<pre>
-DirContext ctx = new InitialDirContext();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>DirContext ctx = new InitialDirContext();
 //[...]
 
 ctx.search(query, filter,
         new SearchControls(scope, countLimit, timeLimit, attributes,
             true, //Enable object deserialization if bound in directory
             deref));
-</pre>
+</code></pre>
 </p>
 <p>
     <b>Solution:</b>
-<pre>
-DirContext ctx = new InitialDirContext();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>DirContext ctx = new InitialDirContext();
 //[...]
 
 ctx.search(query, filter,
         new SearchControls(scope, countLimit, timeLimit, attributes,
             false, //Disable
             deref));
-</pre>
+</code></pre>
 </p>
 <br/>
 <p>
@@ -6356,10 +6263,10 @@ Persistent cookies are often used to profile users as they interact with a site.
 </p>
 <p>
     <b>Vulnerable Code:</b> The following code sets a cookie to expire in 1 year.<br/>
-<pre>[...]
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>[...]
 Cookie cookie = new Cookie("email", email);
 cookie.setMaxAge(60*60*24*365);
-[...]</pre>
+[...]</code></pre>
 </p>
 <p>
     <b>Solution:</b><br/>
@@ -6403,9 +6310,9 @@ URL rewriting has significant security risks. Since session ID appears in the UR
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre>out.println("Click &lt;a href=" + 
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>out.println("Click &lt;a href=" + 
                 res.encodeURL(HttpUtils.getRequestURL(req).toString()) + 
-                "&gt;here&lt;/a&gt;");</pre>
+                "&gt;here&lt;/a&gt;");</code></pre>
 </p>
 <p>
     <b>Solution:</b><br/>
@@ -6440,7 +6347,7 @@ The application would now potentially leak sensitive user information on a broke
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre>...
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>...
 Email email = new SimpleEmail();
 email.setHostName("smtp.servermail.com");
 email.setSmtpPort(465);
@@ -6451,12 +6358,12 @@ email.setSubject("TestMail");
 email.setMsg("This is a test mail ... :-)");
 email.addTo("foo@bar.com");
 email.send();
-...</pre>
+...</code></pre>
 </p>
 <p>
     <b>Solution:</b><br/>
 Please add the following check to verify the server certificate:
-<pre>email.setSSLCheckServerIdentity(true);</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>email.setSSLCheckServerIdentity(true);</code></pre>
 </p>
 <br/>
 <p>
@@ -6486,7 +6393,7 @@ The following example dynamically constructs and executes a SimpleDB SELECT quer
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre>...
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>...
 String customerID = getAuthenticatedCustomerID(customerName, customerCredentials);
 String productCategory = request.getParameter("productCategory");
 ...
@@ -6496,7 +6403,7 @@ String query = "select * from invoices where productCategory = '"
             + customerID + "' order by '"
             + sortColumn + "' asc";
 SelectResult sdbResult = sdbc.select(new SelectRequest(query));
-</pre>
+</code></pre>
 </p>
 <p>
     <b>Solution:</b><br/>
@@ -6531,14 +6438,14 @@ An attacker can leverage this functionality to access special bean properties li
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre>MyBean bean = ...;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>MyBean bean = ...;
 HashMap map = new HashMap();
 Enumeration names = request.getParameterNames();
 while (names.hasMoreElements()) {
     String name = (String) names.nextElement();
     map.put(name, request.getParameterValues(name));
 }
-BeanUtils.populate(bean, map);</pre>
+BeanUtils.populate(bean, map);</code></pre>
 </p>
 <p>
     <b>Solution:</b><br/>
@@ -6572,10 +6479,10 @@ An attacker may be able to forge a request parameter to match sensitive file loc
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre>... 
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>... 
 String returnURL = request.getParameter("returnURL"); 
 Return new ActionForward(returnURL); 
-...</pre>
+...</code></pre>
 </p>
 <p>
     <b>Solution:</b><br/>
@@ -6609,10 +6516,10 @@ An attacker may be able to forge a request parameter to match sensitive file loc
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre>... 
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>... 
 String returnURL = request.getParameter("returnURL");
 return new ModelAndView(returnURL); 
-...</pre>
+...</code></pre>
 </p>
 <p>
     <b>Solution:</b><br/>
@@ -6646,10 +6553,10 @@ An attacker may be able to forge a request parameter to match sensitive file loc
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre>...
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>...
 String jspFile = request.getParameter("jspFile");
 request.getRequestDispatcher("/WEB-INF/jsps/" + jspFile + ".jsp").include(request, response);
-...</pre>
+...</code></pre>
 </p>
 <p>
     <b>Solution:</b><br/>
@@ -6684,9 +6591,9 @@ The example code below lets the user specify the decimal points to which it show
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre>Formatter formatter = new Formatter(Locale.US);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Formatter formatter = new Formatter(Locale.US);
 String format = "The customer: %s %s has the balance %4$." + userInput + "f";
-formatter.format(format, firstName, lastName, accountNo, balance);</pre>
+formatter.format(format, firstName, lastName, accountNo, balance);</code></pre>
 </p>
 <p>
     <b>Solution:</b><br/>
@@ -6696,6 +6603,7 @@ Avoid using user controlled values in the format string argument.
 <p>
 <b>References</b><br/>
 <a href="http://cwe.mitre.org/data/definitions/134.html">CWE-134: Use of Externally-Controlled Format String</a><br/>
+<a href="https://wiki.sei.cmu.edu/confluence/pages/viewpage.action?pageId=88487836">CERT Oracle Coding Standard for Java: IDS06-J. Exclude unsanitized user input from format strings</a><br/>
 </p>
             
         
@@ -6720,10 +6628,10 @@ In the following example the programmer has not considered the possibility that 
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre>String lang = request.getParameter("lang");
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>String lang = request.getParameter("lang");
 GetMethod get = new GetMethod("http://www.host.com");
 get.setQueryString("lang=" + lang + "&user_id=" + user_id);
-get.execute();</pre>
+get.execute();</code></pre>
 <p>
     <b>Solution:</b><br/>
 Sanitize user input before using it in HTTP parameters.
@@ -6755,11 +6663,11 @@ The sensitive information may be valuable information on its own (such as a pass
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre>try {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>try {
   out = httpResponse.getOutputStream()
 } catch (Exception e) {
   e.printStackTrace(out);
-}</pre>
+}</code></pre>
 </p>
 <p>
 <b>References</b><br/>
@@ -6794,14 +6702,13 @@ and <a href="http://www.simplejavamail.org">Simple Java Mail</a> which filter sp
 </p>
     <b>Vulnerable Code:</b><br/>
 <p>
-<pre>
-Message message = new MimeMessage(session);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Message message = new MimeMessage(session);
 message.setFrom(new InternetAddress("noreply@your-organisation.com"));
 message.setRecipients(Message.RecipientType.TO, new InternetAddress[] {new InternetAddress("target@gmail.com")});
 message.setSubject(usernameDisplay + " has sent you notification"); //Injectable API
 message.setText("Visit your ACME Corp profile for more info.");
 Transport.send(message);
-</pre>
+</code></pre>
 </p>
     <b>Solution</b><br/>
 <p>Use <a href="https://commons.apache.org/proper/commons-email/userguide.html">Apache Common Email</a> or <a href="http://www.simplejavamail.org">Simple Java Mail</a>.</p>
@@ -6867,9 +6774,8 @@ Disabling HTML escaping put the application at risk for Cross-Site Scripting (XS
 </p>
 <p>
 <b>Vulnerable Code:</b><br/>
-<pre>
-add(new Label("someLabel").setEscapeModelStrings(false));
-</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>add(new Label("someLabel").setEscapeModelStrings(false));
+</code></pre>
 </p>
 
 <p>
@@ -6927,6 +6833,7 @@ add(new Label("someLabel").setEscapeModelStrings(false));
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/fsb-custom.js"></script>
+<script src="js/prism.js"></script>
 
 <!-- Google Analytics -->
 <script type="text/javascript">

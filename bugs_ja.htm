@@ -14,6 +14,7 @@
     <link href="css/font-awesome.css" rel="stylesheet" media="screen">
     <link href="css/fsb-custom-theme.css" rel="stylesheet" media="screen">
     <link href="css/agency.css" rel="stylesheet" media="screen">
+    <link href="css/prism.css" rel="stylesheet" media="screen">
 
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -609,14 +610,14 @@
 </p>
 <p>
 <b>脆弱なコード:</b><br>
-<pre>String generateSecretToken() {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>String generateSecretToken() {
     Random r = new Random();
     return Long.toHexString(r.nextLong());
-}</pre>
+}</code></pre>
 </p>
 <p>
 <b>解決策:</b>
-<pre>import org.apache.commons.codec.binary.Hex;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>import org.apache.commons.codec.binary.Hex;
 
 String generateSecretToken() {
     SecureRandom secRandom = new SecureRandom();
@@ -624,7 +625,7 @@ String generateSecretToken() {
     byte[] result = new byte[32];
     secRandom.nextBytes(result);
     return Hex.encodeHexString(result);
-}</pre>
+}</code></pre>
 </p>
 <br>
 <p>
@@ -662,34 +663,34 @@ String generateSecretToken() {
 </p>
 <p>
 <b>脆弱なコード:</b><br>
-<pre>import scala.util.Random
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>import scala.util.Random
 
 def generateSecretToken() {
     val result = Seq.fill(16)(Random.nextInt)
     return result.map("%02x" format _).mkString
-}</pre>
+}</code></pre>
 </p>
 <p>
     <b>解決策:</b>
-<pre>import java.security.SecureRandom
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>import java.security.SecureRandom
 
 def generateSecretToken() {
     val rand = new SecureRandom()
     val value = Array.ofDim[Byte](16)
     rand.nextBytes(value)
     return value.map("%02x" format _).mkString
-}</pre>
+}</code></pre>
 </p>
 <!--<p>
 <b>解決策:</b>
-<pre>import java.security.SecureRandom
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>import java.security.SecureRandom
 import scala.util.Random._
 
 def generateSecretToken() {
     val secRandom = javaRandomToRandom(new SecureRandom())
     val result = Seq.fill(16)(secRandom.nextInt)
     return result.map("%02x" format _).mkString
-}</pre>
+}</code></pre>
 </p>-->
 <br>
 <p>
@@ -775,10 +776,9 @@ HTTP ヘッダー Content-Type は，クライアントによって操作可能�
             
 <p>Host ヘッダーは，クライアントによって操作可能です。したがって，その値をセキュリティ上重要な決定では使用しないでください。
 <code>ServletRequest.getServerName()</code> と <code>HttpServletRequest.getHeader("Host")</code> は，どちらも <code>Host</code> ヘッダーを抽出するという同じ動作をします。</p>
-<pre>
-GET /testpage HTTP/1.1
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>GET /testpage HTTP/1.1
 Host: www.example.com
-[...]</pre>
+[...]</code></pre>
 <p>
 アプリケーションにサービスを提供するウェブコンテナは，デフォルトでは，アプリケーションにリクエストをリダイレクトすることがあります。
 これにより，悪意のあるユーザーが Host ヘッダーで任意の値を配置できるようになります。
@@ -813,12 +813,11 @@ Host: www.example.com
 <p>
 クライアントに渡される値は一般的に英数字の値です (例えば <code>JSESSIONID=jp6q31lq2myn</code>)。しかし，この値はクライアントによって改ざんできます。
 次の HTTP リクエストは変更の可能性を示しています。
-<pre>
-GET /somePage HTTP/1.1
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>GET /somePage HTTP/1.1
 Host: yourwebsite.com
 User-Agent: Mozilla/5.0
 Cookie: JSESSIONID=Any value of the user&#39;s choice!!??'''&quot;&gt;
-</pre>
+</code></pre>
 </p>
 <p>そのため，JSESSIONID は，その値が既存のセッション ID と一致するかどうかを確認するためだけに使用されるべきです。
 そうでない場合，そのユーザーは認証されていないユーザーであると考えるべきです。加えて，セッション ID の値をログに記録してはいけません。
@@ -992,7 +991,7 @@ HttpSession (HttpServletRequest.getSession()) を参照してください。</p>
 
 <p>
     <b>脆弱なコード:</b><br>
-<pre>@GET
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@GET
 @Path("/images/{image}")
 @Produces("images/*")
 public Response getImage(@javax.ws.rs.PathParam("image") String image) {
@@ -1003,13 +1002,13 @@ public Response getImage(@javax.ws.rs.PathParam("image") String image) {
     }
 
     return Response.ok().entity(new FileInputStream(file)).build();
-}</pre>
+}</code></pre>
 </p>
 <br>
 
 <p>
     <b>解決策:</b><br>
-<pre>import org.apache.commons.io.FilenameUtils;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>import org.apache.commons.io.FilenameUtils;
 
 @GET
 @Path("/images/{image}")
@@ -1022,7 +1021,7 @@ public Response getImage(@javax.ws.rs.PathParam("image") String image) {
     }
 
     return Response.ok().entity(new FileInputStream(file)).build();
-}</pre>
+}</code></pre>
 </p>
 <br>
 <p>
@@ -1086,20 +1085,20 @@ public Response getImage(@javax.ws.rs.PathParam("image") String image) {
 
 <p>
     <b>脆弱なコード:</b><br>
-<pre>def getWordList(value:String) = Action {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>def getWordList(value:String) = Action {
   if (!Files.exists(Paths.get("public/lists/" + value))) {
     NotFound("File not found")
   } else {
     val result = Source.fromFile("public/lists/" + value).getLines().mkString // Weak point
     Ok(result)
   }
-}</pre>
+}</code></pre>
 </p>
 <br>
 
 <p>
     <b>解決策:</b><br>
-<pre>import org.apache.commons.io.FilenameUtils;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>import org.apache.commons.io.FilenameUtils;
 
 def getWordList(value:String) = Action {
   val filename = "public/lists/" + FilenameUtils.getName(value)
@@ -1110,7 +1109,7 @@ def getWordList(value:String) = Action {
     val result = Source.fromFile(filename).getLines().mkString // Fix
     Ok(result)
   }
-}</pre>
+}</code></pre>
 </p>
 <br>
 <p>
@@ -1142,10 +1141,10 @@ def getWordList(value:String) = Action {
 <br>
 <p>
     <b>脆弱なコード:</b><br>
-<pre>import java.lang.Runtime;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>import java.lang.Runtime;
 
 Runtime r = Runtime.getRuntime();
-r.exec("/bin/sh -c some_tool" + input);</pre>
+r.exec("/bin/sh -c some_tool" + input);</code></pre>
 </p>
 <p>
 <b>参考文献</b><br>
@@ -1175,10 +1174,10 @@ r.exec("/bin/sh -c some_tool" + input);</pre>
 <br>
 <p>
     <b>脆弱なコード:</b><br>
-<pre>def executeCommand(value:String) = Action {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>def executeCommand(value:String) = Action {
     val result = value.!
     Ok("Result:\n"+result)
-}</pre>
+}</code></pre>
 </p>
 <p>
 <b>参考文献</b><br>
@@ -1252,7 +1251,7 @@ OS レベルであるので，たとえ Java 自体が NULLl バイトを気に�
 <br>
 <p>
     <b>脆弱なコード:</b><br>
-<pre>class TrustAllManager implements X509TrustManager {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>class TrustAllManager implements X509TrustManager {
 
     @Override
     public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
@@ -1268,12 +1267,12 @@ OS レベルであるので，たとえ Java 自体が NULLl バイトを気に�
     public X509Certificate[] getAcceptedIssuers() {
         return null;
     }
-}</pre>
+}</code></pre>
 </p>
 <br>
 <p>
     <b>解決策 (キーストアに基づく TrustMangager):</b><br>
-<pre>KeyStore ks = //Load keystore containing the certificates trusted
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>KeyStore ks = //Load keystore containing the certificates trusted
 
 SSLContext sc = SSLContext.getInstance("TLS");
 
@@ -1281,7 +1280,7 @@ TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
 tmf.init(ks);
 
 sc.init(kmf.getKeyManagers(), tmf.getTrustManagers(),null);
-</pre>
+</code></pre>
 </p>
 <br>
 <p>
@@ -1319,16 +1318,16 @@ sc.init(kmf.getKeyManagers(), tmf.getTrustManagers(),null);
 <br>
 <p>
     <b>脆弱なコード:</b><br>
-<pre>public class AllHosts implements HostnameVerifier {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public class AllHosts implements HostnameVerifier {
     public boolean verify(final String hostname, final SSLSession session) {
         return true;
     }
-}</pre>
+}</code></pre>
 </p>
 <br>
 <p>
     <b>解決策 (キーストアに基づく TrustMangager):</b><br>
-<pre>KeyStore ks = //Load keystore containing the certificates trusted
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>KeyStore ks = //Load keystore containing the certificates trusted
 
 SSLContext sc = SSLContext.getInstance("TLS");
 
@@ -1336,7 +1335,7 @@ TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
 tmf.init(ks);
 
 sc.init(kmf.getKeyManagers(), tmf.getTrustManagers(),null);
-</pre>
+</code></pre>
 </p>
 <br>
 <p>
@@ -1436,14 +1435,14 @@ sc.init(kmf.getKeyManagers(), tmf.getTrustManagers(),null);
 Tapestry アプリケーションは，各ページのバッキング Java クラスと対応する Tapestry マークアップ言語ページ (.tml ファイル) で構成されます。
 リクエストが受信されると，GET/POST パラメーターはバッキング Java クラス内の特定の入力にマッピングされます。
 マッピングはいずれかで行われます。<br>フィールド名で:</p>
-<pre><code>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'><code>
     [...]
     protected String input;
     [...]
-</code></pre>
+</code></code></pre>
 <p>または，明示的なアノテーションの定義で:
 </p>
-<pre><code>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'><code>
     [...]
     @org.apache.tapestry5.annotations.Parameter
     protected String parameter1;
@@ -1451,7 +1450,7 @@ Tapestry アプリケーションは，各ページのバッキング Java ク�
     @org.apache.tapestry5.annotations.Component(id = "password")
     private PasswordField passwordField;
     [...]
-</code></pre>
+</code></code></pre>
 <p>ページは，ビュー <code>[/resources/package/PageName].tml</code> にマッピングされます。</p>
 <p>このアプリケーションの各 Tapestry ページは，このように自動的にマッピングされるすべての入力が使用される前に適切に検証されているか調査すべきです。</p>
 <br>
@@ -1527,27 +1526,27 @@ Tapestry アプリケーションは，各ページのバッキング Java ク�
 <br>
 <p>
     <b>脆弱なコード:</b><br>
-    <pre>MessageDigest md5Digest = MessageDigest.getInstance("MD5");
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>MessageDigest md5Digest = MessageDigest.getInstance("MD5");
     md5Digest.update(password.getBytes());
-    byte[] hashValue = md5Digest.digest();</pre>
+    byte[] hashValue = md5Digest.digest();</code></pre>
     <br>
-    <pre>byte[] hashValue = DigestUtils.getMd5Digest().digest(password.getBytes());</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>byte[] hashValue = DigestUtils.getMd5Digest().digest(password.getBytes());</code></pre>
 </p>
 <br>
 <p>
     <b>解決策 (Bouncy Castle を使う):</b><br>
-    <pre>public static byte[] getEncryptedPassword(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public static byte[] getEncryptedPassword(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
     PKCS5S2ParametersGenerator gen = new PKCS5S2ParametersGenerator(new SHA256Digest());
     gen.init(password.getBytes("UTF-8"), salt.getBytes(), 4096);
     return ((KeyParameter) gen.generateDerivedParameters(256)).getKey();
-}</pre>
+}</code></pre>
     <br>
     <b>解決策 (Java 8 以降):</b><br>
-    <pre>public static byte[] getEncryptedPassword(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public static byte[] getEncryptedPassword(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
     KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 4096, 256 * 8);
     SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
     return f.generateSecret(spec).getEncoded();
-}</pre>
+}</code></pre>
 </p>
 <br>
 <p>
@@ -1601,27 +1600,27 @@ Tapestry アプリケーションは，各ページのバッキング Java ク�
 <br>
 <p>
     <b>脆弱なコード:</b><br>
-    <pre>MessageDigest sha1Digest = MessageDigest.getInstance("SHA1");
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>MessageDigest sha1Digest = MessageDigest.getInstance("SHA1");
     sha1Digest.update(password.getBytes());
-    byte[] hashValue = sha1Digest.digest();</pre>
+    byte[] hashValue = sha1Digest.digest();</code></pre>
     <br>
-    <pre>byte[] hashValue = DigestUtils.getSha1Digest().digest(password.getBytes());</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>byte[] hashValue = DigestUtils.getSha1Digest().digest(password.getBytes());</code></pre>
 </p>
 <br>
 <p>
     <b>解決策 (Bouncy Castle を使う):</b><br>
-    <pre>public static byte[] getEncryptedPassword(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public static byte[] getEncryptedPassword(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
     PKCS5S2ParametersGenerator gen = new PKCS5S2ParametersGenerator(new SHA256Digest());
     gen.init(password.getBytes("UTF-8"), salt.getBytes(), 4096);
     return ((KeyParameter) gen.generateDerivedParameters(256)).getKey();
-}</pre>
+}</code></pre>
     <br>
     <b>解決策 (Java 8 以降):</b><br>
-    <pre>public static byte[] getEncryptedPassword(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public static byte[] getEncryptedPassword(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
     KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 4096, 256 * 8);
     SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
     return f.generateSecret(spec).getEncoded();
-}</pre>
+}</code></pre>
 </p>
 <br>
 <p>
@@ -1652,9 +1651,8 @@ Tapestry アプリケーションは，各ページのバッキング Java ク�
             
 <p>
     <b>脆弱なコード:</b><br>
-<pre>
-    HttpClient client = new DefaultHttpClient();
-</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>    HttpClient client = new DefaultHttpClient();
+</code></pre>
 </p>
 <p>
 <p><b>解決策:</b><br>
@@ -1664,25 +1662,22 @@ Tapestry アプリケーションは，各ページのバッキング Java ク�
   <li>代わりに <a href="http://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/impl/client/SystemDefaultHttpClient.html">SystemDefaultHttpClient</a> を使用します。</li>
 <p>
     <b>サンプルコード:</b><br>
-<pre>
-    HttpClient client = new SystemDefaultHttpClient();
-</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>    HttpClient client = new SystemDefaultHttpClient();
+</code></pre>
 </p>
   <li>SSLSocketFactory に基づいて HttpClient を作成します - <a href="https://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/conn/ssl/SSLSocketFactory.html#getSystemSocketFactory()">getSystemSocketFactory()</a> で SSLSocketFactory のインスタンスを取得して，HttpClient の作成に使用します。</li>
   <li>SSLConnectionSocketFactory に基づいて HttpClient を作成する - <a href="https://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/conn/ssl/SSLConnectionSocketFactory.html#getSystemSocketFactory()">getSystemSocketFactory()</a> でインスタンスを取得して，HttpClient の作成に使用します。</li>
   <li>HttpClientBuilder を使用します - build() を呼び出す前に <a href="http://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/impl/client/HttpClientBuilder.html#useSystemProperties()">useSystemProperties()</a> を呼び出します。</li>
 <p>
     <b>サンプルコード:</b><br>
-<pre>
-    HttpClient client = HttpClientBuilder.create().useSystemProperties().build();
-</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>    HttpClient client = HttpClientBuilder.create().useSystemProperties().build();
+</code></pre>
 </p>
   <li>HttpClients - <a href="https://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/org/apache/http/impl/client/HttpClients.html#createSystem()">createSystem()</a> を呼び出してインスタンスを作成します。</li>
 <p>
     <b>サンプルコード:</b><br>
-<pre>
-    HttpClient client = HttpClients.createSystem();
-</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>    HttpClient client = HttpClients.createSystem();
+</code></pre>
 </p>
 </ul>
 </p>
@@ -1711,17 +1706,15 @@ Tapestry アプリケーションは，各ページのバッキング Java ク�
             
 <p>
     <b>脆弱なコード:</b><br>
-<pre>
-    SSLContext.getInstance("SSL");
-</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>    SSLContext.getInstance("SSL");
+</code></pre>
 </p>
 <p>
 <p><b>解決策:</b><br>
 
 https.protocols JVM オプションを TLSv1.2を含むように設定して，実装を改良します:</p>
-<pre>
-    SSLContext.getInstance("TLS");
-</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>    SSLContext.getInstance("TLS");
+</code></pre>
 <p>
 </p>
 <br>
@@ -1761,21 +1754,21 @@ https.protocols JVM オプションを TLSv1.2を含むように設定して，�
 </blockquote>
 <p>
     <b>脆弱なコード:</b><br>
-<pre>MyProprietaryMessageDigest extends MessageDigest {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>MyProprietaryMessageDigest extends MessageDigest {
     @Override
     protected byte[] engineDigest() {
         [...]
         // 独創性は悪い考え
         return [...];
     }
-}</pre>
+}</code></pre>
 </p>
 <p>
 <p>承認されたアルゴリズムの1つを使用するように実装を改良します。セキュリティニーズを満たす十分に強いアルゴリズムを使用します。</p>
 <p>
     <b>解決例:</b><br>
-<pre>MessageDigest sha256Digest = MessageDigest.getInstance("SHA256");
-sha256Digest.update(password.getBytes());</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>MessageDigest sha256Digest = MessageDigest.getInstance("SHA256");
+sha256Digest.update(password.getBytes());</code></pre>
 </p>
 <br>
 <p>
@@ -1877,16 +1870,14 @@ sha256Digest.update(password.getBytes());</pre>
 <p>信頼されていないソースから受け取った XML を処理しているときに，XML パーサーが XML エンティティをサポートしていると XML 外部エンティティ (XXE:XML External Entities) 攻撃が発生する可能性があります。</p>
 <p><b>リスク 1: ローカルファイルの内容の暴露 (XXE: <u>X</u>ML e<u>X</u>ternal <u>E</u>ntity)</b></p>
 <p>
-<pre>
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
 &lt;!DOCTYPE foo [
    &lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot; &gt; ]&gt;
-&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</pre>
+&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</code></pre>
 </p>
 <b>リスク 2: サービス拒否 (XEE: <u>X</u>ml <u>E</u>ntity <u>E</u>xpansion)</b>
 <p>
-<pre>
-&lt;?xml version=&quot;1.0&quot;?&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot;?&gt;
 &lt;!DOCTYPE lolz [
  &lt;!ENTITY lol &quot;lol&quot;&gt;
  &lt;!ELEMENT lolz (#PCDATA)&gt;
@@ -1896,7 +1887,7 @@ sha256Digest.update(password.getBytes());</pre>
 [...]
  &lt;!ENTITY lol9 &quot;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&quot;&gt;
 ]&gt;
-&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;</pre>
+&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;</code></pre>
 </p>
 
 <h3>解決策</h3>
@@ -1907,12 +1898,12 @@ XML パーサーの危険な機能が公開されないようにするために�
 
 <p><b>脆弱なコード:</b></p>
 <p>
-<pre>public void parseXML(InputStream input) throws XMLStreamException {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void parseXML(InputStream input) throws XMLStreamException {
 
     XMLInputFactory factory = XMLInputFactory.newFactory();
     XMLStreamReader reader = factory.createXMLStreamReader(input);
     [...]
-}</pre>
+}</code></pre>
 </p>
 <br>
 <p>
@@ -1921,24 +1912,24 @@ XML パーサーの危険な機能が公開されないようにするために�
 
 <p><b>外部エンティティーを無効にする解決策:</b></p>
 <p>
-<pre>public void parseXML(InputStream input) throws XMLStreamException {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void parseXML(InputStream input) throws XMLStreamException {
 
     XMLInputFactory factory = XMLInputFactory.newFactory();
     factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
     XMLStreamReader reader = factory.createXMLStreamReader(input);
     [...]
-}</pre>
+}</code></pre>
 </p>
 
 <p><b>DTD を無効にする解決策:</b></p>
 <p>
-<pre>public void parseXML(InputStream input) throws XMLStreamException {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void parseXML(InputStream input) throws XMLStreamException {
 
     XMLInputFactory factory = XMLInputFactory.newFactory();
     factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
     XMLStreamReader reader = factory.createXMLStreamReader(input);
     [...]
-}</pre>
+}</code></pre>
 </p>
 <br>
 <p>
@@ -1976,16 +1967,14 @@ XML パーサーの危険な機能が公開されないようにするために�
 <p>信頼されていないソースから受け取った XML を処理しているときに，XML パーサーが XML エンティティをサポートしていると XML 外部エンティティ (XXE:XML External Entities) 攻撃が発生する可能性があります。</p>
 <p><b>リスク 1: ローカルファイルの内容の暴露 (XXE: <u>X</u>ML e<u>X</u>ternal <u>E</u>ntity)</b></p>
 <p>
-<pre>
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
 &lt;!DOCTYPE foo [
    &lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot; &gt; ]&gt;
-&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</pre>
+&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</code></pre>
 </p>
 <b>リスク 2: サービス拒否 (XEE: <u>X</u>ml <u>E</u>ntity <u>E</u>xpansion)</b>
 <p>
-<pre>
-&lt;?xml version=&quot;1.0&quot;?&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot;?&gt;
 &lt;!DOCTYPE lolz [
  &lt;!ENTITY lol &quot;lol&quot;&gt;
  &lt;!ELEMENT lolz (#PCDATA)&gt;
@@ -1995,7 +1984,7 @@ XML パーサーの危険な機能が公開されないようにするために�
 [...]
  &lt;!ENTITY lol9 &quot;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&quot;&gt;
 ]&gt;
-&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;</pre>
+&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;</code></pre>
 </p>
 
 <h3>解決策</h3>
@@ -2006,10 +1995,9 @@ XML パーサーの危険な機能が公開されないようにするために�
 
 <p><b>脆弱なコード:</b></p>
 <p>
-<pre>
-SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
 
-parser.parse(inputStream, customHandler);</pre>
+parser.parse(inputStream, customHandler);</code></pre>
 </p>
 <br>
 <p>
@@ -2019,23 +2007,21 @@ parser.parse(inputStream, customHandler);</pre>
 <p><b>"Secure processing" モードを使用した解決策:</b></p>
 <p>
 この設定により，サービス拒否攻撃とリモートファイルアクセスから保護されます。
-<pre>
-SAXParserFactory spf = SAXParserFactory.newInstance();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>SAXParserFactory spf = SAXParserFactory.newInstance();
 spf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 SAXParser parser = spf.newSAXParser();
 
-parser.parse(inputStream, customHandler);</pre>
+parser.parse(inputStream, customHandler);</code></pre>
 </p>
 
 <p><b>DTD を無効にする解決策:</b></p>
 <p>
 DTD を無効にすることによって，ほとんどすべての XXE 攻撃 が防止されます。
-<pre>
-SAXParserFactory spf = SAXParserFactory.newInstance();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>SAXParserFactory spf = SAXParserFactory.newInstance();
 spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
 SAXParser parser = spf.newSAXParser();
 
-parser.parse(inputStream, customHandler);</pre>
+parser.parse(inputStream, customHandler);</code></pre>
 </p>
 <br>
 <p>
@@ -2073,16 +2059,14 @@ parser.parse(inputStream, customHandler);</pre>
 <p>信頼されていないソースから受け取った XML を処理しているときに，XML パーサーが XML エンティティをサポートしていると XML 外部エンティティ (XXE:XML External Entities) 攻撃が発生する可能性があります。</p>
 <p><b>リスク 1: ローカルファイルの内容の暴露 (XXE: <u>X</u>ML e<u>X</u>ternal <u>E</u>ntity)</b></p>
 <p>
-<pre>
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
 &lt;!DOCTYPE foo [
    &lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot; &gt; ]&gt;
-&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</pre>
+&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</code></pre>
 </p>
 <b>リスク 2: サービス拒否 (XEE: <u>X</u>ml <u>E</u>ntity <u>E</u>xpansion)</b>
 <p>
-<pre>
-&lt;?xml version=&quot;1.0&quot;?&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot;?&gt;
 &lt;!DOCTYPE lolz [
  &lt;!ENTITY lol &quot;lol&quot;&gt;
  &lt;!ELEMENT lolz (#PCDATA)&gt;
@@ -2092,7 +2076,7 @@ parser.parse(inputStream, customHandler);</pre>
 [...]
  &lt;!ENTITY lol9 &quot;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&quot;&gt;
 ]&gt;
-&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;</pre>
+&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;</code></pre>
 </p>
 
 <h3>Solution</h3>
@@ -2103,10 +2087,9 @@ XML パーサーの危険な機能が公開されないようにするために�
 
 <p><b>脆弱なコード:</b></p>
 <p>
-<pre>
-XMLReader reader = XMLReaderFactory.createXMLReader();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>XMLReader reader = XMLReaderFactory.createXMLReader();
 reader.setContentHandler(customHandler);
-reader.parse(new InputSource(inputStream));</pre>
+reader.parse(new InputSource(inputStream));</code></pre>
 </p>
 <br>
 <p>
@@ -2116,23 +2099,21 @@ reader.parse(new InputSource(inputStream));</pre>
 <p><b>"Secure processing" モードを使用した解決策:</b></p>
 <p>
 この設定により，サービス拒否攻撃とリモートファイルアクセスから保護されます。
-<pre>
-XMLReader reader = XMLReaderFactory.createXMLReader();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>XMLReader reader = XMLReaderFactory.createXMLReader();
 reader.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 reader.setContentHandler(customHandler);
 
-reader.parse(new InputSource(inputStream));</pre>
+reader.parse(new InputSource(inputStream));</code></pre>
 </p>
 
 <p><b>DTD を無効にする解決策:</b></p>
 <p>
 DTD を無効にすることによって，ほとんどすべての XXE 攻撃 が防止されます。
-<pre>
-XMLReader reader = XMLReaderFactory.createXMLReader();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>XMLReader reader = XMLReaderFactory.createXMLReader();
 reader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
 reader.setContentHandler(customHandler);
 
-reader.parse(new InputSource(inputStream));</pre>
+reader.parse(new InputSource(inputStream));</code></pre>
 </p>
 <br>
 <p>
@@ -2170,16 +2151,14 @@ reader.parse(new InputSource(inputStream));</pre>
 <p>信頼されていないソースから受け取った XML を処理しているときに，XML パーサーが XML エンティティをサポートしていると XML 外部エンティティ (XXE:XML External Entities) 攻撃が発生する可能性があります。</p>
 <p><b>リスク 1: ローカルファイルの内容の暴露 (XXE: <u>X</u>ML e<u>X</u>ternal <u>E</u>ntity)</b></p>
 <p>
-<pre>
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
 &lt;!DOCTYPE foo [
    &lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot; &gt; ]&gt;
-&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</pre>
+&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</code></pre>
 </p>
 <b>リスク 2: サービス拒否 (XEE: <u>X</u>ml <u>E</u>ntity <u>E</u>xpansion)</b>
 <p>
-<pre>
-&lt;?xml version=&quot;1.0&quot;?&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot;?&gt;
 &lt;!DOCTYPE lolz [
  &lt;!ENTITY lol &quot;lol&quot;&gt;
  &lt;!ELEMENT lolz (#PCDATA)&gt;
@@ -2189,7 +2168,7 @@ reader.parse(new InputSource(inputStream));</pre>
 [...]
  &lt;!ENTITY lol9 &quot;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&quot;&gt;
 ]&gt;
-&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;</pre>
+&lt;lolz&gt;&amp;lol9;&lt;/lolz&gt;</code></pre>
 </p>
 
 <h3>Solution</h3>
@@ -2200,10 +2179,9 @@ XML パーサーの危険な機能が公開されないようにするために�
 
 <p><b>脆弱なコード:</b></p>
 <p>
-<pre>
-DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
-Document doc = db.parse(input);</pre>
+Document doc = db.parse(input);</code></pre>
 </p>
 <br>
 <p>
@@ -2213,23 +2191,21 @@ Document doc = db.parse(input);</pre>
 <p><b>"Secure processing" モードを使用した解決策:</b></p>
 <p>
 この設定により，サービス拒否攻撃とリモートファイルアクセスから保護されます。
-<pre>
-DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 DocumentBuilder db = dbf.newDocumentBuilder();
 
-Document doc = db.parse(input);</pre>
+Document doc = db.parse(input);</code></pre>
 </p>
 
 <p><b>DTD を無効にする解決策:</b></p>
 <p>
 DTD を無効にすることによって，ほとんどすべての XXE 攻撃 が防止されます。
-<pre>
-DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
 DocumentBuilder db = dbf.newDocumentBuilder();
 
-Document doc = db.parse(input);</pre>
+Document doc = db.parse(input);</code></pre>
 </p>
 <br>
 <p>
@@ -2360,14 +2336,14 @@ XPath インジェクションのリスクは，SQL インジェクションに�
 <p>この保護を無効にすることが有効なユースケースは，ブラウザ以外のクライアントによってだけ使用されることが保証されている状態変更操作を公開するサービスです。</p>
 <p>
     <b>安全でない設定:</b><br>
-<pre>@EnableWebSecurity
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
     }
-}</pre>
+}</code></pre>
 </p>
 <p>
 <b>参考文献</b><br>
@@ -2400,18 +2376,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 <code>POST</code>，<code>PUT</code>，<code>DELETE</code>，<code>PATCH</code> は CSRF 攻撃に対して脆弱です。</p>
 <p>
     <b>脆弱なコード:</b><br>
-<pre>@Controller
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@Controller
 public class UnsafeController {
 
     @RequestMapping("/path")
     public void writeData() {
         // State-changing operations performed within this method.
     }
-}</pre>
+}</code></pre>
 </p>
 <p>
     <b>解決策 (Spring Framework 4.3 以降):</b><br>
-<pre>@Controller
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@Controller
 public class SafeController {
 
     /**
@@ -2430,11 +2406,11 @@ public class SafeController {
     public void writeData() {
         // State-changing operations performed within this method.
     }
-}</pre>
+}</code></pre>
 </p>
 <p>
     <b>解決策 (Spring Framework 4.3 以前):</b><br>
-<pre>@Controller
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@Controller
 public class SafeController {
 
     /**
@@ -2455,7 +2431,7 @@ public class SafeController {
     public void writeData() {
         // State-changing operations performed within this method.
     }
-}</pre>
+}</code></pre>
 </p>
 <p>
 <b>参考文献</b><br>
@@ -2487,7 +2463,7 @@ public class SafeController {
 
 <p>
     <b>脆弱なコード:</b><br>
-    <pre>SqlUtil.execQuery("select * from UserEntity t where id = " + parameterInput);</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>SqlUtil.execQuery("select * from UserEntity t where id = " + parameterInput);</code></pre>
 </p>
 <p>
 <a href="https://github.com/find-sec-bugs/find-sec-bugs/wiki/Custom-signatures">カスタムシグネチャを設定する方法</a> の詳細については，オンラインウィキを参照してください。
@@ -2524,18 +2500,16 @@ SQL クエリーに含まれる入力値は安全に渡す必要があります�
 </p>
 <p>
     <b>脆弱なコード:</b><br>
-    <pre>
-createQuery("select * from User where id = '"+inputId+"'");
-</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>createQuery("select * from User where id = '"+inputId+"'");
+</code></pre>
 </p>
 <p>
     <b>解決策:</b><br>
 
-    <pre>
-import org.owasp.esapi.Encoder;
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>import org.owasp.esapi.Encoder;
 
 createQuery("select * from User where id = '"+Encoder.encodeForSQL(inputId)+"'");
-</pre>
+</code></pre>
 </p>
 <br>
 <p>
@@ -2570,33 +2544,29 @@ Turbine API は，Java コードを使用してクエリーを作成する DSL �
 </p>
 <p>
     <b>脆弱なコード:</b><br>
-    <pre>
-List&lt;Record&gt; BasePeer.executeQuery( "select * from Customer where id=" + inputId );
-</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>List&lt;Record&gt; BasePeer.executeQuery( "select * from Customer where id=" + inputId );
+</code></pre>
 </p>
 <p>
     <b>解決策 (Criteria DSL を使用):</b><br>
 
-    <pre>
-Criteria c = new Criteria();
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Criteria c = new Criteria();
 c.add( CustomerPeer.ID, inputId );
 
 List&lt;Customer&gt; customers = CustomerPeer.doSelect( c );
-</pre>
+</code></pre>
 
     <b>解決策 (特殊なメソッドを使用):</b><br>
 
-<pre>
-Customer customer = CustomerPeer.retrieveByPK( new NumberKey( inputId ) );
-</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Customer customer = CustomerPeer.retrieveByPK( new NumberKey( inputId ) );
+</code></pre>
 
     <b>解決策 (OWASP Encoder を使用):</b><br>
 
-    <pre>
-import org.owasp.esapi.Encoder;
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>import org.owasp.esapi.Encoder;
 
 BasePeer.executeQuery("select * from Customer where id = '"+Encoder.encodeForSQL(inputId)+"'");
-</pre>
+</code></pre>
 </p>
 <br>
 <p>
@@ -2633,27 +2603,24 @@ SQL クエリーに含まれる入力値は安全に渡す必要があります�
 </p>
 <p>
     <b>脆弱なコード:</b><br>
-    <pre>
-Session session = sessionFactory.openSession();
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Session session = sessionFactory.openSession();
 Query q = session.createQuery("select t from UserEntity t where id = " + input);
-q.execute();</pre>
+q.execute();</code></pre>
 </p>
 <p>
     <b>解決策:</b><br>
-    <pre>
-Session session = sessionFactory.openSession();
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Session session = sessionFactory.openSession();
 Query q = session.createQuery("select t from UserEntity t where id = :userId");
 q.setString("userId",input);
-q.execute();</pre>
+q.execute();</code></pre>
 </p>
 <p>
     <b>動的クエリーの解決策 (Hibernate Criteria を使用):</b><br>
-    <pre>
-Session session = sessionFactory.openSession();
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Session session = sessionFactory.openSession();
 Query q = session.createCriteria(UserEntity.class)
     .add( Restrictions.like("id", input) )
     .list();
-q.execute();</pre>
+q.execute();</code></pre>
 </p>
 <br>
 <p>
@@ -2691,20 +2658,18 @@ SQL クエリーに含まれる入力値は安全に渡す必要があります�
 </p>
 <p>
     <b>脆弱なコード:</b><br>
-    <pre>
-PersistenceManager pm = getPM();
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>PersistenceManager pm = getPM();
 
 Query q = pm.newQuery("select * from Users where name = " + input);
-q.execute();</pre>
+q.execute();</code></pre>
 </p>
 <p>
     <b>解決策:</b><br>
-    <pre>
-PersistenceManager pm = getPM();
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>PersistenceManager pm = getPM();
 
 Query q = pm.newQuery("select * from Users where name = nameParam");
 q.declareParameters("String nameParam");
-q.execute(input);</pre>
+q.execute(input);</code></pre>
 </p>
 <br>
 <p>
@@ -2740,23 +2705,21 @@ SQL クエリーに含まれる入力値は安全に渡す必要があります�
 </p>
 <p>
     <b>脆弱なコード:</b><br>
-    <pre>
-EntityManager pm = getEM();
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>EntityManager pm = getEM();
 
 TypedQuery&lt;UserEntity&gt; q = em.createQuery(
     String.format("select * from Users where name = %s", username),
     UserEntity.class);
 
-UserEntity res = q.getSingleResult();</pre>
+UserEntity res = q.getSingleResult();</code></pre>
 </p>
 <p>
     <b>解決策:</b><br>
-    <pre>
-TypedQuery&lt;UserEntity&gt; q = em.createQuery(
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>TypedQuery&lt;UserEntity&gt; q = em.createQuery(
     "select * from Users where name = usernameParam",UserEntity.class)
     .setParameter("usernameParam", username);
 
-UserEntity res = q.getSingleResult();</pre>
+UserEntity res = q.getSingleResult();</code></pre>
 </p>
 <br>
 <p>
@@ -2793,14 +2756,14 @@ SQL クエリーに含まれる入力値は安全に渡す必要があります�
 
 <p>
     <b>脆弱なコード:</b><br>
-    <pre>JdbcTemplate jdbc = new JdbcTemplate();
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>JdbcTemplate jdbc = new JdbcTemplate();
 int count = jdbc.queryForObject("select count(*) from Users where name = '"+paramName+"'", Integer.class);
-</pre>
+</code></pre>
 </p>
 <p>
     <b>解決策:</b><br>
-    <pre>JdbcTemplate jdbc = new JdbcTemplate();
-int count = jdbc.queryForObject("select count(*) from Users where name = ?", Integer.class, paramName);</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>JdbcTemplate jdbc = new JdbcTemplate();
+int count = jdbc.queryForObject("select count(*) from Users where name = ?", Integer.class, paramName);</code></pre>
 </p>
 <br>
 
@@ -2837,16 +2800,16 @@ SQL クエリーに含まれる入力値は安全に渡す必要があります�
 
 <p>
     <b>脆弱なコード:</b><br>
-    <pre>Connection conn = [...];
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Connection conn = [...];
 Statement stmt = con.createStatement();
-ResultSet rs = stmt.executeQuery("update COFFEES set SALES = "+nbSales+" where COF_NAME = '"+coffeeName+"'");</pre>
+ResultSet rs = stmt.executeQuery("update COFFEES set SALES = "+nbSales+" where COF_NAME = '"+coffeeName+"'");</code></pre>
 </p>
 <p>
     <b>解決策:</b><br>
-    <pre>Connection conn = [...];
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Connection conn = [...];
 conn.prepareStatement("update COFFEES set SALES = ? where COF_NAME = ?");
 updateSales.setInt(1, nbSales);
-updateSales.setString(2, coffeeName);</pre>
+updateSales.setString(2, coffeeName);</code></pre>
 </p>
 <br>
 
@@ -2883,15 +2846,15 @@ SQL クエリーに含まれる入力値は安全に渡す必要があります�
 
 <p>
     <b>脆弱なコード:</b><br>
-    <pre>db.run {
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>db.run {
   sql"select * from people where name = '#$value'".as[Person]
-}</pre>
+}</code></pre>
 </p>
 <p>
     <b>解決策:</b><br>
-    <pre>db.run {
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>db.run {
   sql"select * from people where name = $value".as[Person]
-}</pre>
+}</code></pre>
 </p>
 <br>
 
@@ -2926,19 +2889,19 @@ SQL クエリーに含まれる入力値は安全に渡す必要があります�
 
 <p>
     <b>脆弱なコード:</b><br>
-    <pre>val peopleParser = Macro.parser[Person]("id", "name", "age")
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>val peopleParser = Macro.parser[Person]("id", "name", "age")
 
 DB.withConnection { implicit c =>
   val people: List[Person] = SQL("select * from people where name = '" + value + "'").as(peopleParser.*)
-}</pre>
+}</code></pre>
 </p>
 <p>
     <b>解決策:</b><br>
-    <pre>val peopleParser = Macro.parser[Person]("id", "name", "age")
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>val peopleParser = Macro.parser[Person]("id", "name", "age")
 
 DB.withConnection { implicit c =>
   val people: List[Person] = SQL"select * from people where name = $value".as(peopleParser.*)
-}</pre>
+}</code></pre>
 </p>
 <br>
 
@@ -2973,13 +2936,13 @@ SQL クエリーに含まれる入力値は安全に渡す必要があります�
 
 <p>
     <b>脆弱なコード:</b><br>
-    <pre>String query = "SELECT * FROM  messages WHERE uid= '"+userInput+"'" ;
-Cursor cursor = this.getReadableDatabase().rawQuery(query,null);</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>String query = "SELECT * FROM  messages WHERE uid= '"+userInput+"'" ;
+Cursor cursor = this.getReadableDatabase().rawQuery(query,null);</code></pre>
 </p>
 <p>
     <b>解決策:</b><br>
-    <pre>String query = "SELECT * FROM  messages WHERE uid= ?" ;
-Cursor cursor = this.getReadableDatabase().rawQuery(query,new String[] {userInput});</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>String query = "SELECT * FROM  messages WHERE uid= ?" ;
+Cursor cursor = this.getReadableDatabase().rawQuery(query,new String[] {userInput});</code></pre>
 </p>
 <br>
 
@@ -3020,8 +2983,8 @@ SQL と同様に，LDAP クエリーに渡されるすべての入力は安全�
 </p>
 <p>
     <b>リスクのあるコード:</b><br>
-    <pre>NamingEnumeration&lt;SearchResult&gt; answers = context.search("dc=People,dc=example,dc=com",
-        "(uid=" + username + ")", ctrls);</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>NamingEnumeration&lt;SearchResult&gt; answers = context.search("dc=People,dc=example,dc=com",
+        "(uid=" + username + ")", ctrls);</code></pre>
 </p>
 <br>
 <p>
@@ -3058,20 +3021,18 @@ SQL と同様に，LDAP クエリーに渡されるすべての入力は安全�
 
 <p><b>リスクのあるコード:</b></p>
 <p>
-<pre>
-public void runCustomTrigger(String script) {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void runCustomTrigger(String script) {
     ScriptEngineManager factory = new ScriptEngineManager();
     ScriptEngine engine = factory.getEngineByName("JavaScript");
 
     engine.eval(script); //Bad things can happen here.
-}</pre>
+}</code></pre>
 </p>
 
 <p><b>解決策:</b></p>
 <p>
 Cloudbees Rhino Sandbox ライブラリを使用した Javascript コードの安全な評価。<br>
-<pre>
-public void runCustomTrigger(String script) {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void runCustomTrigger(String script) {
     SandboxContextFactory contextFactory = new SandboxContextFactory();
     Context context = contextFactory.makeContext();
     contextFactory.enterContext(context);
@@ -3085,7 +3046,7 @@ public void runCustomTrigger(String script) {
     } finally {
         context.exit();
     }
-}</pre>
+}</code></pre>
 </p>
 <br>
 <p>
@@ -3118,8 +3079,7 @@ Spring 式は，動的な値で構築されています。フィルタリング�
 </p>
 <p><b>リスクのあるコード:</b></p>
 <p>
-<pre>
-public void parseExpressionInterface(Person personObj,String property) {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void parseExpressionInterface(Person personObj,String property) {
 
         ExpressionParser parser = new SpelExpressionParser();
 
@@ -3128,7 +3088,7 @@ public void parseExpressionInterface(Person personObj,String property) {
 
         StandardEvaluationContext testContext = new StandardEvaluationContext(personObj);
         boolean result = exp.getValue(testContext, Boolean.class);
-[...]</pre>
+[...]</code></pre>
 </p>
 <br>
 <p>
@@ -3162,13 +3122,13 @@ public void parseExpressionInterface(Person personObj,String property) {
 </p>
 <p><b>リスクのあるコード:</b></p>
 <p>
-<pre>public void evaluateExpression(String expression) {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void evaluateExpression(String expression) {
     FacesContext context = FacesContext.getCurrentInstance();
     ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
     ELContext elContext = context.getELContext();
     ValueExpression vex = expressionFactory.createValueExpression(elContext, expression, String.class);
     return (String) vex.getValue(elContext);
-}</pre>
+}</code></pre>
 </p>
 <br>
 <p>
@@ -3207,17 +3167,17 @@ Seam Logging API は，ログメッセージに Bean プロパティを取り込
 </p>
 <p><b>リスクのあるコード:</b></p>
 <p>
-<pre>public void logUser(User user) {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void logUser(User user) {
     log.info("Current logged in user : " + user.getUsername());
     //...
-}</pre>
+}</code></pre>
 </p>
 <p><b>解決策:</b></p>
 <p>
-<pre>public void logUser(User user) {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void logUser(User user) {
     log.info("Current logged in user : #0", user.getUsername());
     //...
-}</pre>
+}</code></pre>
 </p>
 <br>
 <p>
@@ -3251,13 +3211,12 @@ Seam Logging API は，ログメッセージに Bean プロパティを取り込
 </p>
 <p><b>リスクのあるコード:</b></p>
 <p>
-<pre>
-public void getUserProperty(String property) {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void getUserProperty(String property) {
   [...]
   //The first argument is the dynamic expression.
   return ognlUtil.getValue("user."+property, ctx, root, String.class);
 }
-</pre>
+</code></pre>
 </p>
 <p><b>解決策:</b></p>
 <p>
@@ -3298,10 +3257,10 @@ OWASP によると，この問題はほぼすべての今の Java EE アプリ�
 <br>
 <p>
 <b>リスクのあるコード:</b><br>
-<pre>String author = request.getParameter(AUTHOR_PARAMETER);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>String author = request.getParameter(AUTHOR_PARAMETER);
 // ...
 Cookie cookie = new Cookie("author", author);
-response.addCookie(cookie);</pre>
+response.addCookie(cookie);</code></pre>
 </p>
 <br>
 <p>
@@ -3337,7 +3296,7 @@ response.addCookie(cookie);</pre>
 <br>
 <p>
 <b>リスクのあるコード:</b><br>
-<pre>String val = request.getParameter("user");
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>String val = request.getParameter("user");
 String metadata = request.getParameter("metadata");
 [...]
 if(authenticated) {
@@ -3346,7 +3305,7 @@ if(authenticated) {
 else {
     log.info("User " + val + " (" + metadata + ") was not authenticated");
 }
-</pre>
+</code></pre>
 
 悪意のあるユーザーがメタデータパラメーターに値を送信する可能性があります: <code>"Firefox) was authenticated successfully\r\n[INFO] User bbb (Internet Explorer"</code>。
 </p>
@@ -3354,16 +3313,14 @@ else {
 <b>解決策:</b><br>
 <p>
 手動で各パラメーターをエスケープします。
-<pre>
-log.info("User " + val.replaceAll("[\r\n]","") + " (" + userAgent.replaceAll("[\r\n]","") + ") was not authenticated");
-</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>log.info("User " + val.replaceAll("[\r\n]","") + " (" + userAgent.replaceAll("[\r\n]","") + ") was not authenticated");
+</code></pre>
 </p>
 
 <p>
 すべてのメッセージイベントの改行を置き換えるようにロガーサービスを設定することもできます。<a href="https://logback.qos.ch/manual/layouts.html#replace">replace 関数を使用した</a> LogBack の設定例を示します。。
-<pre>
-&lt;pattern&gt;%-5level - %replace(%msg){'[\r\n]', ''}%n&lt;/pattern&gt;
-</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;pattern&gt;%-5level - %replace(%msg){'[\r\n]', ''}%n&lt;/pattern&gt;
+</code></pre>
 </p>
 
 <br>
@@ -3398,7 +3355,7 @@ log.info("User " + val.replaceAll("[\r\n]","") + " (" + userAgent.replaceAll("[\
 <br>
 <p>
 <b>リスクのあるコード:</b><br>
-<pre>conn.setCatalog(request.getParameter("catalog"));</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>conn.setCatalog(request.getParameter("catalog"));</code></pre>
 </p>
 <br>
 <p>
@@ -3424,8 +3381,7 @@ log.info("User " + val.replaceAll("[\r\n]","") + " (" + userAgent.replaceAll("[\
             
 <p>ハッシュ署名を含むバイト配列を人間が読める文字列に変換するとき，配列がバイト単位で読み取られると変換ミスが発生する可能性があります。
 次のサンプルは，計算されたハッシュ値の各バイトから先行ゼロをトリムする <code>Integer.toHexString()</code> の使用方法を示しています。
-<pre>
-MessageDigest md = MessageDigest.getInstance("SHA-256");
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>MessageDigest md = MessageDigest.getInstance("SHA-256");
 byte[] resultBytes = md.digest(password.getBytes("UTF-8"));
 
 StringBuilder stringBuilder = new StringBuilder();
@@ -3433,7 +3389,7 @@ for(byte b :resultBytes) {
     stringBuilder.append( Integer.toHexString( b & 0xFF ) );
 }
 
-return stringBuilder.toString();</pre>
+return stringBuilder.toString();</code></pre>
 </p>
 <p>
 この間違いは，より多くの衝突を招くので，計算されたハッシュ値を脆弱にします。
@@ -3442,7 +3398,7 @@ return stringBuilder.toString();</pre>
 
 <p>
 このような状況では，<code>toHexString()</code> を次のように <code>String.format()</code> に置き換えるべきです:
-<pre>stringBuilder.append( String.format( "%02X", b ) );</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>stringBuilder.append( String.format( "%02X", b ) );</code></pre>
 </p>
 <br>
 <p>
@@ -3498,10 +3454,10 @@ return stringBuilder.toString();</pre>
 </p>
 <p>
     <b>脆弱なコード:</b><br>
-<pre>Cipher doNothingCihper = new NullCipher();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher doNothingCihper = new NullCipher();
 [...]
 //The ciphertext produced will be identical to the plaintext.
-byte[] cipherText = c.doFinal(plainText);</pre>
+byte[] cipherText = c.doFinal(plainText);</code></pre>
 </p>
 <p>
     <b>解決策:</b><br>
@@ -3535,12 +3491,12 @@ byte[] cipherText = c.doFinal(plainText);</pre>
 <p>
 <b>脆弱なコード:</b><br>
 プレーンソケット (平文通信):
-<pre>Socket soc = new Socket("www.google.com",80);</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Socket soc = new Socket("www.google.com",80);</code></pre>
 </p>
 <p>
 <b>解決策:</b><br>
 SSL ソケット (安全な通信):
-<pre>Socket soc = SSLSocketFactory.getDefault().createSocket("www.google.com", 443);</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Socket soc = SSLSocketFactory.getDefault().createSocket("www.google.com", 443);</code></pre>
 </p>
 <p>SSL ソケットを使用する以外に，<code>SSLSocketFactory</code> を使用して，中間者攻撃の対象にならないように，すべての適切な証明書検証チェックを実行する必要があります。
 チェックを正しく行う方法の詳細については，OWASP Transport Layer Protection Cheat Sheet をお読みください。
@@ -3577,12 +3533,12 @@ SSL ソケット (安全な通信):
 <p>
 <b>脆弱なコード:</b><br>
 プレーンサーバーソケット (平文通信):
-<pre>ServerSocket soc = new ServerSocket(1234);</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>ServerSocket soc = new ServerSocket(1234);</code></pre>
 </p>
 <p>
 <b>解決策:</b><br>
 SSL サーバーソケット (安全な通信):
-<pre>ServerSocket soc = SSLServerSocketFactory.getDefault().createServerSocket(1234);</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>ServerSocket soc = SSLServerSocketFactory.getDefault().createServerSocket(1234);</code></pre>
 </p>
 <p>SSL サーバーソケットを使用する以外に，<code>SSLServerSocketFactory</code> を使用することで，中間者攻撃の対象にならないように，すべての適切な証明書検証チェックを実行する必要があります。
 チェックを正しく行う方法の詳細については，OWASP Transport Layer Protection Cheat Sheet をお読みください。
@@ -3618,15 +3574,15 @@ DES と DESede (3DES) は，今のアプリケーションでは強固な暗号�
 </p>
 <p>
     <b>弱いコードの例:</b>
-<pre>Cipher c = Cipher.getInstance("DESede/ECB/PKCS5Padding");
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher c = Cipher.getInstance("DESede/ECB/PKCS5Padding");
 c.init(Cipher.ENCRYPT_MODE, k, iv);
-byte[] cipherText = c.doFinal(plainText);</pre>
+byte[] cipherText = c.doFinal(plainText);</code></pre>
 </p>
 <p>
     <b>解決例:</b>
-    <pre>Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
 c.init(Cipher.ENCRYPT_MODE, k, iv);
-byte[] cipherText = c.doFinal(plainText);</pre>
+byte[] cipherText = c.doFinal(plainText);</code></pre>
 </p>
 <br>
 <p>
@@ -3656,12 +3612,12 @@ byte[] cipherText = c.doFinal(plainText);</pre>
 </p>
 <p>
 <b>脆弱なコード:</b><br>
-<pre>Cipher.getInstance("RSA/NONE/NoPadding")</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher.getInstance("RSA/NONE/NoPadding")</code></pre>
 </p>
 <p>
 <b>解決策:</b><br>
 コードは次のように置き換えるべきです:<br>
-<pre>Cipher.getInstance("RSA/ECB/OAEPWithMD5AndMGF1Padding")</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher.getInstance("RSA/ECB/OAEPWithMD5AndMGF1Padding")</code></pre>
 </p>
 <br>
 <p>
@@ -3694,10 +3650,10 @@ byte[] cipherText = c.doFinal(plainText);</pre>
 <p>
 <p><b>脆弱なコード:</b><br>
 
-<pre>private String SECRET_PASSWORD = "letMeIn!";
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>private String SECRET_PASSWORD = "letMeIn!";
 
 Properties props = new Properties();
-props.put(Context.SECURITY_CREDENTIALS, "p@ssw0rd");</pre>
+props.put(Context.SECURITY_CREDENTIALS, "p@ssw0rd");</code></pre>
 </p>
 <br>
 <p>
@@ -3729,11 +3685,11 @@ props.put(Context.SECURITY_CREDENTIALS, "p@ssw0rd");</pre>
 <p>
 <p><b>脆弱なコード:</b><br>
 
-<pre>byte[] key = {1, 2, 3, 4, 5, 6, 7, 8};
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>byte[] key = {1, 2, 3, 4, 5, 6, 7, 8};
 SecretKeySpec spec = new SecretKeySpec(key, "AES");
 Cipher aes = Cipher.getInstance("AES");
 aes.init(Cipher.ENCRYPT_MODE, spec);
-return aesCipher.doFinal(secretData);</pre>
+return aesCipher.doFinal(secretData);</code></pre>
 </p>
 <br>
 <p>
@@ -3763,18 +3719,16 @@ return aesCipher.doFinal(secretData);</pre>
 </p>
 <p>
 <p><b>脆弱なコード:</b><br>
-<pre>
-String actualHash = ...
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>String actualHash = ...
 if(userInput.equals(actualHash)) {
     ...
-}</pre>
+}</code></pre>
 </p>
 <p><b>解決策:</b><br>
-<pre>
-String actualHash = ...
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>String actualHash = ...
 if(MessageDigest.isEqual(userInput.getBytes(),actualHash.getBytes())) {
     ...
-}</pre>
+}</code></pre>
 </p>
 <br>
 <p>
@@ -3803,8 +3757,7 @@ if(MessageDigest.isEqual(userInput.getBytes(),actualHash.getBytes())) {
 </p>
 <p>
 検証は，<code>validate</code> メソッドを実装することで導入できます。
-<pre>
-public class RegistrationForm extends ValidatorForm {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public class RegistrationForm extends ValidatorForm {
 
     private String name;
     private String email;
@@ -3815,7 +3768,7 @@ public class RegistrationForm extends ValidatorForm {
         // HttpRequest を介して渡された名前と電子メールパラメーターの検証コードはここに
     }
 }
-</pre>
+</code></pre>
 </p>
 <br>
 <p>
@@ -3856,7 +3809,7 @@ public class RegistrationForm extends ValidatorForm {
 <p>
 <b>迂回の例:</b><br>
 </p>
-<pre>&lt;scrivbscript:pt&gt;alert(1)&lt;/scrivbscript:pt&gt;</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;scrivbscript:pt&gt;alert(1)&lt;/scrivbscript:pt&gt;</code></pre>
 <p>
 前述の入力は <b><code>"&lt;script&gt;alert(1)&lt;/script&gt;"</code></b> に変換されます。
 <code>"vbscript:"</code> の除去は，<code>"&lt;script&gt;.*&lt;/script&gt;"</code> の置換が行われた後です。
@@ -3899,13 +3852,13 @@ Blowfish の使用が必要なときは，鍵を生成するときに少なく�
 </p>
 
 <p><b>脆弱なコード:</b><br>
-<pre>KeyGenerator keyGen = KeyGenerator.getInstance("Blowfish");
-keyGen.init(64);</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>KeyGenerator keyGen = KeyGenerator.getInstance("Blowfish");
+keyGen.init(64);</code></pre>
 </p>
 
 <p><b>解決策:</b><br>
-<pre>KeyGenerator keyGen = KeyGenerator.getInstance("Blowfish");
-keyGen.init(128);</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>KeyGenerator keyGen = KeyGenerator.getInstance("Blowfish");
+keyGen.init(128);</code></pre>
 </p>
 <br>
 <p>
@@ -3940,18 +3893,16 @@ NISTは，RSA アルゴリズムに <u>2048ビット以上</u> の鍵を使用�
 </blockquote>
 
 <p><b>脆弱なコード:</b><br>
-<pre>
-KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
 keyGen.initialize(512);
-</pre>
+</code></pre>
 </p>
 
 <p><b>解決策:</b><br>
 KeyPairGenerator の作成は，次のように少なくとも2048ビットの鍵長にすべきです。
-<pre>
-KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
 keyGen.initialize(2048);
-</pre>
+</code></pre>
 </p>
 <br>
 <p>
@@ -3995,11 +3946,11 @@ keyGen.initialize(2048);
 </p>
 <p>
     <b>脆弱なコード:</b></br/>
-    <pre>protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     [...]
     resp.sendRedirect(req.getParameter("redirectUrl"));
     [...]
-}</pre>
+}</code></pre>
 </p>
 <p>
     <b>解決策/対策:</b><br>
@@ -4051,10 +4002,10 @@ keyGen.initialize(2048);
 </p>
 <p>
     <b>脆弱なコード:</b></br/>
-    <pre>def login(redirectUrl:String) = Action {
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>def login(redirectUrl:String) = Action {
     [...]
     Redirect(url)
-}</pre>
+}</code></pre>
 </p>
 <p>
     <b>解決策/対策:</b><br>
@@ -4106,11 +4057,11 @@ keyGen.initialize(2048);
 </p>
 <p>
     <b>脆弱なコード:</b></br/>
-    <pre>@RequestMapping("/redirect")
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@RequestMapping("/redirect")
 public String redirect(@RequestParam("url") String url) {
     [...]
     return "redirect:" + url;
-}</pre>
+}</code></pre>
 </p>
 <p>
     <b>解決策/対策:</b><br>
@@ -4152,13 +4103,13 @@ public String redirect(@RequestParam("url") String url) {
 </p>
 <p>
     <b>脆弱なコード:</b>
-    <pre>&lt;jsp:include page="${param.secret_param}" /&gt;</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;jsp:include page="${param.secret_param}" /&gt;</code></pre>
 </p>
 <p>
     <b>解決策:</b>
-    <pre>&lt;c:if test="${param.secret_param == 'page1'}"&gt;
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;c:if test="${param.secret_param == 'page1'}"&gt;
     &lt;jsp:include page="page1.jsp" /&gt;
-&lt;/c:if&gt;</pre>
+&lt;/c:if&gt;</code></pre>
 </p>
 <br>
 <p>
@@ -4187,19 +4138,19 @@ public String redirect(@RequestParam("url") String url) {
 </p>
 <p>
     <b>脆弱なコード:</b>
-    <pre>&lt;%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %&gt;
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %&gt;
 
-&lt;spring:eval expression="${param.lang}" var="lang" /&gt;</pre>
+&lt;spring:eval expression="${param.lang}" var="lang" /&gt;</code></pre>
     <br>
-    <pre>&lt;%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %&gt;
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %&gt;
 
-&lt;spring:eval expression="'${param.lang}'=='fr'" var="languageIsFrench" /&gt;</pre>
+&lt;spring:eval expression="'${param.lang}'=='fr'" var="languageIsFrench" /&gt;</code></pre>
 </p>
 <p>
     <b>解決策:</b>
-    <pre>&lt;c:set var="lang" value="${param.lang}"/&gt;</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;c:set var="lang" value="${param.lang}"/&gt;</code></pre>
     <br>
-    <pre>&lt;c:set var="languageIsFrench" value="${param.lang == 'fr'}"/&gt;</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;c:set var="languageIsFrench" value="${param.lang == 'fr'}"/&gt;</code></pre>
 </p>
 <br>
 <p>
@@ -4229,15 +4180,15 @@ public String redirect(@RequestParam("url") String url) {
 </p>
 <p>
     <b>脆弱なコード:</b>
-    <pre>&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
 
-&lt;c:out value="${param.test_param}" escapeXml="false"/&gt;</pre>
+&lt;c:out value="${param.test_param}" escapeXml="false"/&gt;</code></pre>
 </p>
 <p>
     <b>解決策:</b>
-    <pre>&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
 
-&lt;c:out value="${param.test_param}"/&gt;</pre>
+&lt;c:out value="${param.test_param}"/&gt;</code></pre>
 </p>
 <br>
 <p>
@@ -4270,21 +4221,20 @@ public String redirect(@RequestParam("url") String url) {
 </p>
 <p>
     <b>脆弱なコード:</b>
-    <pre><%
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'><%
 String taintedInput = (String) request.getAttribute("input");
 %>
 [...]
-&lt;%= taintedInput %&gt;</pre>
+&lt;%= taintedInput %&gt;</code></pre>
 </p>
 <p>
     <b>解決策:</b>
-    <pre>
-&lt;%
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;%
 String taintedInput = (String) request.getAttribute("input");
 %&gt;
 [...]
 &lt;%= Encode.forHtml(taintedInput) %&gt;
-    </pre>
+    </code></pre>
 </p>
 <p>
 XSS に対する最善の防御は，上記の例のような特定の状況で使える出力エンコーディングです。
@@ -4322,19 +4272,19 @@ OWASP XSS Prevention Cheat Sheet で定義されている XSS 保護ルールに
 </p>
 <p>
     <b>脆弱なコード:</b>
-<pre>protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     String input1 = req.getParameter("input1");
     [...]
     resp.getWriter().write(input1);
-}</pre>
+}</code></pre>
 </p>
 <p>
     <b>解決策:</b>
-<pre>protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     String input1 = req.getParameter("input1");
     [...]
     resp.getWriter().write(Encode.forHtml(input1));
-}</pre>
+}</code></pre>
 </p>
 <p>
 XSSに対する最善の防御は，上記の例のような特定の状況で使える出力エンコーディングです。
@@ -4377,8 +4327,7 @@ OWASP XSS Prevention Cheat Sheet で定義されている XSS 保護ルールに
 <p>
     <b>悪意のある XML の例</b>
 </p>
-<pre>
-&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
 &lt;java version="1.4.0" class="java.beans.XMLDecoder"&gt;
   &lt;object class="java.io.PrintWriter"&gt;
     &lt;string>/tmp/Hacked.txt&lt;/string&gt;
@@ -4388,17 +4337,17 @@ OWASP XSS Prevention Cheat Sheet で定義されている XSS 保護ルールに
     &lt;void method="close"/&gt;
   &lt;/object&gt;
 &lt;/java&gt;
-</pre>
+</code></pre>
 <p>
 上記の XML コードはコンテンツ "Hello World！" を持つファイルが作成されます。
 </p>
 <p>
     <b>脆弱なコード:</b></br/>
-    <pre>XMLDecoder d = new XMLDecoder(in);
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>XMLDecoder d = new XMLDecoder(in);
 try {
     Object result = d.readObject();
 }
-[...]</pre>
+[...]</code></pre>
 </p>
 <p>
 <b>解決策:</b></br/>
@@ -4433,25 +4382,23 @@ try {
 </p>
 <p><b>脆弱なコード:</b></p>
 <p>
-<pre>
-private static byte[] IV = new byte[16] {(byte)0,(byte)1,(byte)2,[...]};
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>private static byte[] IV = new byte[16] {(byte)0,(byte)1,(byte)2,[...]};
 
 public void encrypt(String message) throws Exception {
 
     IvParameterSpec ivSpec = new IvParameterSpec(IV);
 [...]
-</pre>
+</code></pre>
 <p><b>解決策:</b></p>
 <p>
-<pre>
-public void encrypt(String message) throws Exception {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void encrypt(String message) throws Exception {
 
     byte[] iv = new byte[16];
     new SecureRandom().nextBytes(iv);
 
     IvParameterSpec ivSpec = new IvParameterSpec(iv);
 [...]
-</pre>
+</code></pre>
 </p>
 <br>
 <p>
@@ -4485,15 +4432,15 @@ public void encrypt(String message) throws Exception {
 </p>
 <p>
 <b>リスクのあるコード:</b>
-    <pre>Cipher c = Cipher.getInstance("AES/ECB/NoPadding");
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher c = Cipher.getInstance("AES/ECB/NoPadding");
 c.init(Cipher.ENCRYPT_MODE, k, iv);
-byte[] cipherText = c.doFinal(plainText);</pre>
+byte[] cipherText = c.doFinal(plainText);</code></pre>
 </p>
 <p>
     <b>解決策:</b>
-    <pre>Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
 c.init(Cipher.ENCRYPT_MODE, k, iv);
-byte[] cipherText = c.doFinal(plainText);</pre>
+byte[] cipherText = c.doFinal(plainText);</code></pre>
 </p>
 <br>
 <p>
@@ -4527,15 +4474,15 @@ byte[] cipherText = c.doFinal(plainText);</pre>
 </p>
 <p>
     <b>リスクのあるコード:</b>
-    <pre>Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
 c.init(Cipher.ENCRYPT_MODE, k, iv);
-byte[] cipherText = c.doFinal(plainText);</pre>
+byte[] cipherText = c.doFinal(plainText);</code></pre>
 </p>
 <p>
     <b>解決策:</b>
-    <pre>Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
 c.init(Cipher.ENCRYPT_MODE, k, iv);
-byte[] cipherText = c.doFinal(plainText);</pre>
+byte[] cipherText = c.doFinal(plainText);</code></pre>
 </p>
 <br>
 <p>
@@ -4581,21 +4528,21 @@ HMAC 関数を既存の暗号と組み合わせると，エラーが発生しや
     <b>リスクのあるコード:</b><br>
     <i>CBC モードで AES</i><br>
 
-    <pre>Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
 c.init(Cipher.ENCRYPT_MODE, k, iv);
-byte[] cipherText = c.doFinal(plainText);</pre>
+byte[] cipherText = c.doFinal(plainText);</code></pre>
     <br>
     <i>ECB モードのトリプル DES</i><br>
 
-<pre>Cipher c = Cipher.getInstance("DESede/ECB/PKCS5Padding");
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher c = Cipher.getInstance("DESede/ECB/PKCS5Padding");
 c.init(Cipher.ENCRYPT_MODE, k, iv);
-byte[] cipherText = c.doFinal(plainText);</pre>
+byte[] cipherText = c.doFinal(plainText);</code></pre>
 </p>
 <p>
     <b>解決策:</b>
-    <pre>Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
 c.init(Cipher.ENCRYPT_MODE, k, iv);
-byte[] cipherText = c.doFinal(plainText);</pre>
+byte[] cipherText = c.doFinal(plainText);</code></pre>
 </p>
 <p>
 上記の解決例では，GCM モードは結果の暗号化されたデータに HMAC を導入し，結果の完全性を提供します。
@@ -4636,24 +4583,22 @@ ESAPI には，暗号化コンポーネント内にちょっとした脆弱性�
 <p>
     Maven ユーザーならプラグイン <a href="http://mojo.codehaus.org/versions-maven-plugin/">versions</a> を次のコマンドを使用して呼び出せます。
     ESAPI の有効なバージョンは，その出力から入手できます。<br>
-    <pre>$ mvn versions:display-dependency-updates</pre>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>$ mvn versions:display-dependency-updates</code></pre>
     <br>出力:<br>
-    <pre>
-[...]
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>[...]
 [INFO] The following dependencies in Dependencies have newer versions:
 [INFO]   org.slf4j:slf4j-api ................................... 1.6.4 -> 1.7.7
 [INFO]   org.owasp.esapi:esapi ................................. 2.0.1 -> 2.1.0
 [...]
-    </pre>
+    </code></pre>
 </p>
 <p>
     または，直接設定を見ることによって.<br>
-    <pre>
-&lt;dependency&gt;
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;dependency&gt;
     &lt;groupId&gt;org.owasp.esapi&lt;/groupId&gt;
     &lt;artifactId&gt;esapi&lt;/artifactId&gt;
     &lt;version&gt;2.1.0&lt;/version&gt;
-&lt;/dependency&gt;</pre>
+&lt;/dependency&gt;</code></pre>
 </p>
 <p>
 Ant ユーザーなら使用する jar は <a href="http://repo1.maven.org/maven2/org/owasp/esapi/esapi/2.1.0/esapi-2.1.0.jar">esapi-2.1.0.jar</a> でなければなりません。
@@ -4664,20 +4609,18 @@ Ant ユーザーなら使用する jar は <a href="http://repo1.maven.org/maven
     <br>
     <div><b>これらの要素のいずれかが存在すると ESAPI の暗号化設定も脆弱になる可能性があります:</b><br>
     <b>安全でない設定:</b><br>
-    <pre>
-Encryptor.CipherText.useMAC=false
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Encryptor.CipherText.useMAC=false
 
 Encryptor.EncryptionAlgorithm=AES
 Encryptor.CipherTransformation=AES/CBC/PKCS5Padding
 
-Encryptor.cipher_modes.additional_allowed=CBC</pre>
+Encryptor.cipher_modes.additional_allowed=CBC</code></pre>
     </div>
 </p>
 <p>
     <div>
     <b>Secure configuration:</b><br>
-    <pre>
-#必要
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>#必要
 Encryptor.CipherText.useMAC=true
 
 #信頼できる認証が必要
@@ -4685,7 +4628,7 @@ Encryptor.EncryptionAlgorithm=AES
 Encryptor.CipherTransformation=AES/GCM/NoPadding
 
 #パディングオラクルを避けるために CBC モードを削除すべき
-Encryptor.cipher_modes.additional_allowed=</pre>
+Encryptor.cipher_modes.additional_allowed=</code></pre>
     </div>
 </p>
 <br>
@@ -4722,19 +4665,17 @@ Encryptor.cipher_modes.additional_allowed=</pre>
 </p>
 <p>
     <b>リスクのあるコード:</b><br>
-<pre>
-file file = new File(getExternalFilesDir(TARGET_TYPE), filename);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>file file = new File(getExternalFilesDir(TARGET_TYPE), filename);
 fos = new FileOutputStream(file);
 fos.write(confidentialData.getBytes());
 fos.flush();
-</pre>
+</code></pre>
 </p>
 <p>
     <b>より良い代替手段:</b><br>
-<pre>
-fos = openFileOutput(filename, Context.MODE_PRIVATE);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>fos = openFileOutput(filename, Context.MODE_PRIVATE);
 fos.write(string.getBytes());
-</pre>
+</code></pre>
 </p>
 <br>
 <p>
@@ -4767,31 +4708,28 @@ fos.write(string.getBytes());
 </p>
 <p>
     <b>リスクのあるコード:</b><br>
-<pre>
-Intent i = new Intent();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Intent i = new Intent();
 i.setAction("com.insecure.action.UserConnected");
 i.putExtra("username", user);
 i.putExtra("email", email);
 i.putExtra("session", newSessionId);
 
 this.sendBroadcast(v1);
-</pre>
+</code></pre>
 </p>
 <br>
 <p>
     <b>解決策 (可能なら):</b><br>
-<pre>
-Intent i = new Intent();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Intent i = new Intent();
 i.setAction("com.secure.action.UserConnected");
 
 sendBroadcast(v1);
-</pre>
+</code></pre>
 </p>
 <br>
 <p>
     <b>設定 (receiver)<sup>[1] Source: StackOverflow</sup>:</b><br>
-<pre>
-&lt;manifest ...&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;manifest ...&gt;
 
     &lt;!-- Permission declaration --&gt;
     &lt;permission android:name="my.app.PERMISSION" /&gt;
@@ -4806,19 +4744,18 @@ sendBroadcast(v1);
 
     ...
 &lt;/manifest>
-</pre>
+</code></pre>
 </p>
 <p>
     <b>設定 (sender)<sup>[1] Source: StackOverflow</sup>:</b><br>
-<pre>
-&lt;manifest&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;manifest&gt;
     &lt;!-- We declare we own the permission to send broadcast to the above receiver --&gt;
     &lt;uses-permission android:name="my.app.PERMISSION"/&gt;
 
     &lt;!-- With the following configuration, both the sender and the receiver apps need to be signed by the same developer certificate. --&gt;
     &lt;permission android:name="my.app.PERMISSION" android:protectionLevel="signature"/&gt;
 &lt;/manifest&gt;
-</pre>
+</code></pre>
 </p>
 <br>
 <p>
@@ -4853,17 +4790,15 @@ sendBroadcast(v1);
 </p>
 <p>
     <b>リスクのあるコード:</b><br>
-<pre>
-fos = openFileOutput(filename, MODE_WORLD_READABLE);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>fos = openFileOutput(filename, MODE_WORLD_READABLE);
 fos.write(userInfo.getBytes());
-</pre>
+</code></pre>
 </p>
 <br>
 <p>
     <b>解決策 (MODE_PRIVATE の使用):</b><br>
-<pre>
-fos = openFileOutput(filename, MODE_PRIVATE);
-</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>fos = openFileOutput(filename, MODE_PRIVATE);
+</code></pre>
 </p>
 <p>
     <b>解決策 (ローカル SQLite データベースの使用):</b><br>
@@ -4902,21 +4837,19 @@ fos = openFileOutput(filename, MODE_PRIVATE);
 </p>
 <p>
     <b>リスクのあるコード:</b><br>
-<pre>
-webView.setWebChromeClient(new WebChromeClient() {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>webView.setWebChromeClient(new WebChromeClient() {
     @Override
     public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
         callback.invoke(origin, true, false);
     }
 });
-</pre>
+</code></pre>
 </p>
 <p>
     <b>Suggested code:</b><br>
 
     ジオロケーションのサンプリングを制限し，ユーザーに確認を求めます。
-<pre>
-webView.setWebChromeClient(new WebChromeClient() {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>webView.setWebChromeClient(new WebChromeClient() {
     @Override
     public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
         callback.invoke(origin, true, false);
@@ -4924,7 +4857,7 @@ webView.setWebChromeClient(new WebChromeClient() {
         //Ask the user for confirmation
     }
 });
-</pre>
+</code></pre>
 </p>
 <br>
 <p>
@@ -4952,22 +4885,20 @@ webView.setWebChromeClient(new WebChromeClient() {
             
 <p>
 WebView で JavaScript を有効にすると XSS の影響を受けやすくなります。潜在的な反映型 XSS，格納型 XSS，DOM XSS についてページレンダリングを検査すべきです。<br>
-<pre>
-WebView myWebView = (WebView) findViewById(R.id.webView);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>WebView myWebView = (WebView) findViewById(R.id.webView);
 WebSettings webSettings = myWebView.getSettings();
 webSettings.setJavaScriptEnabled(true);
-</pre>
+</code></pre>
 </p>
 
 <p>
     <b>リスクのあるコード:</b><br>
 JavaScript を有効にすることは悪いことではありません。潜在的な XSS に対してバックエンドコードを監査する必要があることを意味します。
 XSS は，クライアント側に DOM XSS を導入することもできます。
-<pre>
-function updateDescription(newDescription) {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>function updateDescription(newDescription) {
     $("#userDescription").html("&lt;p&gt;"+newDescription+"&lt;/p&gt;");
 }
-</pre>
+</code></pre>
 </p>
 <br>
 <p>
@@ -5003,8 +4934,7 @@ WebView で XSS が引き起こされると，そのクラスは悪質な JavaSc
 
 <p>
     <b>リスクのあるコード:</b><br>
-    <pre>
-WebView myWebView = (WebView) findViewById(R.id.webView);
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>WebView myWebView = (WebView) findViewById(R.id.webView);
 
 myWebView.addJavascriptInterface(new FileWriteUtil(this), "fileWriteUtil");
 
@@ -5023,7 +4953,7 @@ class FileWriteUtil {
         [...]
     }
 }
-    </pre>
+    </code></pre>
 </p>
 <br>
 <p>
@@ -5055,25 +4985,22 @@ class FileWriteUtil {
 
 <p>
 <b>リスクのあるコード:</b><br>
-<pre>
-Cookie cookie = new Cookie("userName",userName);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cookie cookie = new Cookie("userName",userName);
 response.addCookie(cookie);
-</pre>
+</code></pre>
 </p>
 
 <p>
 <b>解決策 (具体的な設定):</b><br>
-<pre>
-Cookie cookie = new Cookie("userName",userName);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cookie cookie = new Cookie("userName",userName);
 cookie.setSecure(true); // Secure flag
 cookie.setHttpOnly(true);
-</pre>
+</code></pre>
 </p>
 
 <p>
 <b>解決策 (Servlet 3.0 の設定):</b><br>
-<pre>
-&lt;web-app xmlns="http://java.sun.com/xml/ns/javaee" version="3.0"&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;web-app xmlns="http://java.sun.com/xml/ns/javaee" version="3.0"&gt;
 [...]
 &lt;session-config&gt;
  &lt;cookie-config&gt;
@@ -5082,7 +5009,7 @@ cookie.setHttpOnly(true);
  &lt;/cookie-config&gt;
 &lt;/session-config&gt;
 &lt;/web-app&gt;
-</pre>
+</code></pre>
 </p>
 <br>
 <p>
@@ -5118,25 +5045,22 @@ cookie.setHttpOnly(true);
 
 <p>
 <b>リスクのあるコード:</b><br>
-<pre>
-Cookie cookie = new Cookie("email",userName);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cookie cookie = new Cookie("email",userName);
 response.addCookie(cookie);
-</pre>
+</code></pre>
 </p>
 
 <p>
 <b>解決策 (具体的な設定):</b><br>
-<pre>
-Cookie cookie = new Cookie("email",userName);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Cookie cookie = new Cookie("email",userName);
 cookie.setSecure(true);
 cookie.setHttpOnly(true); //HttpOnly flag
-</pre>
+</code></pre>
 </p>
 
 <p>
 <b>解決策 (Servlet 3.0 の設定):</b><br>
-<pre>
-&lt;web-app xmlns="http://java.sun.com/xml/ns/javaee" version="3.0"&gt;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;web-app xmlns="http://java.sun.com/xml/ns/javaee" version="3.0"&gt;
 [...]
 &lt;session-config&gt;
  &lt;cookie-config&gt;
@@ -5145,7 +5069,7 @@ cookie.setHttpOnly(true); //HttpOnly flag
  &lt;/cookie-config&gt;
 &lt;/session-config&gt;
 &lt;/web-app&gt;
-</pre>
+</code></pre>
 </p>
 <br>
 <p>
@@ -5185,14 +5109,13 @@ Java 仮想マシン <sup>[2] [3]</sup> に新しい脆弱性が見つかると�
 
 <p>
 <b>リスクのあるコード:</b><br>
-<pre>
-public UserData deserializeObject(InputStream receivedFile) throws IOException, ClassNotFoundException {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public UserData deserializeObject(InputStream receivedFile) throws IOException, ClassNotFoundException {
 
     try (ObjectInputStream in = new ObjectInputStream(receivedFile)) {
         return (UserData) in.readObject();
     }
 }
-</pre>
+</code></pre>
 </p>
 
 <p>
@@ -5239,8 +5162,7 @@ public UserData deserializeObject(InputStream receivedFile) throws IOException, 
 
 <p>
 <b>リスクのあるコード:</b><br>
-<pre>
-public class Example {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public class Example {
     static class ABean {
         public int id;
         public Object obj;
@@ -5263,7 +5185,7 @@ public class Example {
     }
 
 }
-</pre>
+</code></pre>
 </p>
 
 <p>
@@ -5332,22 +5254,20 @@ public class Example {
 
 <p>
 <b>リスクのあるコード:</b><br>
-<pre>
-public void doSomething(HttpServletRequest req, String activateProperty) {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void doSomething(HttpServletRequest req, String activateProperty) {
     //..
 
     req.getSession().setAttribute(activateProperty,"true");
 
 }
-</pre>
+</code></pre>
 <br>
-<pre>
-public void loginEvent(HttpServletRequest req, String userSubmitted) {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>public void loginEvent(HttpServletRequest req, String userSubmitted) {
     //..
 
     req.getSession().setAttribute("user",userSubmitted);
 }
-</pre>
+</code></pre>
 </p>
 
 <p>
@@ -5385,9 +5305,8 @@ public void loginEvent(HttpServletRequest req, String userSubmitted) {
 </p>
 <p>
 <b>リスクのあるコード:</b><br>
-<pre>
-&#x3C;x:transform xml=&#x22;${xmlData}&#x22; xslt=&#x22;${xsltControlledByUser}&#x22; /&#x3E;
-</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&#x3C;x:transform xml=&#x22;${xmlData}&#x22; xslt=&#x22;${xsltControlledByUser}&#x22; /&#x3E;
+</code></pre>
 </p>
 <p>
 <b>解決策:</b><br>
@@ -5429,14 +5348,13 @@ public void loginEvent(HttpServletRequest req, String userSubmitted) {
 </p>
 <p>
 <b>リスクのあるコード:</b><br>
-<pre>
-Source xslt = new StreamSource(new FileInputStream(inputUserFile)); //Dangerous source to validate
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Source xslt = new StreamSource(new FileInputStream(inputUserFile)); //Dangerous source to validate
 
 Transformer transformer = TransformerFactory.newInstance().newTransformer(xslt);
 
 Source text = new StreamSource(new FileInputStream("/data_2_process.xml"));
 transformer.transform(text, new StreamResult(...));
-</pre>
+</code></pre>
 </p>
 <p>
 <b>解決策:</b><br>
@@ -5480,11 +5398,11 @@ transformer.transform(text, new StreamResult(...));
 </p>
 <p>
 <b>リスクのあるコード:</b><br>
-<pre>def doGet(value:String) = Action {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>def doGet(value:String) = Action {
   val configElement = configuration.underlying.getString(value)
 
   Ok("Hello "+ configElement +" !")
-}</pre>
+}</code></pre>
 </p>
 <p>
 アプリケーションの構成要素を応答コンテンツに送信しないでください。また，コードによって使用される構成要素をユーザーが制御できないようにすべきです。
@@ -5518,11 +5436,11 @@ Server-Side Request Forgery (SSRF) は，Web サーバーがユーザーが指�
 </p>
 <p>
     <b>脆弱なコード:</b>
-<pre>def doGet(value:String) = Action {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>def doGet(value:String) = Action {
     WS.url(value).get().map { response =>
         Ok(response.body)
     }
-}</pre>
+}</code></pre>
 </p>
 <p>
     <b>解決策/対策:</b><br>
@@ -5563,11 +5481,10 @@ Server-Side Request Forgery (SSRF) は，Web サーバーがユーザーが指�
 <code>URLConnection</code> は，file：// プロトコルまたは他のプロトコルと共に使用して，ローカルファイルシステムやその他のサービスにアクセスできます。
 <p>
     <b>脆弱なコード:</b>
-<pre>
-new URL(String url).openConnection()
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>new URL(String url).openConnection()
 new URL(String url).openStream()
 new URL(String url).getContent()
-</pre>
+</code></pre>
 </p>
 <p>
     <b>解決策/対策:</b><br>
@@ -5607,15 +5524,15 @@ new URL(String url).getContent()
 </p>
 <p>
     <b>脆弱なコード:</b>
-<pre>@(value: Html)
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@(value: Html)
 
-@value</pre>
+@value</code></pre>
 </p>
 <p>
     <b>解決策:</b>
-<pre>@(value: String)
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@(value: String)
 
-@value</pre>
+@value</code></pre>
 </p>
 <p>
 XSSに対する最善の防御は，上記の例のような特定の状況で使える出力エンコーディングです。考慮すべきコンテキストは，HTML，JavaScript，CSS (スタイル)，URL の4つです。
@@ -5652,15 +5569,15 @@ OWASP XSS Prevention Cheat Sheet で定義されている XSS 保護ルールに
 </p>
 <p>
     <b>脆弱なコード:</b>
-<pre>def doGet(value:String) = Action {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>def doGet(value:String) = Action {
     Ok("Hello " + value + " !").as("text/html")
-  }</pre>
+  }</code></pre>
 </p>
 <p>
     <b>解決策:</b>
-<pre>def doGet(value:String) = Action {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>def doGet(value:String) = Action {
     Ok("Hello " + Encode.forHtml(value) + " !")
-  }</pre>
+  }</code></pre>
 </p>
 <p>
 XSSに対する最善の防御は，上記の例のような特定の状況で使える出力エンコーディングです。考慮すべきコンテキストは，HTML，JavaScript，CSS (スタイル)，URL の4つです。
@@ -5699,9 +5616,9 @@ Velocity テンプレートはスクリプトとしてみなすべきです。
 </p>
 <p>
     <b>脆弱なコード:</b>
-<pre>[...]
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>[...]
 
-Velocity.evaluate(context, swOut, "test", userInput);</pre>
+Velocity.evaluate(context, swOut, "test", userInput);</code></pre>
 </p>
 <p>
     <b>解決策:</b>
@@ -5739,9 +5656,9 @@ Freemarker テンプレートはスクリプトとして見なすべきです。
 </p>
 <p>
     <b>脆弱なコード:</b>
-<pre>Template template = cfg.getTemplate(inputTemplate);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Template template = cfg.getTemplate(inputTemplate);
 [...]
-template.process(data, swOut);</pre>
+template.process(data, swOut);</code></pre>
 </p>
 <p>
     <b>解決策:</b>
@@ -5781,7 +5698,7 @@ HTML5 以前の Web ブラウザでは，同一生成元ポリシーが強制さ
 </p>
 <p>
     <b>脆弱なコード:</b>
-<pre>response.addHeader("Access-Control-Allow-Origin", "*");</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>response.addHeader("Access-Control-Allow-Origin", "*");</code></pre>
 </p>
 <p>
     <b>解決策:</b>
@@ -5817,10 +5734,10 @@ HTML5 以前の Web ブラウザでは，同一生成元ポリシーが強制さ
 </p>
 <p>
     <b>脆弱なコード:</b>
-<pre>...
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>...
 env.put(Context.SECURITY_AUTHENTICATION, "none");
 DirContext ctx = new InitialDirContext(env);
-...</pre>
+...</code></pre>
 </p>
 <p>
     <b>解決策:</b>
@@ -5859,27 +5776,25 @@ LDAP ベースクエリにエントリポイントを持っていると，攻撃
 </p>
 <p>
     <b>脆弱なコード:</b>
-<pre>
-DirContext ctx = new InitialDirContext();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>DirContext ctx = new InitialDirContext();
 //[...]
 
 ctx.search(query, filter,
         new SearchControls(scope, countLimit, timeLimit, attributes,
             true, //Enable object deserialization if bound in directory
             deref));
-</pre>
+</code></pre>
 </p>
 <p>
     <b>解決策:</b>
-<pre>
-DirContext ctx = new InitialDirContext();
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>DirContext ctx = new InitialDirContext();
 //[...]
 
 ctx.search(query, filter,
         new SearchControls(scope, countLimit, timeLimit, attributes,
             false, //Disable
             deref));
-</pre>
+</code></pre>
 </p>
 <br>
 <p>
@@ -5918,10 +5833,10 @@ ctx.search(query, filter,
 </p>
 <p>
     <b>脆弱なコード:</b> 次のコードは，クッキーが1年間で期限切れになるよう設定します。<br>
-<pre>[...]
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>[...]
 Cookie cookie = new Cookie("email", email);
 cookie.setMaxAge(60*60*24*365);
-[...]</pre>
+[...]</code></pre>
 </p>
 <p>
     <b>解決策:</b><br>
@@ -5966,9 +5881,9 @@ URL のセッション ID は，さまざまな方法で公開できます。た
 </p>
 <p>
     <b>脆弱なコード:</b><br>
-<pre>out.println("Click &lt;a href=" +
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>out.println("Click &lt;a href=" +
                 res.encodeURL(HttpUtils.getRequestURL(req).toString()) +
-                "&gt;here&lt;/a&gt;");</pre>
+                "&gt;here&lt;/a&gt;");</code></pre>
 </p>
 <p>
     <b>解決策:</b><br>
@@ -6003,7 +5918,7 @@ SSL 接続を確立すると，サーバー ID の確認は無効になります
 </p>
 <p>
     <b>脆弱なコード:</b><br>
-<pre>...
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>...
 Email email = new SimpleEmail();
 email.setHostName("smtp.servermail.com");
 email.setSmtpPort(465);
@@ -6014,12 +5929,12 @@ email.setSubject("TestMail");
 email.setMsg("This is a test mail ... :-)");
 email.addTo("foo@bar.com");
 email.send();
-...</pre>
+...</code></pre>
 </p>
 <p>
     <b>解決策:</b><br>
 次のチェックを追加して，サーバ証明書を確認してください:
-<pre>email.setSSLCheckServerIdentity(true);</pre>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>email.setSSLCheckServerIdentity(true);</code></pre>
 </p>
 <br>
 <p>
@@ -6050,7 +5965,7 @@ email.send();
 </p>
 <p>
     <b>脆弱なコード:</b><br>
-<pre>...
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>...
 String customerID = getAuthenticatedCustomerID(customerName, customerCredentials);
 String productCategory = request.getParameter("productCategory");
 ...
@@ -6060,7 +5975,7 @@ String query = "select * from invoices where productCategory = '"
             + customerID + "' order by '"
             + sortColumn + "' asc";
 SelectResult sdbResult = sdbc.select(new SelectRequest(query));
-</pre>
+</code></pre>
 </p>
 <p>
     <b>解決策:</b><br>
@@ -6094,14 +6009,14 @@ SelectResult sdbResult = sdbc.select(new SelectRequest(query));
 </p>
 <p>
     <b>脆弱なコード:</b><br>
-<pre>MyBean bean = ...;
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>MyBean bean = ...;
 HashMap map = new HashMap();
 Enumeration names = request.getParameterNames();
 while (names.hasMoreElements()) {
     String name = (String) names.nextElement();
     map.put(name, request.getParameterValues(name));
 }
-BeanUtils.populate(bean, map);</pre>
+BeanUtils.populate(bean, map);</code></pre>
 </p>
 <p>
     <b>解決策:</b><br>
@@ -6137,10 +6052,10 @@ BeanUtils.populate(bean, map);</pre>
 </p>
 <p>
     <b>脆弱なコード:</b><br>
-<pre>...
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>...
 String returnURL = request.getParameter("returnURL");
 Return new ActionForward(returnURL);
-...</pre>
+...</code></pre>
 </p>
 <p>
     <b>解決策:</b><br>
@@ -6176,10 +6091,10 @@ Return new ActionForward(returnURL);
 </p>
 <p>
     <b>脆弱なコード:</b><br>
-<pre>...
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>...
 String returnURL = request.getParameter("returnURL");
 return new ModelAndView(returnURL);
-...</pre>
+...</code></pre>
 </p>
 <p>
     <b>解決策:</b><br>
@@ -6215,10 +6130,10 @@ return new ModelAndView(returnURL);
 </p>
 <p>
     <b>脆弱なコード:</b><br>
-<pre>...
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>...
 String jspFile = request.getParameter("jspFile");
 request.getRequestDispatcher("/WEB-INF/jsps/" + jspFile + ".jsp").include(request, response);
-...</pre>
+...</code></pre>
 </p>
 <p>
     <b>解決策:</b><br>
@@ -6256,9 +6171,9 @@ request.getRequestDispatcher("/WEB-INF/jsps/" + jspFile + ".jsp").include(reques
 </p>
 <p>
     <b>脆弱なコード:</b><br>
-<pre>Formatter formatter = new Formatter(Locale.US);
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Formatter formatter = new Formatter(Locale.US);
 String format = "The customer: %s %s has the balance %4$." + userInput + "f";
-formatter.format(format, firstName, lastName, accountNo, balance);</pre>
+formatter.format(format, firstName, lastName, accountNo, balance);</code></pre>
 </p>
 <p>
     <b>解決策:</b><br>
@@ -6295,10 +6210,10 @@ Web アプリケーションがユーザー入力を適切にエスケープし�
 </p>
 <p>
     <b>脆弱なコード:</b><br>
-<pre>String lang = request.getParameter("lang");
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>String lang = request.getParameter("lang");
 GetMethod get = new GetMethod("http://www.host.com");
 get.setQueryString("lang=" + lang + "&user_id=" + user_id);
-get.execute();</pre>
+get.execute();</code></pre>
 <p>
     <b>解決策:</b><br>
 HTTP パラメータで使用する前にユーザー入力をエスケープします。
@@ -6352,6 +6267,7 @@ HTTP パラメータで使用する前にユーザー入力をエスケープし
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/fsb-custom.js"></script>
+<script src="js/prism.js"></script>
 
 <!-- Google Analytics -->
 <script type="text/javascript">

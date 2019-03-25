@@ -87,3 +87,7 @@ blockquote:before {
   font-size: 5em;
   z-index: 2;
 }
+
+pre {
+  font-size: 90%;
+}
