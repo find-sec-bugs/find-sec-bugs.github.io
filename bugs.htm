@@ -420,6 +420,10 @@
                             Spring Unvalidated Redirect (SPRING_UNVALIDATED_REDIRECT)
                         </a></li>
                         
+                        <li><a href="#SPRING_ENTITY_LEAK">
+                            Spring Entity Leak (SPRING_ENTITY_LEAK)
+                        </a></li>
+                        
                         <li><a href="#JSP_INCLUDE">
                             Dynamic JSP inclusion (JSP_INCLUDE)
                         </a></li>
@@ -1791,7 +1795,7 @@ Upgrade your implementation to the following, and configure <code>https.protocol
 </blockquote>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>class MyProprietaryMessageDigest extends MessageDigest {
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>MyProprietaryMessageDigest extends MessageDigest {
     @Override
     protected byte[] engineDigest() {
         [...]
@@ -4493,6 +4497,58 @@ public String redirect(@RequestParam("url") String url) {
     </section>
     
     <section>
+        <a class="anchor" name="SPRING_ENTITY_LEAK"></a>
+        <h2 class="page-header">
+            Spring Entity Leak
+            <a href="#SPRING_ENTITY_LEAK" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p class="text-muted"><em><small>Bug Pattern: <tt>SPRING_ENTITY_LEAK</tt></small></em></p>
+
+        
+            
+<p>
+    Persistent objects should never be returned/accepted by APIs. They might lead to leaking business logic over the UI, unauthorized tampering of
+    persistent objects in database.
+</p>
+<p>
+    <b>Persistence Annotations</b><br/>
+    1. javax.persistence.Entity (JPA)<br>
+    2. javax.jdo.spi.PersistenceCapable (JDO)<br>
+    3. org.springframework.data.mongodb.core.mapping.Document (Document database)<br>
+    <br/>
+</p>
+<p>
+    <b>Vulnerable Code:</b></br/>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@GetMapping("/sample/api")
+    public SampleEntityClass sampleMethod(Principal principal) {
+        Query query = getEntityManager().createQuery("select c from SampleTable c");
+        SampleEntityClass entityObject = query.getResultList().get(0);
+        return entityObject;
+    }</code></pre>
+<br>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@GetMapping("/sampletwo/api")
+public void update(SampleEntityClass updateEntity) {
+  ...
+}
+</code></pre>
+</p>
+<p>
+    <b>Solution/Countermeasures:</b><br/>
+    <ul>
+        <li>Data transfer objects should be used instead including only the parameters needed as input/response to/from the API.</li>
+        <li>Sensitive parameters should be removed properly before transferring to UI.</li>
+        <li>Data should be persisted in database only after proper sanitisation checks.</li>
+    </ul>
+</p>
+<br/>
+            
+        
+
+        <hr/>
+        <br/>
+    </section>
+    
+    <section>
         <a class="anchor" name="JSP_INCLUDE"></a>
         <h2 class="page-header">
             Dynamic JSP inclusion
@@ -6603,7 +6659,6 @@ Avoid using user controlled values in the format string argument.
 <p>
 <b>References</b><br/>
 <a href="http://cwe.mitre.org/data/definitions/134.html">CWE-134: Use of Externally-Controlled Format String</a><br/>
-<a href="https://wiki.sei.cmu.edu/confluence/pages/viewpage.action?pageId=88487836">CERT Oracle Coding Standard for Java: IDS06-J. Exclude unsanitized user input from format strings</a><br/>
 </p>
             
         
@@ -6817,7 +6872,7 @@ Disabling HTML escaping put the application at risk for Cross-Site Scripting (XS
 <footer id="footer" class="footer hidden-print">
     <div class="container text-center">
         <div>
-            Find Security Bugs 1.8.0
+            Find Security Bugs 1.9.0
             <span class="hide-xs">&middot;</span>
             Created by <a target="_blank" href="https://twitter.com/h3xstream">Philippe Arteau</a>
         </div>
