@@ -149,7 +149,7 @@
                         </a></li>
                         
                         <li><a href="#SCALA_PATH_TRAVERSAL_IN">
-                            Potential Path Traversal (file read) (SCALA_PATH_TRAVERSAL_IN)
+                            Potential Path Traversal using Scala API (file read) (SCALA_PATH_TRAVERSAL_IN)
                         </a></li>
                         
                         <li><a href="#COMMAND_INJECTION">
@@ -381,11 +381,11 @@
                         </a></li>
                         
                         <li><a href="#HARD_CODE_PASSWORD">
-                            Hard Coded Password (HARD_CODE_PASSWORD)
+                            Hard coded password (HARD_CODE_PASSWORD)
                         </a></li>
                         
                         <li><a href="#HARD_CODE_KEY">
-                            Hard Coded Key (HARD_CODE_KEY)
+                            Hard coded key (HARD_CODE_KEY)
                         </a></li>
                         
                         <li><a href="#UNSAFE_HASH_EQUALS">
@@ -420,8 +420,12 @@
                             Spring Unvalidated Redirect (SPRING_UNVALIDATED_REDIRECT)
                         </a></li>
                         
-                        <li><a href="#SPRING_ENTITY_LEAK">
-                            Spring Entity Leak (SPRING_ENTITY_LEAK)
+                        <li><a href="#ENTITY_LEAK">
+                            Unexpected property leak (ENTITY_LEAK)
+                        </a></li>
+                        
+                        <li><a href="#ENTITY_MASS_ASSIGNMENT">
+                            Mass assignment (ENTITY_MASS_ASSIGNMENT)
                         </a></li>
                         
                         <li><a href="#JSP_INCLUDE">
@@ -517,7 +521,7 @@
                         </a></li>
                         
                         <li><a href="#JSP_XSLT">
-                            A malicious XSLT could be provided (JSP_XSLT)
+                            A malicious XSLT could be provided to the JSP tag (JSP_XSLT)
                         </a></li>
                         
                         <li><a href="#MALICIOUS_XSLT">
@@ -618,6 +622,14 @@
                         
                         <li><a href="#WICKET_XSS1">
                             Disabling HTML escaping put the application at risk for XSS (WICKET_XSS1)
+                        </a></li>
+                        
+                        <li><a href="#SAML_IGNORE_COMMENTS">
+                            Ignoring XML comments in SAML may lead to authentication bypass (SAML_IGNORE_COMMENTS)
+                        </a></li>
+                        
+                        <li><a href="#OVERLY_PERMISSIVE_FILE_PERMISSION">
+                            Overly permissive file permission (OVERLY_PERMISSIVE_FILE_PERMISSION)
                         </a></li>
                         
                     </ul>
@@ -810,8 +822,8 @@ The HTTP header Content-Type can be controlled by the client. As such, its value
 
         
             
-<p>The hostname header can be controlled by the client. As such, its value should not be used in any security critical decisions. 
-Both <code>ServletRequest.getServerName()</code> and <code>HttpServletRequest.getHeader("Host")</code> have the same 
+<p>The hostname header can be controlled by the client. As such, its value should not be used in any security critical decisions.
+Both <code>ServletRequest.getServerName()</code> and <code>HttpServletRequest.getHeader("Host")</code> have the same
 behavior which is to extract the <code>Host</code> header.</p>
 <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>GET /testpage HTTP/1.1
 Host: www.example.com
@@ -848,7 +860,7 @@ The method <a href="http://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpS
 typically returns the value of the cookie <code>JSESSIONID</code>. This value is normally only accessed by the session management logic and not normal developer code.
 </p>
 <p>
-The value passed to the client is generally an alphanumeric value (e.g., <code>JSESSIONID=jp6q31lq2myn</code>). However, the value can be altered by the client. 
+The value passed to the client is generally an alphanumeric value (e.g., <code>JSESSIONID=jp6q31lq2myn</code>). However, the value can be altered by the client.
 The following HTTP request illustrates the potential modification.
 <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>GET /somePage HTTP/1.1
 Host: yourwebsite.com
@@ -856,8 +868,8 @@ User-Agent: Mozilla/5.0
 Cookie: JSESSIONID=Any value of the user&#39;s choice!!??'''&quot;&gt;
 </code></pre>
 </p>
-<p>As such, the JSESSIONID should only be used to see if its value matches an existing session ID. If it does not, the user should be 
-considered an unauthenticated user. In addition, the session ID value should never be logged. If it is, then the log file could contain 
+<p>As such, the JSESSIONID should only be used to see if its value matches an existing session ID. If it does not, the user should be
+considered an unauthenticated user. In addition, the session ID value should never be logged. If it is, then the log file could contain
 valid active session IDs, allowing an insider to hijack any sessions whose IDs have been logged and are still active.
 </p>
 <br/>
@@ -887,9 +899,9 @@ valid active session IDs, allowing an insider to hijack any sessions whose IDs h
 <p>The query string is the concatenation of the GET parameter names and values. Parameters other than those intended can
 be passed in.</p>
 <p>For the URL request <code>/app/servlet.htm?a=1&b=2</code>, the query string extract will be <code>a=1&b=2</code></p>
-<p>Just as is true for individual parameter values retrieved via methods like <code>HttpServletRequest.getParameter()</code>, 
+<p>Just as is true for individual parameter values retrieved via methods like <code>HttpServletRequest.getParameter()</code>,
 the value obtained from <code>HttpServletRequest.getQueryString()</code> should be considered unsafe.
-You may need to validate or sanitize anything pulled from the query string before passing it to sensitive APIs. 
+You may need to validate or sanitize anything pulled from the query string before passing it to sensitive APIs.
 </p>
 <br/>
 <p>
@@ -913,8 +925,8 @@ You may need to validate or sanitize anything pulled from the query string befor
 
         
             
-<p>Request headers can easily be altered by the requesting user. In general, no assumption should be made that 
-the request came from a regular browser without modification by an attacker. As such, it is recommended that you 
+<p>Request headers can easily be altered by the requesting user. In general, no assumption should be made that
+the request came from a regular browser without modification by an attacker. As such, it is recommended that you
 not trust this value in any security decisions you make with respect to a request.</p>
 <br/>
 <p>
@@ -1023,7 +1035,7 @@ and referenced by the user's session cookie. See HttpSession (<code>HttpServletR
 
         
             
-<p>A file is opened to read its content. The filename comes from an <b>input</b> parameter. 
+<p>A file is opened to read its content. The filename comes from an <b>input</b> parameter.
 If an unfiltered parameter is passed to this file API, files from an arbitrary filesystem location could be read.</p>
 <p>This rule identifies <b>potential</b> path traversal vulnerabilities. In many cases, the constructed file path cannot be controlled
 by the user. If that is the case, the reported instance is a false positive.</p>
@@ -1088,7 +1100,7 @@ public Response getImage(@javax.ws.rs.PathParam("image") String image) {
 
         
             
-<p>A file is opened to write to its contents. The filename comes from an <b>input</b> parameter. 
+<p>A file is opened to write to its contents. The filename comes from an <b>input</b> parameter.
 If an unfiltered parameter is passed to this file API, files at an arbitrary filesystem location could be modified.</p>
 <p>This rule identifies <b>potential</b> path traversal vulnerabilities. In many cases, the constructed file path cannot be controlled
 by the user. If that is the case, the reported instance is a false positive.</p>
@@ -1110,7 +1122,7 @@ by the user. If that is the case, the reported instance is a false positive.</p>
     <section>
         <a class="anchor" name="SCALA_PATH_TRAVERSAL_IN"></a>
         <h2 class="page-header">
-            Potential Path Traversal (file read)
+            Potential Path Traversal using Scala API (file read)
             <a href="#SCALA_PATH_TRAVERSAL_IN" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
         </h2>
         <p class="text-muted"><em><small>Bug Pattern: <tt>SCALA_PATH_TRAVERSAL_IN</tt></small></em></p>
@@ -1243,11 +1255,11 @@ r.exec("/bin/sh -c some_tool" + input);</code></pre>
 <p>Some <code>FilenameUtils'</code> methods don't filter NULL bytes (<code>0x00</code>).</p>
 <p>If a null byte is injected into a filename, if this filename is passed to the underlying OS, the file retrieved will be the
 name of the file that is specified prior to the NULL byte, since at the OS level, all strings are terminated by a null byte even
-though Java itself doesn't care about null bytes or treat them special. This OS behavior can be used to bypass filename validation 
+though Java itself doesn't care about null bytes or treat them special. This OS behavior can be used to bypass filename validation
 that looks at the end of the filename (e.g., ends with <code>".log"</code>) to make sure it's a safe file to access.</p>
 <p>To fix this, two things are recommended:
 <ul>
-<li>Upgrade to Java 7 update 40 or later, or Java 8+ since  
+<li>Upgrade to Java 7 update 40 or later, or Java 8+ since
 <a href="http://bugs.java.com/bugdatabase/view_bug.do?bug_id=8014846">NULL byte injection in filenames is fixed in those versions</a>.</li>
 <li>Strongly validate any filenames provided by untrusted users to make sure they are valid (i.e., don't contain null, don't include path characters, etc).</li>
 </ul>
@@ -1472,7 +1484,7 @@ sc.init(kmf.getKeyManagers(), tmf.getTrustManagers(),null);
 
         
             
-<p>A Tapestry endpoint was discovered at application startup. Tapestry apps are structured with a backing Java class and a corresponding 
+<p>A Tapestry endpoint was discovered at application startup. Tapestry apps are structured with a backing Java class and a corresponding
 Tapestry Markup Language page (a <code>.tml</code> file) for each page. When a request is received, the GET/POST parameters are mapped to specific
 inputs in the backing Java class. The mapping is either done with field name:</p>
 <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'><code>
@@ -1492,7 +1504,7 @@ inputs in the backing Java class. The mapping is either done with field name:</p
     [...]
 </code></code></pre>
 <p>The page is mapped to the view <code>/resources/package/PageName.tml</code>.</p>
-<p>Each Tapestry page in this application should be researched to make sure all inputs that are automatically 
+<p>Each Tapestry page in this application should be researched to make sure all inputs that are automatically
 mapped in this way are properly validated before they are used.</p>
 <br/>
 <p>
@@ -1517,9 +1529,9 @@ mapped in this way are properly validated before they are used.</p>
 
         
             
-<p>This class represents a Wicket WebPage. Input is automatically read from a PageParameters instance passed to the constructor. 
+<p>This class represents a Wicket WebPage. Input is automatically read from a PageParameters instance passed to the constructor.
 The current page is mapped to the view <code>/package/WebPageName.html</code>.</p>
-<p>Each Wicket page in this application should be researched to make sure all inputs that are automatically 
+<p>Each Wicket page in this application should be researched to make sure all inputs that are automatically
 mapped in this way are properly validated before they are used.</p>
 <br/>
 <p>
@@ -1840,8 +1852,8 @@ sha256Digest.update(password.getBytes());</code></pre>
 <li><code>"../../../config/overide_file"</code></li>
 <li><code>"shell.jsp\u0000expected.gif"</code></li>
 </ul>
-<p>Therefore, such values should not be passed directly to the filesystem API. If acceptable, the application should generate its 
-own file names and use those. Otherwise, the provided filename should be properly validated to ensure it's properly structured, 
+<p>Therefore, such values should not be passed directly to the filesystem API. If acceptable, the application should generate its
+own file names and use those. Otherwise, the provided filename should be properly validated to ensure it's properly structured,
 contains no unauthorized path characters (e.g., / \), and refers to an authorized file.</p>
 <br/>
 <p>
@@ -1877,17 +1889,17 @@ contains no unauthorized path characters (e.g., / \), and refers to an authorize
     For example, for the regex: <code>^(a+)+$</code>, the input "<code>aaaaaaaaaaaaaaaaX</code>" will cause the regex engine to analyze 65536
 different paths.<sup>[1] Example taken from OWASP references</sup></p>
 <p>
-Therefore, it is possible that a single request may cause a large amount of computation on the server side. 
-The problem with this regex, and others like it, is that there are two different ways the same input character can be accepted by the 
+Therefore, it is possible that a single request may cause a large amount of computation on the server side.
+The problem with this regex, and others like it, is that there are two different ways the same input character can be accepted by the
 Regex due to the <code>+</code> (or a <code>*</code>) inside the parenthesis, and the <code>+</code> (or a <code>*</code>) outside the parenthesis. The way this is written, either <code>+</code> could
-consume the character 'a'. To fix this, the regex should be rewritten to eliminate the ambiguity. For example, this could simply be 
+consume the character 'a'. To fix this, the regex should be rewritten to eliminate the ambiguity. For example, this could simply be
 rewritten as: <code>^a+$</code>, which is presumably what the author meant anyway (any number of a's). Assuming that's what the original
 regex meant, this new regex can be evaluated quickly, and is not subject to ReDOS.
 </p>
 <br/>
 <p>
 <b>References</b><br/>
-<a href="http://www.jroller.com/sebastianKuebeck/entry/detecting_and_preventing_redos_vulnerabilities">Sebastian Kubeck's Weblog: Detecting and Preventing ReDoS Vulnerabilities</a><br/>
+<a href="https://sebastiankuebeck.wordpress.com/2011/03/01/detecting-and-preventing-redos-vulnerabilities/">Sebastian Kubeck's Weblog: Detecting and Preventing ReDoS Vulnerabilities</a><br/>
 <sup>[1]</sup> <a href="https://www.owasp.org/index.php/Regular_expression_Denial_of_Service_-_ReDoS">OWASP: Regular expression Denial of Service</a><br/>
 <a href="http://cwe.mitre.org/data/definitions/400.html">CWE-400: Uncontrolled Resource Consumption ('Resource Exhaustion')</a>
 </p>
@@ -2596,7 +2608,7 @@ could be exposed. This could allow an attacker to access unauthorized data or ma
         
             
 <p>This class is a Struts 1 Action.</p>
-<p>Once a request is routed to this controller, a Form object will automatically be instantiated that contains the HTTP parameters. 
+<p>Once a request is routed to this controller, a Form object will automatically be instantiated that contains the HTTP parameters.
 The use of these parameters should be reviewed to make sure they are used safely.</p>
 
         
@@ -2617,7 +2629,7 @@ The use of these parameters should be reviewed to make sure they are used safely
             
 <p>In Struts 2, the endpoints are Plain Old Java Objects (POJO) which means no Interface/Class needs to be implemented/extended.</p>
 <p>When a request is routed to its controller (like the selected class), the supplied HTTP parameters are automatically mapped to setters for
-the class. Therefore, all setters of this class should be considered as untrusted input even if the form doesn't include those values. 
+the class. Therefore, all setters of this class should be considered as untrusted input even if the form doesn't include those values.
 An attacker can simply provide additional values in the request, and they will be set in the object anyway, as long as that object has
 such a setter. The use of these parameters should be reviewed to make sure they are used safely.</p>
 
@@ -2955,9 +2967,11 @@ q.execute();</code></pre>
 <br/>
 <p>
 <b>References (Hibernate)</b><br/>
+<a href="http://cwe.mitre.org/data/definitions/564.html">CWE-564: SQL Injection: Hibernate</a><br/>
 <a href="https://docs.jboss.org/hibernate/orm/3.3/reference/en/html/querycriteria.html">Hibernate Documentation: Query Criteria</a><br/>
 <a href="https://docs.jboss.org/hibernate/orm/3.2/api/org/hibernate/Query.html">Hibernate Javadoc: Query Object</a><br/>
 <a href="http://blog.h3xstream.com/2014/02/hql-for-pentesters.html">HQL for pentesters</a>: Guideline to test if the suspected code is exploitable.<br/>
+
 <b>References (SQL injection)</b><br/>
 <a href="http://projects.webappsec.org/w/page/13246963/SQL%20Injection">WASC-19: SQL Injection</a><br/>
 <a href="http://capec.mitre.org/data/definitions/66.html">CAPEC-66: SQL Injection</a><br/>
@@ -3705,7 +3719,7 @@ The project <a href="https://github.com/javabeanz/owasp-security-logging">OWASP 
             
 <p>
     Allowing external control of system settings can disrupt service or cause an application
-    to behave in unexpected, and potentially malicious ways. 
+    to behave in unexpected, and potentially malicious ways.
     An attacker could cause an error by providing a nonexistent catalog name
     or connect to an unauthorized portion of the database.
 </p>
@@ -3736,7 +3750,7 @@ The project <a href="https://github.com/javabeanz/owasp-security-logging">OWASP 
 
         
             
-<p>When converting a byte array containing a hash signature to a human readable string, a conversion mistake can be made if 
+<p>When converting a byte array containing a hash signature to a human readable string, a conversion mistake can be made if
 the array is read byte by byte. The following sample illustrates the use of the method <code>Integer.toHexString()</code> which will trim any leading zeroes
 from each byte of the computed hash value.
 <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -3750,7 +3764,7 @@ for(byte b :resultBytes) {
 return stringBuilder.toString();</code></pre>
 </p>
 <p>
-This mistake weakens the hash value computed since it introduces more collisions. 
+This mistake weakens the hash value computed since it introduces more collisions.
 For example, the hash values "0x0679" and "0x6709" would both output as "679" for the above function.
 </p>
 
@@ -3807,7 +3821,7 @@ In this situation, the method <code>Integer.toHexString()</code> should be repla
         
             
 <p>
-The NullCipher is rarely used intentionally in production applications. It implements the Cipher interface by returning ciphertext 
+The NullCipher is rarely used intentionally in production applications. It implements the Cipher interface by returning ciphertext
 identical to the supplied plaintext. In a few contexts, such as testing, a NullCipher may be appropriate.
 </p>
 <p>
@@ -4035,7 +4049,7 @@ The code should be replaced with:<br/>
     <section>
         <a class="anchor" name="HARD_CODE_PASSWORD"></a>
         <h2 class="page-header">
-            Hard Coded Password
+            Hard coded password
             <a href="#HARD_CODE_PASSWORD" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
         </h2>
         <p class="text-muted"><em><small>Bug Pattern: <tt>HARD_CODE_PASSWORD</tt></small></em></p>
@@ -4070,7 +4084,7 @@ props.put(Context.SECURITY_CREDENTIALS, "p@ssw0rd");</code></pre>
     <section>
         <a class="anchor" name="HARD_CODE_KEY"></a>
         <h2 class="page-header">
-            Hard Coded Key
+            Hard coded key
             <a href="#HARD_CODE_KEY" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
         </h2>
         <p class="text-muted"><em><small>Bug Pattern: <tt>HARD_CODE_KEY</tt></small></em></p>
@@ -4080,7 +4094,7 @@ props.put(Context.SECURITY_CREDENTIALS, "p@ssw0rd");</code></pre>
 <p>
 Cryptographic keys should not be kept in the source code. The source code can be widely shared in an enterprise environment, and is
 certainly shared in open source. To be managed safely, passwords and secret keys should be stored in separate configuration files or keystores.
-(Hard coded passwords are reported separately by <i>Hard Coded Password</i> pattern)
+(Hard coded passwords are reported separately by the <i>Hard coded password</i> pattern)
 </p>
 <p>
 <p><b>Vulnerable Code:</b><br/>
@@ -4089,7 +4103,7 @@ certainly shared in open source. To be managed safely, passwords and secret keys
 SecretKeySpec spec = new SecretKeySpec(key, "AES");
 Cipher aes = Cipher.getInstance("AES");
 aes.init(Cipher.ENCRYPT_MODE, spec);
-return aesCipher.doFinal(secretData);</code></pre> 
+return aesCipher.doFinal(secretData);</code></pre>
 </p>
 <br/>
 <p>
@@ -4497,38 +4511,43 @@ public String redirect(@RequestParam("url") String url) {
     </section>
     
     <section>
-        <a class="anchor" name="SPRING_ENTITY_LEAK"></a>
+        <a class="anchor" name="ENTITY_LEAK"></a>
         <h2 class="page-header">
-            Spring Entity Leak
-            <a href="#SPRING_ENTITY_LEAK" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+            Unexpected property leak
+            <a href="#ENTITY_LEAK" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
         </h2>
-        <p class="text-muted"><em><small>Bug Pattern: <tt>SPRING_ENTITY_LEAK</tt></small></em></p>
+        <p class="text-muted"><em><small>Bug Pattern: <tt>ENTITY_LEAK</tt></small></em></p>
 
         
             
 <p>
-    Persistent objects should never be returned/accepted by APIs. They might lead to leaking business logic over the UI, unauthorized tampering of
+    Persistent objects should never be returned by APIs. They might lead to leaking business logic over the UI, unauthorized tampering of
     persistent objects in database.
 </p>
 <p>
-    <b>Persistence Annotations</b><br/>
-    1. javax.persistence.Entity (JPA)<br>
-    2. javax.jdo.spi.PersistenceCapable (JDO)<br>
-    3. org.springframework.data.mongodb.core.mapping.Document (Document database)<br>
-    <br/>
-</p>
-<p>
     <b>Vulnerable Code:</b></br/>
-<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@GetMapping("/sample/api")
-    public SampleEntityClass sampleMethod(Principal principal) {
-        Query query = getEntityManager().createQuery("select c from SampleTable c");
-        SampleEntityClass entityObject = query.getResultList().get(0);
-        return entityObject;
-    }</code></pre>
-<br>
-<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@GetMapping("/sampletwo/api")
-public void update(SampleEntityClass updateEntity) {
-  ...
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@javax.persistence.Entity
+class UserEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String username;
+
+    private String password;
+}
+
+[...]
+@Controller
+class UserController {
+
+    @GetMapping("/user/{id}")
+    public UserEntity getUser(@PathVariable("id") String id) {
+
+        return userService.findById(id).get(); //Return the user entity with ALL fields.
+    }
+
 }
 </code></pre>
 </p>
@@ -4540,7 +4559,128 @@ public void update(SampleEntityClass updateEntity) {
         <li>Data should be persisted in database only after proper sanitisation checks.</li>
     </ul>
 </p>
+<p>
+    <b>Spring MVC Solution:</b><br/>
+    In Spring specifically, you can apply the following solution to allow or disallow specific fields.
+
+        <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@Controller
+class UserController {
+
+   @InitBinder
+   public void initBinder(WebDataBinder binder, WebRequest request)
+   {
+      binder.setAllowedFields(["username","firstname","lastname"]);
+   }
+
+}
+    </code></pre>
+</p>
+
+<p>
+<b>References</b><br/>
+<a href="https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure">OWASP Top 10-2017 A3: Sensitive Data Exposure</a><br/>
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Mass_Assignment_Cheat_Sheet.html#spring-mvc">OWASP Cheat Sheet: Mass Assignment</a><br/>
+<a href="https://cwe.mitre.org/data/definitions/212.html">CWE-212: Improper Cross-boundary Removal of Sensitive Data</a><br/>
+<a href="https://cwe.mitre.org/data/definitions/213.html">CWE-213: Intentional Information Exposure</a><br/>
+
+
+</p>
+
+            
+        
+
+        <hr/>
+        <br/>
+    </section>
+    
+    <section>
+        <a class="anchor" name="ENTITY_MASS_ASSIGNMENT"></a>
+        <h2 class="page-header">
+            Mass assignment
+            <a href="#ENTITY_MASS_ASSIGNMENT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p class="text-muted"><em><small>Bug Pattern: <tt>ENTITY_MASS_ASSIGNMENT</tt></small></em></p>
+
+        
+            
+<p>
+    Persistent objects should never be returned by APIs. They might lead to leaking business logic over the UI, unauthorized tampering of
+    persistent objects in database.
+</p>
+<p>
+    <b>Vulnerable Code:</b></br/>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@javax.persistence.Entity
+class UserEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String username;
+
+    private String password;
+
+    private Long role;
+}
+
+[...]
+@Controller
+class UserController {
+
+    @PutMapping("/user/")
+    @ResponseStatus(value = HttpStatus.OK)
+    public void update(UserEntity user) {
+
+        userService.save(user); //ALL fields from the user can be altered
+    }
+
+}
+</code></pre>
+</p>
+<p>
+    <b>General Guidelines:</b><br/>
+    <ul>
+        <li>Data transfer objects should be used instead including only the parameters needed as input/response to/from the API.</li>
+        <li>Sensitive parameters should be removed properly before transferring to UI.</li>
+        <li>Data should be persisted in database only after proper sanitisation checks.</li>
+    </ul>
+</p>
+<p>
+    <b>Spring MVC Solution:</b><br/>
+    In Spring specifically, you can apply the following solution to allow or disallow specific fields.<br/>
 <br/>
+With whitelist:<br/>
+        <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@Controller
+class UserController {
+
+   @InitBinder
+   public void initBinder(WebDataBinder binder, WebRequest request)
+   {
+      binder.setAllowedFields(["username","password"]);
+   }
+
+}
+    </code></pre>
+<br/>
+With a blacklist:<br/>
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@Controller
+class UserController {
+
+   @InitBinder
+   public void initBinder(WebDataBinder binder, WebRequest request)
+   {
+      binder.setDisallowedFields(["role"]);
+   }
+
+}
+    </code></pre>
+</p>
+
+<p>
+<b>References</b><br/>
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Mass_Assignment_Cheat_Sheet.html#spring-mvc">OWASP Cheat Sheet: Mass Assignment</a><br/>
+<a href="https://cwe.mitre.org/data/definitions/915.html">CWE-915: Improperly Controlled Modification of Dynamically-Determined Object Attributes</a><br/>
+</p>
             
         
 
@@ -4696,7 +4836,7 @@ String taintedInput = (String) request.getAttribute("input");
     </code></pre>
 </p>
 <p>
-The best defense against XSS is context sensitive output encoding like the example above. There are typically 4 contexts to consider: 
+The best defense against XSS is context sensitive output encoding like the example above. There are typically 4 contexts to consider:
 HTML, JavaScript, CSS (styles), and URLs. Please follow the XSS protection rules defined in the OWASP XSS Prevention Cheat Sheet,
 which explains these defenses in significant detail.
 </p>
@@ -4746,7 +4886,7 @@ A potential XSS was found. It could be used to execute unwanted JavaScript in a 
 }</code></pre>
 </p>
 <p>
-The best defense against XSS is context sensitive output encoding like the example above. There are typically 4 contexts to consider: 
+The best defense against XSS is context sensitive output encoding like the example above. There are typically 4 contexts to consider:
 HTML, JavaScript, CSS (styles), and URLs. Please follow the XSS protection rules defined in the OWASP XSS Prevention Cheat Sheet,
 which explains these defenses in significant detail.
 </p>
@@ -4885,8 +5025,8 @@ public void encrypt(String message) throws Exception {
         
             
 <p>An authentication cipher mode which provides better confidentiality of the encrypted data should be used instead of Electronic Code Book (ECB) mode,
-which does not provide good confidentiality. Specifically, ECB mode produces the same output for the same input each time. So, 
-for example, if a user is sending a password, the encrypted value is the same each time. This allows an attacker to intercept 
+which does not provide good confidentiality. Specifically, ECB mode produces the same output for the same input each time. So,
+for example, if a user is sending a password, the encrypted value is the same each time. This allows an attacker to intercept
 and replay the data.</p>
 <p>
 To fix this, something like Galois/Counter Mode (GCM) should be used instead.
@@ -4972,7 +5112,7 @@ byte[] cipherText = c.doFinal(plainText);</code></pre>
         
             
 <p>
-    The ciphertext produced is susceptible to alteration by an adversary. This mean that the cipher provides no way to detect that the 
+    The ciphertext produced is susceptible to alteration by an adversary. This mean that the cipher provides no way to detect that the
     data has been tampered with. If the ciphertext can be controlled by an attacker, it could be altered without detection.
 </p>
 <p>
@@ -5762,7 +5902,7 @@ safe location rather than using direct user input.
     <section>
         <a class="anchor" name="JSP_XSLT"></a>
         <h2 class="page-header">
-            A malicious XSLT could be provided
+            A malicious XSLT could be provided to the JSP tag
             <a href="#JSP_XSLT" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
         </h2>
         <p class="text-muted"><em><small>Bug Pattern: <tt>JSP_XSLT</tt></small></em></p>
@@ -5970,15 +6110,19 @@ Path traversal <sup>[3][4]</sup> are not possible.
 <p>
     <b>Vulnerable Code:</b>
 <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>new URL(String url).openConnection()
-new URL(String url).openStream()
-new URL(String url).getContent()
+</code></pre>
+
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>new URL(String url).openStream()
+</code></pre>
+
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>new URL(String url).getContent()
 </code></pre>
 </p>
 <p>
     <b>Solution/Countermeasures:</b><br/>
     <ul>
         <li>Don't accept URL destinations from users</li>
-        <li>Accept a destination key, and use it to look up the target (legal) destination</li>
+        <li>Accept a destination key, and use it to look up the target destination associate with the key</li>
         <li>White list URLs (if possible)</li>
         <li>Validate that the beginning of the URL is part of a white list</li>
     </ul>
@@ -6366,8 +6510,8 @@ URL rewriting has significant security risks. Since session ID appears in the UR
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>out.println("Click &lt;a href=" + 
-                res.encodeURL(HttpUtils.getRequestURL(req).toString()) + 
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>out.println("Click &lt;a href=" +
+                res.encodeURL(HttpUtils.getRequestURL(req).toString()) +
                 "&gt;here&lt;/a&gt;");</code></pre>
 </p>
 <p>
@@ -6535,9 +6679,9 @@ An attacker may be able to forge a request parameter to match sensitive file loc
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>... 
-String returnURL = request.getParameter("returnURL"); 
-Return new ActionForward(returnURL); 
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>...
+String returnURL = request.getParameter("returnURL");
+Return new ActionForward(returnURL);
 ...</code></pre>
 </p>
 <p>
@@ -6572,9 +6716,9 @@ An attacker may be able to forge a request parameter to match sensitive file loc
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>... 
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>...
 String returnURL = request.getParameter("returnURL");
-return new ModelAndView(returnURL); 
+return new ModelAndView(returnURL);
 ...</code></pre>
 </p>
 <p>
@@ -6726,8 +6870,8 @@ The sensitive information may be valuable information on its own (such as a pass
 </p>
 <p>
 <b>References</b><br/>
-
-<a href="https://cwe.mitre.org/data/definitions/209.html">CWE-209: Information Exposure Through an Error Message</a>
+<a href="https://cwe.mitre.org/data/definitions/209.html">CWE-209: Information Exposure Through an Error Message</a><br/>
+<a href="https://cwe.mitre.org/data/definitions/211.html">CWE-211: Information Exposure Through Externally-Generated Error Message</a><br/>
 </p>
             
         
@@ -6851,6 +6995,145 @@ Disabling HTML escaping put the application at risk for Cross-Site Scripting (XS
         <br/>
     </section>
     
+    <section>
+        <a class="anchor" name="SAML_IGNORE_COMMENTS"></a>
+        <h2 class="page-header">
+            Ignoring XML comments in SAML may lead to authentication bypass
+            <a href="#SAML_IGNORE_COMMENTS" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p class="text-muted"><em><small>Bug Pattern: <tt>SAML_IGNORE_COMMENTS</tt></small></em></p>
+
+        
+            
+<p>
+Security Assertion Markup Language (SAML) is a single sign-on protocol that that used XML.
+The SAMLResponse message include statements that describe the authenticated user.
+If a user manage to place XML comments (<code>&lt;!-- --&gt;</code>), it may caused issue in the way the parser extract literal value.
+</p>
+
+<p>
+    For example, let's take the following XML section:
+    <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;saml:Subject&gt;&lt;saml:NameID&gt;admin@domain.com&lt;!----&gt;.evil.com&lt;/saml:NameID&gt;&lt;/saml:Subject&gt;</code></pre>
+
+    The user identity is <code>"admin@domain.com&lt;!----&gt;.evil.com"</code> but it is in fact a text node <code>"admin@domain.com"</code>, a comment <code>""</code> and a text node <code>".evil.com"</code>.
+    When extracting the NameID, the service provider implementation might take first text node or the last one.
+</p>
+
+<p>
+<b>Vulnerable Code:</b><br/>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@Bean
+ParserPool parserPool1() {
+    BasicParserPool pool = new BasicParserPool();
+    pool.setIgnoreComments(false);
+    return pool;
+}
+</code></pre>
+</p>
+
+<p>
+<b>Solution:</b><br/>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>@Bean
+ParserPool parserPool1() {
+    BasicParserPool pool = new BasicParserPool();
+    pool.setIgnoreComments(true);
+    return pool;
+}
+</code></pre>
+</p>
+
+
+<p>
+<b>References</b><br/>
+<a href="https://duo.com/blog/duo-finds-saml-vulnerabilities-affecting-multiple-implementations">Duo Finds SAML Vulnerabilities Affecting Multiple Implementations</a><br/>
+<a href="https://spring.io/blog/2018/03/01/spring-security-saml-and-this-week-s-saml-vulnerability">Spring Security SAML and this week's SAML Vulnerability</a><br/>
+
+</p>
+
+
+            
+        
+
+        <hr/>
+        <br/>
+    </section>
+    
+    <section>
+        <a class="anchor" name="OVERLY_PERMISSIVE_FILE_PERMISSION"></a>
+        <h2 class="page-header">
+            Overly permissive file permission
+            <a href="#OVERLY_PERMISSIVE_FILE_PERMISSION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p class="text-muted"><em><small>Bug Pattern: <tt>OVERLY_PERMISSIVE_FILE_PERMISSION</tt></small></em></p>
+
+        
+            
+<p>
+It is generally a bad practices to set overly permissive file permission such as read+write+exec for all users.
+If the file affected is a configuration, a binary, a script or sensitive data, it can lead to privilege escalation or information leakage.
+</p>
+<p>
+It is possible that another service, running on the same host as your application, gets compromised.
+Services typically run under a different user. A compromised service account could be use to read your configuration, add execution instruction to scripts or alter the data file.
+To limite the damage from other services or local users, you should limited to permission of your application files.
+</p>
+
+<p>
+<b>Vulnerable Code 1 (symbolic notation):</b><br/>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Files.setPosixFilePermissions(configPath, PosixFilePermissions.fromString("rw-rw-rw-"));
+</code></pre>
+</p>
+
+<p>
+<b>Solution 1 (symbolic notation):</b><br/>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Files.setPosixFilePermissions(configPath, PosixFilePermissions.fromString("rw-rw----"));
+</code></pre>
+</p>
+
+
+<p>
+<b>Vulnerable Code 2 (Object-oriented implementation):</b><br/>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Set&lt;PosixFilePermission&gt; perms = new HashSet&lt;&gt;();
+perms.add(PosixFilePermission.OWNER_READ);
+perms.add(PosixFilePermission.OWNER_WRITE);
+perms.add(PosixFilePermission.OWNER_EXECUTE);
+
+perms.add(PosixFilePermission.GROUP_READ);
+perms.add(PosixFilePermission.GROUP_WRITE);
+perms.add(PosixFilePermission.GROUP_EXECUTE);
+
+perms.add(PosixFilePermission.OTHERS_READ);
+perms.add(PosixFilePermission.OTHERS_WRITE);
+perms.add(PosixFilePermission.OTHERS_EXECUTE);
+</code></pre>
+</p>
+
+<p>
+<b>Solution 2 (Object-oriented implementation):</b><br/>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Set&lt;PosixFilePermission&gt; perms = new HashSet&lt;&gt;();
+perms.add(PosixFilePermission.OWNER_READ);
+perms.add(PosixFilePermission.OWNER_WRITE);
+perms.add(PosixFilePermission.OWNER_EXECUTE);
+
+perms.add(PosixFilePermission.GROUP_READ);
+perms.add(PosixFilePermission.GROUP_WRITE);
+perms.add(PosixFilePermission.GROUP_EXECUTE);
+</code></pre>
+</p>
+
+<p>
+<b>References</b><br/>
+<a href="https://cwe.mitre.org/data/definitions/732.html">CWE-732: Incorrect Permission Assignment for Critical Resource</a><br/>
+<a href="https://payatu.com/guide-linux-privilege-escalation/">A guide to Linux Privilege Escalation</a><br/>
+<a href="https://en.wikipedia.org/wiki/File_system_permissions">File system permissions</a><br/>
+</p>
+
+            
+        
+
+        <hr/>
+        <br/>
+    </section>
+    
         </div>
 
         <div class="col-md-1" id="rightCol">
@@ -6872,7 +7155,7 @@ Disabling HTML escaping put the application at risk for Cross-Site Scripting (XS
 <footer id="footer" class="footer hidden-print">
     <div class="container text-center">
         <div>
-            Find Security Bugs 1.9.0
+            Find Security Bugs 1.10.0
             <span class="hide-xs">&middot;</span>
             Created by <a target="_blank" href="https://twitter.com/h3xstream">Philippe Arteau</a>
         </div>
