@@ -532,6 +532,10 @@
                             Freemarker の潜在的なテンプレートインジェクション (TEMPLATE_INJECTION_FREEMARKER)
                         </a></li>
                         
+                        <li><a href="#TEMPLATE_INJECTION_PEBBLE">
+                            Pebble の潜在的なテンプレートインジェクション (TEMPLATE_INJECTION_PEBBLE)
+                        </a></li>
+                        
                         <li><a href="#PERMISSIVE_CORS">
                             過剰に許可される CORS ポリシー (PERMISSIVE_CORS)
                         </a></li>
@@ -5680,6 +5684,46 @@ template.process(data, swOut);</code></pre>
     </section>
     
     <section>
+        <a class="anchor" name="TEMPLATE_INJECTION_PEBBLE"></a>
+        <h2 class="page-header">
+            Pebble の潜在的なテンプレートインジェクション
+            <a href="#TEMPLATE_INJECTION_PEBBLE" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p class="text-muted"><em><small>Bug Pattern: <tt>TEMPLATE_INJECTION_PEBBLE</tt></small></em></p>
+
+        
+            
+<p>
+Pebble テンプレートエンジンは強力です。条件文，ループ，外部呼び出しなどのロジックを追加することができます。
+テンプレート操作をサンドボックスにすることは設計されていません。テンプレートを制御する悪意のあるユーザーは，サーバー側で悪意のあるコードを実行する可能性があります。
+Pebble テンプレートはスクリプトとして見なすべきです。
+</p>
+<p>
+    <b>脆弱なコード:</b>
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>PebbleTemplate compiledTemplate = engine.getLiteralTemplate(inputFile);
+[...]
+compiledTemplate.evaluate(writer, context);</code></pre>
+</p>
+<p>
+    <b>解決策:</b>
+<br>
+エンドユーザーが Pebble を使用してテンプレートを操作できないようにします。
+テンプレート編集をユーザーに公開する必要があるときは，Handlebars や Mustache などのロジックレステンプレートエンジンを使用することをお勧めします。(参考文献を参照)
+</p>
+<br>
+<p>
+<b>参考文献</b><br>
+<a href="http://blog.portswigger.net/2015/08/server-side-template-injection.html">PortSwigger: Server-Side Template Injection </a><br>
+<a href="https://jknack.github.io/handlebars.java/">Handlebars.java</a><br>
+</p>
+            
+        
+
+        <hr/>
+        <br/>
+    </section>
+    
+    <section>
         <a class="anchor" name="PERMISSIVE_CORS"></a>
         <h2 class="page-header">
             過剰に許可される CORS ポリシー
@@ -6251,7 +6295,7 @@ HTTP パラメータで使用する前にユーザー入力をエスケープし
 <footer id="footer" class="footer hidden-print">
     <div class="container text-center">
         <div>
-            Find Security Bugs 1.10.0
+            Find Security Bugs 1.10.1
             <span class="hide-xs">&middot;</span>
             Created by <a target="_blank" href="https://twitter.com/h3xstream">Philippe Arteau</a>
         </div>
