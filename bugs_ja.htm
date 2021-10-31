@@ -6487,7 +6487,7 @@ URL のセッション ID は，さまざまな方法で公開できます。た
 </p>
 <p>
     <b>脆弱なコード:</b><br/>
-<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>out.println("Click &lt;a target="_blank" href=" +
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>out.println("Click &lt;a href=" +
                 res.encodeURL(HttpUtils.getRequestURL(req).toString()) +
                 "&gt;here&lt;/a&gt;");</code></pre>
 </p>

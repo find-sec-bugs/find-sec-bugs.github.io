@@ -648,6 +648,18 @@
                             Improper handling of Unicode transformations (IMPROPER_UNICODE)
                         </a></li>
                         
+                        <li><a href="#MODIFICATION_AFTER_VALIDATION">
+                            String is modified after validation and not before it (MODIFICATION_AFTER_VALIDATION)
+                        </a></li>
+                        
+                        <li><a href="#NORMALIZATION_AFTER_VALIDATION">
+                            String is normalzied after validation and not before it (NORMALIZATION_AFTER_VALIDATION)
+                        </a></li>
+                        
+                        <li><a href="#DANGEROUS_PERMISSION_COMBINATION">
+                            Dangerous combination of permissions granted (DANGEROUS_PERMISSION_COMBINATION)
+                        </a></li>
+                        
                     </ul>
                 </div>
             </div>
@@ -2456,12 +2468,12 @@ transformer.transform(input, result);</code></pre>
 The following snippets show two available solutions. You can set one feature or both.
 </p>
 
-<p><b>Solution using "Secure processing" mode:</b></p>
+<p><b>Solution disabling DTD:</b></p>
 <p>
 This setting will protect you against remote file access but not denial of service.
 <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>TransformerFactory factory = TransformerFactory.newInstance();
-factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "all");
-factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "all");
+factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
 
 Transformer transformer = factory.newTransformer();
 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -2469,7 +2481,9 @@ transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 transformer.transform(input, result);</code></pre>
 </p>
 
-<p><b>Solution disabling DTD:</b></p>
+<p>An empty string denies all access to external references for both attributes.</p>
+
+<p><b>Solution using "Secure processing" mode:</b></p>
 <p>
 This setting will protect you against remote file access but not denial of service.
 <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>TransformerFactory factory = TransformerFactory.newInstance();
@@ -2538,12 +2552,12 @@ transformer.transform(input, result);</code></pre>
 <p>
 The following snippets show two available solutions. You can set one feature or both.
 </p>
-<p><b>Solution using "Secure processing" mode:</b></p>
+<p><b>Solution disabling DTD:</b></p>
 <p>
 This setting will protect you against remote file access but not denial of service.
 <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>TransformerFactory factory = TransformerFactory.newInstance();
-factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "all");
-factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "all");
+factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
 
 Transformer transformer = factory.newTransformer();
 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -2551,7 +2565,9 @@ transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 transformer.transform(input, result);</code></pre>
 </p>
 
-<p><b>Solution disabling DTD:</b></p>
+<p>An empty string denies all access to external references for both attributes.</p>
+
+<p><b>Solution using "Secure processing" mode:</b></p>
 <p>
 This setting will protect you against remote file access but not denial of service.
 <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>TransformerFactory factory = TransformerFactory.newInstance();
@@ -6678,7 +6694,7 @@ URL rewriting has significant security risks. Since session ID appears in the UR
 </p>
 <p>
     <b>Vulnerable Code:</b><br/>
-<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>out.println("Click &lt;a target="_blank" href=" +
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>out.println("Click &lt;a href=" +
                 res.encodeURL(HttpUtils.getRequestURL(req).toString()) +
                 "&gt;here&lt;/a&gt;");</code></pre>
 </p>
@@ -7321,13 +7337,13 @@ perms.add(PosixFilePermission.GROUP_EXECUTE);
         
             
 <p>
-Unexpected behavior in Unicode transformations can sometimes lead to bugs, some of them affecting software security.
-Code that applies the uppercase transformation to two strings could mistakenly interpret both strings as being equal.
+Unexpected behavior in unicode transformations can sometimes lead to bugs, some of them affecting software security.
+A code that applies the uppercase transformation to two strings could mistakenly interpret both strings as being equal.
 </p>
 
 <p>
-In the code below, the string <code>"ADM\u0131N"</code> would cause the condition to be true.
-When the uppercase transformation is applied, the character <code>\u0131</code> will become <code>\u0049</code> (I).
+In the code bellow, the string <code>"ADM\u0131N"</code> would cause the condition to be true.
+When the uppercase transformation is applied, the character `\u0131` will becomme '\u0049' (I).
 It can be an issue if the developer only one user to be <code>"ADMIN"</code>.<br/>
 <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>if(username.toUpperCase().equals("ADMIN")) {
   //...
@@ -7336,9 +7352,9 @@ It can be an issue if the developer only one user to be <code>"ADMIN"</code>.<br
 </p>
 
 <p>
-Similar character transformations can occur with normalization functions.
-In the code below, the string <code>"BAC\u212AUP"</code> would cause the condition to be true.
-When the normalization transformation is applied, the character <code>\u212A</code> will become <code>\u0048</code> (K).<br/>
+Similar characters transformations can occurs with normalization functions.
+In the code bellow, the string <code>"BAC\u212AUP"</code> would cause the condition to be true.
+When the normalization transformation is applied, the character `\u212A` will becomme '\u0048' (K).<br/>
 <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>if(Normalizer.normalize(input, Normalizer.Form.NFC).equals("BACKUP")) {
   //...
 }
@@ -7347,15 +7363,161 @@ When the normalization transformation is applied, the character <code>\u212A</co
 
 <p>
 <b>References</b><br/>
-<a target="_blank" href="https://www.gosecure.net/blog/2020/10/27/weakness-in-java-tls-host-verification/">Weakness in Java TLS Host Verification</a><br/>
+<a target="_blank" href="https://www.gosecure.net/blog/2020/08/04/unicode-for-security-professionals/">Unicode for Security Professionals</a><br/>
 <a target="_blank" href="http://websec.github.io/unicode-security-guide/character-transformations/">Unicode Security Guide: Character Transformations</a><br/>
 <a target="_blank" href="https://cwe.mitre.org/data/definitions/176.html">CWE-176: Improper Handling of Unicode Encoding</a><br/>
 <a target="_blank" href="http://unicode.org/reports/tr36/">Unicode: Unicode Security Considerations</a><br/>
-<a target="_blank" href="https://www.gosecure.net/blog/2020/08/04/unicode-for-security-professionals/">Unicode for Security Professionals</a><br/>
 </p>
 
             
         
+
+        <hr/>
+        <br/>
+    </section>
+    
+    <section>
+        <a class="anchor" name="MODIFICATION_AFTER_VALIDATION"></a>
+        <h2 class="page-header">
+            String is modified after validation and not before it
+            <a href="#MODIFICATION_AFTER_VALIDATION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p class="text-muted"><em><small>Bug Pattern: <tt>MODIFICATION_AFTER_VALIDATION</tt></small></em></p>
+
+        
+            
+<p>
+A string must not be modified after validation because it may allow an attacker to bypass validation using a tricky
+string which becomes malicious after the modification. For example, a program may filter out the &langle;script&rangle; tags from
+HTML input to avoid cross-site scripting (XSS) and other vulnerabilities. If non-character code points  are deleted
+from the input following validation, an attacker may pass the string "&langle;scr"+"\uFDEF"+"ipt&rangle;" so that the validation
+check fails to detect the &langle;script&rangle; tag, but the subsequent removal of the non-character code pont creates a &langle;script&rangle;
+tag in the input:
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Pattern pattern = Pattern.compile("<script>");
+Matcher matcher = pattern.matcher(s);
+if (matcher.find()) {
+  throw new IllegalArgumentException("Invalid input");
+}
+
+s = s.replaceAll("[\\p{Cn}]", "");
+</code></pre>
+</p>
+
+<p>
+The proper way is to perform the modification before the validation so the passed string is first changed to &langle;script&rangle;
+which fails to be validated:
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>s = s.replaceAll("[\\p{Cn}]", "\uFFFD");
+Pattern pattern = Pattern.compile("<script>");
+Matcher matcher = pattern.matcher(s);
+if (matcher.find()) {
+  throw new IllegalArgumentException("Invalid input");
+}
+</code></pre>
+</p>
+
+<p>
+<b>References</b><br/>
+<a target="_blank" href="https://wiki.sei.cmu.edu/confluence/display/java/IDS11-J.+Perform+any+string+modifications+before+validation">CERT: IDS11-J. Perform any string modifications before validation</a><br/>
+</p>
+
+            
+        
+
+        <hr/>
+        <br/>
+    </section>
+    
+    <section>
+        <a class="anchor" name="NORMALIZATION_AFTER_VALIDATION"></a>
+        <h2 class="page-header">
+            String is normalzied after validation and not before it
+            <a href="#NORMALIZATION_AFTER_VALIDATION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p class="text-muted"><em><small>Bug Pattern: <tt>NORMALIZATION_AFTER_VALIDATION</tt></small></em></p>
+
+        
+            
+<p>
+A string must not be normalized after validation because it may allow an attacker to bypass validation using a tricky
+string which becomes malicious after the normalization. For example, a program may filter out the &langle;script&rangle; tags from
+HTML input to avoid cross-site scripting (XSS) and other vulnerabilities. However, in unicode, the same string can have
+many different representations. For example, \uFE64 is normalized to &langle; and \uFE65 is normalized to &rangle;. Thus the
+if an attacker passes the string "\uFE64" + "script" + "\uFE65" the validation check fails to detect the &langle;script&rangle; tag,
+but thereafter the string is normalized to the &langle;script&rangle; tag in the input:
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Pattern pattern = Pattern.compile("[<>]"); // Check for angle brackets
+Matcher matcher = pattern.matcher(s);
+if (matcher.find()) {
+  throw new IllegalStateException();
+}
+s = Normalizer.normalize(s, Form.NFKC);
+</code></pre>
+</p>
+
+<p>
+The proper way is to do the normalization before the validation so the passed string is first changed to &langle;script&rangle;
+which fails to be validated:
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>s = Normalizer.normalize(s, Form.NFKC);
+Pattern pattern = Pattern.compile("[<>]");
+Matcher matcher = pattern.matcher(s);
+if (matcher.find()) {
+  throw new IllegalStateException();
+}
+</code></pre>
+</p>
+
+<p>
+<b>References</b><br/>
+<a target="_blank" href="https://wiki.sei.cmu.edu/confluence/display/java/IDS01-J.+Normalize+strings+before+validating+them">CERT: IDS01-J. Normalize strings before validating them</a><br/>
+</p>
+
+            
+        
+
+        <hr/>
+        <br/>
+    </section>
+    
+    <section>
+        <a class="anchor" name="DANGEROUS_PERMISSION_COMBINATION"></a>
+        <h2 class="page-header">
+            Dangerous combination of permissions granted
+            <a href="#DANGEROUS_PERMISSION_COMBINATION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p class="text-muted"><em><small>Bug Pattern: <tt>DANGEROUS_PERMISSION_COMBINATION</tt></small></em></p>
+
+        
+            
+<p>
+Certain combinations of permissions can produce significant capability increases and should not be granted. Granting
+ReflectPermission on the target suppressAccessChecks is dangerous in that information (possibly confidential) and
+methods normally unavailable would be accessible to malicious code. Similarly, the permission
+<code>java.lang.RuntimePermission</code> applied to target createClassLoader grants code the permission to create a
+<code>ClassLoader</code> object.
+This is extremely dangerous, because malicious applications that can instantiate their own class loaders could
+then load their own rogue classes into the system. These newly loaded classes could be placed into any protection
+domain by the class loader, thereby automatically granting the classes the permissions for that domain.
+</p>
+
+
+<p>
+<b>Dangerous permission combinations:</b><br/>
+
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>PermissionCollection pc = super.getPermissions(cs);
+pc.add(new ReflectPermission("suppressAccessChecks"));
+</code></pre>
+<br/>
+
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>PermissionCollection pc = super.getPermissions(cs);
+pc.add(new RuntimePermission("createClassLoader"));
+</code></pre>
+</p>
+
+
+<p>References</b><br>
+<a target="_blank" href="https://wiki.sei.cmu.edu/confluence/display/java/ENV03-J.+Do+not+grant+dangerous+combinations+of+permissions">CERT: ENV03-J. Do not grant dangerous combinations of permissions</a><br/>
+</p>
+            
+    
 
         <hr/>
         <br/>
