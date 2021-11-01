@@ -7393,7 +7393,7 @@ HTML input to avoid cross-site scripting (XSS) and other vulnerabilities. If non
 from the input following validation, an attacker may pass the string "&langle;scr"+"\uFDEF"+"ipt&rangle;" so that the validation
 check fails to detect the &langle;script&rangle; tag, but the subsequent removal of the non-character code pont creates a &langle;script&rangle;
 tag in the input:
-<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Pattern pattern = Pattern.compile("<script>");
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Pattern pattern = Pattern.compile("&lt;script&gt;");
 Matcher matcher = pattern.matcher(s);
 if (matcher.find()) {
   throw new IllegalArgumentException("Invalid input");
@@ -7407,7 +7407,7 @@ s = s.replaceAll("[\\p{Cn}]", "");
 The proper way is to perform the modification before the validation so the passed string is first changed to &langle;script&rangle;
 which fails to be validated:
 <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>s = s.replaceAll("[\\p{Cn}]", "\uFFFD");
-Pattern pattern = Pattern.compile("<script>");
+Pattern pattern = Pattern.compile("&lt;script&gt;");
 Matcher matcher = pattern.matcher(s);
 if (matcher.find()) {
   throw new IllegalArgumentException("Invalid input");
@@ -7544,7 +7544,7 @@ pc.add(new RuntimePermission("createClassLoader"));
 <footer id="footer" class="footer hidden-print">
     <div class="container text-center">
         <div>
-            OWASP Find Security Bugs 1.11.0
+            Find Security Bugs 1.11.0
             <span class="hide-xs">&middot;</span>
             Created by <a target="_blank" href="https://twitter.com/h3xstream">Philippe Arteau</a>
         </div>
