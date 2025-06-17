@@ -244,6 +244,14 @@
                             XSLT parsing vulnerable to XXE (TransformerFactory) (XXE_XSLT_TRANSFORM_FACTORY)
                         </a></li>
                         
+                        <li><a href="#XXE_SCHEMA_FACTORY">
+                            XML schema processing vulnerable to XXE (XXE_SCHEMA_FACTORY)
+                        </a></li>
+                        
+                        <li><a href="#XXE_VALIDATOR">
+                            XML validation vulnerable to XXE (XXE_VALIDATOR)
+                        </a></li>
+                        
                         <li><a href="#XPATH_INJECTION">
                             Potential XPath Injection (XPATH_INJECTION)
                         </a></li>
@@ -653,11 +661,15 @@
                         </a></li>
                         
                         <li><a href="#NORMALIZATION_AFTER_VALIDATION">
-                            String is normalzied after validation and not before it (NORMALIZATION_AFTER_VALIDATION)
+                            String is normalized after validation and not before it (NORMALIZATION_AFTER_VALIDATION)
                         </a></li>
                         
                         <li><a href="#DANGEROUS_PERMISSION_COMBINATION">
                             Dangerous combination of permissions granted (DANGEROUS_PERMISSION_COMBINATION)
+                        </a></li>
+                        
+                        <li><a href="#POTENTIAL_XML_INJECTION">
+                            An unsafe string is potentially injected into an XML string (POTENTIAL_XML_INJECTION)
                         </a></li>
                         
                     </ul>
@@ -1407,7 +1419,7 @@ Detailed information for a proper implementation is available at:
 </p>
 <br/>
 <p>
-    <b>Solution (TrustMangager based on a keystore):</b><br/>
+    <b>Solution (TrustManager based on a keystore):</b><br/>
 <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>KeyStore ks = //Load keystore containing the certificates trusted
 
 SSLContext sc = SSLContext.getInstance("TLS");
@@ -1641,6 +1653,7 @@ mapped in this way are properly validated before they are used.</p>
 <a target="_blank" href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-132.pdf">NIST: Recommendation for Password-Based Key Derivation</a><br/>
 <a target="_blank" href="https://stackoverflow.com/q/22580853/89769">Stackoverflow: Reliable implementation of PBKDF2-HMAC-SHA256 for Java</a><br/>
 <a target="_blank" href="https://cwe.mitre.org/data/definitions/327.html">CWE-327: Use of a Broken or Risky Cryptographic Algorithm</a>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/328.html">CWE-328: Use of Weak Hash</a>
 </p>
 
         
@@ -1715,6 +1728,7 @@ uses. <b>PBKDF2</b> should be used to hash password for example.</p>
 <a target="_blank" href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-132.pdf">NIST: Recommendation for Password-Based Key Derivation</a><br/>
 <a target="_blank" href="https://stackoverflow.com/q/22580853/89769">Stackoverflow: Reliable implementation of PBKDF2-HMAC-SHA256 for Java</a><br/>
 <a target="_blank" href="https://cwe.mitre.org/data/definitions/327.html">CWE-327: Use of a Broken or Risky Cryptographic Algorithm</a>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/328.html">CWE-328: Use of Weak Hash</a>
 </p>
 
         
@@ -1891,7 +1905,6 @@ contains no unauthorized path characters (e.g., / \), and refers to an authorize
 <a target="_blank" href="http://projects.webappsec.org/w/page/13246952/Path%20Traversal">WASC-33: Path Traversal</a><br/>
 <a target="_blank" href="https://www.owasp.org/index.php/Path_Traversal">OWASP: Path Traversal</a><br/>
 <a target="_blank" href="https://capec.mitre.org/data/definitions/126.html">CAPEC-126: Path Traversal</a><br/>
-<a target="_blank" href="https://cwe.mitre.org/data/definitions/22.html">CWE-22: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')</a>
 </p>
 
         
@@ -2591,6 +2604,223 @@ transformer.transform(input, result);</code></pre>
 <a target="_blank" href="https://blog.h3xstream.com/2014/06/identifying-xml-external-entity.html">Identifying XML External Entity vulnerability (XXE)</a><br/>
 <!--XXE_GENERIC_END-->
 </p>
+
+        
+
+        <hr/>
+        <br/>
+    </section>
+    
+    <section>
+        <a class="anchor" name="XXE_SCHEMA_FACTORY"></a>
+        <h2 class="page-header">
+            XML schema processing vulnerable to XXE
+            <a href="#XXE_SCHEMA_FACTORY" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p class="text-muted"><em><small>Bug Pattern: <tt>XXE_SCHEMA_FACTORY</tt></small></em></p>
+
+        
+            
+
+<h4>Summary</h4>
+
+<p>
+XML External Entity attacks can occur when an XML SchemaFactory supports access to external entity references or external schema locations while parsing XML Schema Documents.
+</p>
+
+<h4>Sources</h4>
+
+<p>
+Malicious sources include XML Schema Documents containing entity definitions in the Document Type Declaration (DTD) that reference external locations.
+Documents can also include references to external schema locations using XML Schema include elements.
+</p>
+
+<h5>External Entity in Document Type Declaration</h5>
+
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;!DOCTYPE schema [
+  &lt;!ENTITY entity SYSTEM &quot;file:///etc/passwd&quot;&gt;
+]&gt;
+&lt;schema&gt;&amp;entity;&lt;/schema&gt;</code></pre>
+
+<h5>External Schema Location</h5>
+
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;schema xmlns="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;include schemaLocation="file:///etc/passwd"/&gt;
+&lt;/schema&gt;</code></pre>
+
+<h4>Vulnerabilities</h4>
+
+<p>
+Vulnerable instances of javax.xml.validation.SchemaFactory attempt to resolve XML External Entity references and External Schema Locations in the default configuration.
+</p>
+
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+
+Schema schema = schemaFactory.newSchema(source);
+</code></pre>
+
+<h4>Solutions</h4>
+
+<p>
+Protecting instances of java.xml.validation.SchemaFactory requires disabling external access or enabling secure processing.
+</p>
+
+<h5>Disabling External Access</h5>
+
+<p>
+The Java API for XML Processing (JAXP) version 1.5 implementing JEP 185 requires implementations to support properties for disabling external access.
+Java 7 Update 40 and Java 8 incorporated implementations of JAXP 1.5.
+Both <strong>ACCESS_EXTERNAL_DTD</strong> and <strong>ACCESS_EXTERNAL_SCHEMA</strong> must be disabled using an empty string to indicate
+that no external protocols are allowed.
+</p>
+
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+
+schemaFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+schemaFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+
+Schema schema = schemaFactory.newSchema(source);
+</code></pre>
+
+<h5>Enabling Secure Processing</h5>
+
+<p>
+JAXP 1.5 and JEP 185 indicate that implementations supporting the secure processing feature flag must restrict external access.
+The <strong>FEATURE_SECURE_PROCESSING</strong> flag restricts external access in supported implementations of JAXP 1.5.
+</p>
+
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+
+schemaFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+
+Schema schema = schemaFactory.newSchema(source);
+</code></pre>
+
+<h4>References</h4>
+
+<ul>
+  <li><a target="_blank" href="https://cwe.mitre.org/data/definitions/611.html">CWE-611: Improper Restriction of XML External Entity Reference</a></li>
+  <li><a target="_blank" href="https://owasp.org/www-community/vulnerabilities/XML_External_Entity_(XXE)_Processing">OWASP: XML External Entity (XXE) Processing</a></li>
+  <li><a target="_blank" href="https://www.ws-attacks.org/index.php/XML_Entity_Expansion">WS-Attacks.org: XML Entity Expansion</a></li>
+  <li><a target="_blank" href="https://www.ws-attacks.org/index.php/XML_External_Entity_DOS">WS-Attacks.org: XML External Entity DOS</a></li>
+  <li><a target="_blank" href="https://www.ws-attacks.org/index.php/XML_Entity_Reference_Attack">WS-Attacks.org: XML Entity Reference Attack</a></li>
+  <li><a target="_blank" href="https://blog.h3xstream.com/2014/06/identifying-xml-external-entity.html">Identifying XML External Entity vulnerability (XXE)</a></li>
+  <li><a target="_blank" href="https://openjdk.java.net/jeps/185">JEP 185: Restrict Fetching of External XML Resources</a></li>
+</ul>
+
+        
+
+        <hr/>
+        <br/>
+    </section>
+    
+    <section>
+        <a class="anchor" name="XXE_VALIDATOR"></a>
+        <h2 class="page-header">
+            XML validation vulnerable to XXE
+            <a href="#XXE_VALIDATOR" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p class="text-muted"><em><small>Bug Pattern: <tt>XXE_VALIDATOR</tt></small></em></p>
+
+        
+
+
+<h4>Summary</h4>
+
+<p>
+XML External Entity attacks can occur when an XML Validator supports access to external entity references or external schema locations while validating malicious sources.
+</p>
+
+<h4>Sources</h4>
+
+<p>
+Malicious sources include XML documents containing entity definitions in the Document Type Declaration (DTD) that reference external locations.
+Documents can also include references to external schema locations using XML Schema Instance (XSI) attributes.
+</p>
+
+<h5>External Entity in Document Type Declaration</h5>
+
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;!DOCTYPE document [
+  &lt;!ENTITY entity SYSTEM &quot;file:///etc/passwd&quot;&gt;
+]&gt;
+&lt;document&gt;&amp;entity;&lt;/document&gt;</code></pre>
+
+<h5>External Schema Location</h5>
+
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;document
+  xmlns="urn:external"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="urn:external file:///etc/passwd" /&gt;</code></pre>
+
+<h4>Vulnerabilities</h4>
+
+<p>
+Vulnerable instances of javax.xml.validation.Validator attempt to resolve XML External Entity references and External Schema Locations in the default configuration.
+</p>
+
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+Schema schema = schemaFactory.newSchema();
+
+Validator validator = schema.newValidator();
+validator.validate(source);
+</code></pre>
+
+<h4>Solutions</h4>
+
+<p>
+Protecting instances of java.xml.validation.Validator requires disabling external access or enabling secure processing.
+</p>
+
+<h5>Disabling External Access</h5>
+
+<p>
+The Java API for XML Processing (JAXP) version 1.5 implementing JEP 185 requires implementations to support properties for disabling external access.
+Java 7 Update 40 and Java 8 incorporated implementations of JAXP 1.5.
+Both <strong>ACCESS_EXTERNAL_DTD</strong> and <strong>ACCESS_EXTERNAL_SCHEMA</strong> must be disabled using an empty string to indicate
+that no external protocols are allowed.
+</p>
+
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+Schema schema = schemaFactory.newSchema();
+Validator validator = schema.newValidator();
+
+validator.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+validator.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+
+validator.validate(source);
+</code></pre>
+
+<h5>Enabling Secure Processing</h5>
+
+<p>
+JAXP 1.5 and JEP 185 indicate that implementations supporting the secure processing feature flag must restrict external access.
+The <strong>FEATURE_SECURE_PROCESSING</strong> flag restricts external access in supported implementations of JAXP 1.5.
+</p>
+
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+Schema schema = schemaFactory.newSchema();
+Validator validator = schema.newValidator();
+
+validator.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+
+validator.validate(source);
+</code></pre>
+
+<h4>References</h4>
+
+<ul>
+  <li><a target="_blank" href="https://cwe.mitre.org/data/definitions/611.html">CWE-611: Improper Restriction of XML External Entity Reference</a></li>
+  <li><a target="_blank" href="https://owasp.org/www-community/vulnerabilities/XML_External_Entity_(XXE)_Processing">OWASP: XML External Entity (XXE) Processing</a></li>
+  <li><a target="_blank" href="https://www.ws-attacks.org/index.php/XML_Entity_Expansion">WS-Attacks.org: XML Entity Expansion</a></li>
+  <li><a target="_blank" href="https://www.ws-attacks.org/index.php/XML_External_Entity_DOS">WS-Attacks.org: XML External Entity DOS</a></li>
+  <li><a target="_blank" href="https://www.ws-attacks.org/index.php/XML_Entity_Reference_Attack">WS-Attacks.org: XML Entity Reference Attack</a></li>
+  <li><a target="_blank" href="https://blog.h3xstream.com/2014/06/identifying-xml-external-entity.html">Identifying XML External Entity vulnerability (XXE)</a></li>
+  <li><a target="_blank" href="https://openjdk.java.net/jeps/185">JEP 185: Restrict Fetching of External XML Resources</a></li>
+</ul>
 
         
 
@@ -3688,6 +3918,7 @@ In general, method evaluating OGNL expression should not receive user input. It 
     <a target="_blank" href="https://blog.gdssecurity.com/labs/2017/3/27/an-analysis-of-cve-2017-5638.html">Gotham Digital Science: An Analysis Of CVE-2017-5638</a><br/>
     <a target="_blank" href="https://struts.apache.org/docs/s2-016.html">Apache Struts2: Vulnerability S2-016</a><br/>
     <a target="_blank" href="https://struts.apache.org/docs/ognl.html">Apache Struts 2 Documentation: OGNL</a><br/>
+    <a target="_blank" href="https://cwe.mitre.org/data/definitions/94.html">CWE-94: Improper Control of Generation of Code ('Code Injection')</a><br/>
 </p>
 
         
@@ -3729,6 +3960,7 @@ In general, method evaluating Groovy expression should not receive user input fr
     <a target="_blank" href="https://github.com/orangetw/awesome-jenkins-rce-2019">Jenkins RCE payloads</a> by Orange Tsai<br/>
     <a target="_blank" href="https://github.com/adamyordan/cve-2019-1003000-jenkins-rce-poc">POC for CVE-2019-1003001</a> by Adam Jordan<br/>
     <a target="_blank" href="https://github.com/welk1n/exploiting-groovy-in-Java/">Various payloads of exploiting Groovy code evaluation</a><br/>
+    <a target="_blank" href="https://cwe.mitre.org/data/definitions/94.html">CWE-94: Improper Control of Generation of Code ('Code Injection')</a><br/>
 </p>
 
         
@@ -3945,6 +4177,7 @@ In this situation, the method <code>Integer.toHexString()</code> should be repla
 <a target="_blank" href="http://projects.webappsec.org/w/page/13246945/Insufficient%20Transport%20Layer%20Protection">WASC-04: Insufficient Transport Layer Protection</a><br/>
 <a target="_blank" href="https://docs.hazelcast.org/docs/3.5/manual/html/encryption.html">Hazelcast Documentation: Encryption</a><br/>
 <a target="_blank" href="https://cwe.mitre.org/data/definitions/326.html">CWE-326: Inadequate Encryption Strength</a>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/327.html">CWE-327: Use of a Broken or Risky Cryptographic Algorithm</a>
 </p>
 
         
@@ -4107,6 +4340,7 @@ byte[] cipherText = c.doFinal(plainText);</code></pre>
 <b>References</b><br/>
 <a target="_blank" href="https://www.nist.gov/news-events/news/2005/06/nist-withdraws-outdated-data-encryption-standard">NIST Withdraws Outdated Data Encryption Standard</a><br/>
 <a target="_blank" href="https://cwe.mitre.org/data/definitions/326.html">CWE-326: Inadequate Encryption Strength</a>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/327.html">CWE-327: Use of a Broken or Risky Cryptographic Algorithm</a>
 </p>
 
         
@@ -4407,7 +4641,7 @@ the XSS protection rules defined in the OWASP XSS Prevention Cheat Sheet.
             
 <p>
 The Blowfish cipher supports key sizes from 32 bits to 448 bits. A small key size makes the ciphertext vulnerable to brute force attacks.
-At least 128 bits of entropy should be used when generating the key if use of Blowfish is required.
+At least 128 bits of entropy should be used when generating the key if the use of Blowfish is required.
 </p>
 <p>
 If the algorithm can be changed, the AES block cipher should be used instead.
@@ -4698,7 +4932,7 @@ class UserController {
     <ul>
         <li>Data transfer objects should be used instead including only the parameters needed as input/response to/from the API.</li>
         <li>Sensitive parameters should be removed properly before transferring to UI.</li>
-        <li>Data should be persisted in database only after proper sanitisation checks.</li>
+        <li>Data should be persisted in database only after proper sanitization checks.</li>
     </ul>
 </p>
 <p>
@@ -4746,8 +4980,12 @@ class UserController {
         
             
 <p>
-    Persistent objects should never be returned by APIs. They might lead to leaking business logic over the UI, unauthorized tampering of
-    persistent objects in database.
+    Software frameworks sometime allow developers to automatically bind HTTP request parameters into program code variables or objects 
+    to make using that framework easier on developers. This can sometimes cause harm.
+</p>
+<p>
+    Attackers can sometimes use this methodology to create new parameters that the developer never intended which in turn creates or 
+    overwrites new variable or objects in program code that was not intended.
 </p>
 <p>
     <b>Vulnerable Code:</b></br/>
@@ -4784,7 +5022,7 @@ class UserController {
     <ul>
         <li>Data transfer objects should be used instead including only the parameters needed as input/response to/from the API.</li>
         <li>Sensitive parameters should be removed properly before transferring to UI.</li>
-        <li>Data should be persisted in database only after proper sanitisation checks.</li>
+        <li>Data should be persisted in database only after proper sanitization checks.</li>
     </ul>
 </p>
 <p>
@@ -4859,6 +5097,7 @@ attacker gets the ability to execute any code.
 <b>References</b><br/>
 <a target="_blank" href="https://resources.infosecinstitute.com/file-inclusion-attacks/">InfosecInstitute: File Inclusion Attacks</a><br/>
 <a target="_blank" href="http://projects.webappsec.org/w/page/13246955/Remote%20File%20Inclusion">WASC-05: Remote File Inclusion</a><br/>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/917.html">CWE-917: Improper Neutralization of Special Elements used in an Expression Language Statement ('Expression Language Injection')</a><br/>
 </p>
             
         
@@ -4900,6 +5139,7 @@ attacker gets the ability to execute any code.
 <b>References</b><br/>
     <a target="_blank" href="https://cwe.mitre.org/data/definitions/94.html">CWE-94: Improper Control of Generation of Code ('Code Injection')</a><br/>
     <a target="_blank" href="https://cwe.mitre.org/data/definitions/95.html">CWE-95: Improper Neutralization of Directives in Dynamically Evaluated Code ('Eval Injection')</a><br/>
+    <a target="_blank" href="https://cwe.mitre.org/data/definitions/917.html">CWE-917: Improper Neutralization of Special Elements used in an Expression Language Statement ('Expression Language Injection')</a><br/>
 </p>
             
         
@@ -5101,6 +5341,7 @@ The solution is to avoid using XMLDecoder to parse content from an untrusted sou
 <a target="_blank" href="http://blog.diniscruz.com/2013/08/using-xmldecoder-to-execute-server-side.html">Dinis Cruz Blog: Using XMLDecoder to execute server-side Java Code on a Restlet application</a><br/>
 <a target="_blank" href="https://securityblog.redhat.com/2014/01/23/java-deserialization-flaws-part-2-xml-deserialization/">RedHat blog : Java deserialization flaws: Part 2, XML deserialization</a><br/>
 <a target="_blank" href="https://cwe.mitre.org/data/definitions/20.html">CWE-20: Improper Input Validation</a>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/502.html">CWE-502: Deserialization of Untrusted Data</a>
 </p>
             
         
@@ -5192,6 +5433,7 @@ byte[] cipherText = c.doFinal(plainText);</code></pre>
 <a target="_blank" href="https://csrc.nist.gov/projects/block-cipher-techniques/bcm/modes-develoment#01">NIST: Authenticated Encryption Modes</a><br/>
 <a target="_blank" href="https://en.wikipedia.org/wiki/Block_cipher_modes_of_operation#Electronic_codebook_.28ECB.29">Wikipedia: Block cipher modes of operation</a><br/>
 <a target="_blank" href="https://csrc.nist.gov/publications/detail/sp/800-38a/final">NIST: Recommendation for Block Cipher Modes of Operation</a>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/327.html">CWE-327: Use of a Broken or Risky Cryptographic Algorithm</a><br/>
 </p>
 
         
@@ -5235,6 +5477,7 @@ byte[] cipherText = c.doFinal(plainText);</code></pre>
     <a target="_blank" href="https://csrc.nist.gov/projects/block-cipher-techniques/bcm/modes-develoment#01">NIST: Authenticated Encryption Modes</a><br/>
     <a target="_blank" href="https://capec.mitre.org/data/definitions/463.html">CAPEC: Padding Oracle Crypto Attack</a><br/>
     <a target="_blank" href="https://cwe.mitre.org/data/definitions/696.html">CWE-696: Incorrect Behavior Order</a>
+    <a target="_blank" href="https://cwe.mitre.org/data/definitions/326.html">CWE-326: Inadequate Encryption Strength</a>
 </p>
 
         
@@ -5428,6 +5671,7 @@ fos.write(string.getBytes());
     <a target="_blank" href="https://www.securecoding.cert.org/confluence/display/java/DRD00-J.+Do+not+store+sensitive+information+on+external+storage+%28SD+card%29+unless+encrypted+first">CERT: DRD00-J: Do not store sensitive information on external storage [...]</a><br/>
     <a target="_blank" href="https://developer.android.com/guide/topics/data/data-storage.html#filesExternal">Android Official Doc: Using the External Storage</a><br/>
     <a target="_blank" href="https://www.owasp.org/index.php/Mobile_Top_10_2014-M2">OWASP Mobile Top 10 2014-M2: Insecure Data Storage</a><br/>
+    <a target="_blank" href="https://cwe.mitre.org/data/definitions/276.html">CWE-276: Incorrect Default Permissions</a>
     <a target="_blank" href="https://cwe.mitre.org/data/definitions/312.html">CWE-312: Cleartext Storage of Sensitive Information</a>
 </p>
 
@@ -5509,6 +5753,7 @@ sendBroadcast(v1);
     <a target="_blank" href="https://developer.android.com/reference/android/content/BroadcastReceiver.html#Security">Android Official Doc: BroadcastReceiver (Security)</a><br/>
     <a target="_blank" href="https://developer.android.com/guide/topics/manifest/receiver-element.html">Android Official Doc: Receiver configuration (see <code>android:permission</code>)</a><br/>
     <sup>[1]</sup> <a target="_blank" href="https://stackoverflow.com/a/21513368/89769">StackOverflow: How to set permissions in broadcast sender and receiver in android</a><br/>
+    <a target="_blank" href="https://cwe.mitre.org/data/definitions/276.html">CWE-276: Incorrect Default Permissions</a><br/>
     <a target="_blank" href="https://cwe.mitre.org/data/definitions/925.html">CWE-925: Improper Verification of Intent by Broadcast Receiver</a><br/>
     <a target="_blank" href="https://cwe.mitre.org/data/definitions/927.html">CWE-927: Use of Implicit Intent for Sensitive Communication</a>
 </p>
@@ -5560,6 +5805,7 @@ create on external storage. See references below for implementation guidelines.
     <a target="_blank" href="https://www.vogella.com/tutorials/AndroidSQLite/article.html#databasetutorial_database">vogella.com: Android SQLite database and content provider - Tutorial</a><br/>
     <a target="_blank" href="https://www.vogella.com/tutorials/AndroidSQLite/article.html#databasetutorial_database">vogella.com: Android SQLite database and content provider - Tutorial</a><br/>
     <a target="_blank" href="https://www.owasp.org/index.php/Mobile_Top_10_2014-M2">OWASP Mobile Top 10 2014-M2: Insecure Data Storage</a><br/>
+    <a target="_blank" href="https://cwe.mitre.org/data/definitions/276.html">CWE-276: Incorrect Default Permissions</a>
     <a target="_blank" href="https://cwe.mitre.org/data/definitions/312.html">CWE-312: Cleartext Storage of Sensitive Information</a>
 </p>
 
@@ -5612,6 +5858,7 @@ create on external storage. See references below for implementation guidelines.
     <a target="_blank" href="https://www.securecoding.cert.org/confluence/display/java/DRD15-J.+Consider+privacy+concerns+when+using+Geolocation+API">CERT: DRD15-J. Consider privacy concerns when using Geolocation API</a><br/>
     <a target="_blank" href="https://en.wikipedia.org/wiki/W3C_Geolocation_API">Wikipedia: W3C Geolocation API</a><br/>
     <a target="_blank" href="https://w3c.github.io/geolocation-api/">W3C: Geolocation Specification</a><br/>
+    <a target="_blank" href="https://cwe.mitre.org/data/definitions/359.html">CWE-359: Exposure of Private Personal Information to an Unauthorized Actor</a>
 </p>
 
         
@@ -5707,6 +5954,7 @@ class FileWriteUtil {
 <p>
     <b>References</b><br/>
     <a target="_blank" href="https://developer.android.com/reference/android/webkit/WebView.html#addJavascriptInterface%28java.lang.Object,%20java.lang.String%29">Android Official Doc: <code>WebView.addJavascriptInterface()</code></a><br/>
+    <a target="_blank" href="https://cwe.mitre.org/data/definitions/285.html">CWE-285: Improper Authorization</a>
     <a target="_blank" href="https://cwe.mitre.org/data/definitions/749.html">CWE-749: Exposed Dangerous Method or Function</a>
 </p>
 
@@ -5827,6 +6075,7 @@ cookie.setHttpOnly(true); //HttpOnly flag
 <a target="_blank" href="https://blog.codinghorror.com/protecting-your-cookies-httponly/">Coding Horror blog: Protecting Your Cookies: HttpOnly</a><br/>
 <a target="_blank" href="https://www.owasp.org/index.php/HttpOnly">OWASP: HttpOnly</a><br/>
 <a target="_blank" href="https://www.rapid7.com/db/vulnerabilities/http-cookie-http-only-flag">Rapid7: Missing HttpOnly Flag From Cookie</a>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/1004.html">CWE-1004: Sensitive Cookie Without 'HttpOnly' Flag</a><br/>
 </p>
 
         
@@ -5908,7 +6157,7 @@ Avoid deserializing object provided by remote users.
 <b>Solutions:</b><br/>
 <p>
 Explicitly define what types and subtypes you want to be available when using polymorphism through JsonTypeInfo.Id.NAME.
-Also, never call <code>ObjectMapper.enableDefaultTyping</code> (and then <code>readValue</code> a type that holds a Object or Serializable or Comparable or a known deserialization type).
+Also, never call <code>ObjectMapper.enableDefaultTyping</code> (and then <code>readValue</code> a type that holds an Object or Serializable or Comparable or a known deserialization type).
 </p>
 
 <p>
@@ -5943,6 +6192,7 @@ Also, never call <code>ObjectMapper.enableDefaultTyping</code> (and then <code>r
 <b>References</b><br/>
 <a target="_blank" href="https://github.com/FasterXML/jackson-databind/issues/1599">Jackson Deserializer security vulnerability</a><br>
 <a target="_blank" href="https://github.com/mbechler/marshalsec">Java Unmarshaller Security - Turning your data into code execution</a><br>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/502.html">CWE-502: Deserialization of Untrusted Data</a><br/>
 </p>
 
         
@@ -6078,6 +6328,7 @@ Path traversal <sup>[3][4]</sup> are not possible.
 <a target="_blank" href="https://www.w3.org/TR/xslt">w3.org XSL Transformations (XSLT) Version 1.0</a> : w3c specification<br/>
 [3] <a target="_blank" href="http://projects.webappsec.org/w/page/13246952/Path%20Traversal">WASC: Path Traversal</a><br/>
 [4] <a target="_blank" href="https://www.owasp.org/index.php/Path_Traversal">OWASP: Path Traversal</a><br/>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/94.html">CWE-94: Improper Control of Generation of Code ('Code Injection')</a><br/>
 </p>
             
         
@@ -6137,6 +6388,7 @@ Path traversal <sup>[3][4]</sup> are not possible.
 <a target="_blank" href="https://www.w3.org/TR/xslt">w3.org XSL Transformations (XSLT) Version 1.0</a> : w3c specification<br/>
 [3] <a target="_blank" href="http://projects.webappsec.org/w/page/13246952/Path%20Traversal">WASC: Path Traversal</a><br/>
 [4] <a target="_blank" href="https://www.owasp.org/index.php/Path_Traversal">OWASP: Path Traversal</a><br/>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/94.html">CWE-94: Improper Control of Generation of Code ('Code Injection')</a><br/>
 </p>
             
         
@@ -6408,6 +6660,7 @@ prefer logic-less template engines such as Handlebars or Moustache (See referenc
 <b>References</b><br/>
 <a target="_blank" href="https://blog.portswigger.net/2015/08/server-side-template-injection.html">PortSwigger: Server-Side Template Injection </a><br/>
 <a target="_blank" href="https://jknack.github.io/handlebars.java/">Handlebars.java</a><br/>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/94.html">CWE-94: Improper Control of Generation of Code ('Code Injection')</a><br/>
 </p>
             
         
@@ -6448,6 +6701,7 @@ prefer logic-less template engines such as Handlebars or Moustache (See referenc
 <b>References</b><br/>
 <a target="_blank" href="https://portswigger.net/research/server-side-template-injection">PortSwigger: Server-Side Template Injection</a><br/>
 <a target="_blank" href="https://jknack.github.io/handlebars.java/">Handlebars.java</a><br/>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/94.html">CWE-94: Improper Control of Generation of Code ('Code Injection')</a><br/>
 </p>
             
         
@@ -6489,6 +6743,7 @@ prefer logic-less template engines such as Handlebars or Moustache (See referenc
 <a target="_blank" href="https://research.securitum.com/server-side-template-injection-on-the-example-of-pebble/">Server Side Template Injection – on the example of Pebble</a> by Michał Bentkowski<br/>
 <a target="_blank" href="https://portswigger.net/research/server-side-template-injection">PortSwigger: Server-Side Template Injection</a><br/>
 <a target="_blank" href="https://jknack.github.io/handlebars.java/">Handlebars.java</a><br/>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/94.html">CWE-94: Improper Control of Generation of Code ('Code Injection')</a><br/>
 </p>
             
         
@@ -6524,6 +6779,7 @@ Avoid using * as the value of the Access-Control-Allow-Origin header, which indi
 <b>References</b><br/>
 <a target="_blank" href="https://www.w3.org/TR/cors/">W3C Cross-Origin Resource Sharing</a><br/>
 <a target="_blank" href="https://enable-cors.org/">Enable Cross-Origin Resource Sharing</a><br/>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/942.html">CWE-942: Permissive Cross-domain Policy with Untrusted Domains</a><br/>
 </p>
         
 
@@ -6619,6 +6875,7 @@ ctx.search(query, filter,
 (<a target="_blank" href="https://www.blackhat.com/docs/us-16/materials/us-16-Munoz-A-Journey-From-JNDI-LDAP-Manipulation-To-RCE.pdf">slides</a> &amp; <a target="_blank" href="https://www.youtube.com/watch?v=Y8a5nB-vy78">video</a>) by Alvaro Mu&#xF1;oz and Oleksandr Mirosh<br/>
 <a target="_blank" href="https://community.hpe.com/t5/Security-Research/Introducing-JNDI-Injection-and-LDAP-Entry-Poisoning/ba-p/6885118">HP Enterprise: Introducing JNDI Injection and LDAP Entry Poisoning</a> by Alvaro Mu&#xF1;oz<br/>
 <a target="_blank" href="http://blog.trendmicro.com/trendlabs-security-intelligence/new-headaches-how-the-pawn-storm-zero-day-evaded-javas-click-to-play-protection/">TrendMicro: How The Pawn Storm Zero-Day Evaded Java's Click-to-Play Protection</a> by Jack Tang
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/90.html">CWE-90: Improper Neutralization of Special Elements used in an LDAP Query ('LDAP Injection')</a><br/>
 </p>
             
         
@@ -6706,6 +6963,7 @@ Avoid using those methods. If you are looking to encode a URL String or form par
 <p>
 <b>References</b><br/>
 <a target="_blank" href="https://www.owasp.org/index.php/Top_10_2010-A3-Broken_Authentication_and_Session_Management">OWASP Top 10 2010-A3-Broken Authentication and Session Management</a><br/>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/601.html">CWE-601: URL Redirection to Untrusted Site ('Open Redirect')</a><br/>
 </p>
             
         
@@ -7031,6 +7289,7 @@ HttpGet httpget = new HttpGet(uriBuilder.build().toString()); //OK
 <p>
 <b>References</b><br/>
 <a target="_blank" href="https://capec.mitre.org/data/definitions/460.html">CAPEC-460: HTTP Parameter Pollution (HPP)</a>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/235.html">CWE-235: Improper Handling of Extra Parameters</a><br/>
 </p>
             
         
@@ -7083,7 +7342,7 @@ The sensitive information may be valuable information on its own (such as a pass
         
             
 <p>
-Simple Mail Transfer Protocol (SMTP) is a the text based protocol used for email delivery.
+Simple Mail Transfer Protocol (SMTP) is a text based protocol used for email delivery.
 Like with HTTP, headers are separate by new line separator.
 If user input is place in a header line, the application should remove
 or replace new line characters (<code>CR</code> / <code>LF</code>).
@@ -7265,8 +7524,8 @@ If the file affected is a configuration, a binary, a script or sensitive data, i
 </p>
 <p>
 It is possible that another service, running on the same host as your application, gets compromised.
-Services typically run under a different user. A compromised service account could be use to read your configuration, add execution instruction to scripts or alter the data file.
-To limite the damage from other services or local users, you should limited to permission of your application files.
+Services typically run under a different user. A compromised service account could be used to read your configuration, add execution instruction to scripts or alter the data file.
+To limite the damage from other services or local users, you should limit the permission of your application files.
 </p>
 
 <p>
@@ -7343,7 +7602,7 @@ A code that applies the uppercase transformation to two strings could mistakenly
 
 <p>
 In the code bellow, the string <code>"ADM\u0131N"</code> would cause the condition to be true.
-When the uppercase transformation is applied, the character `\u0131` will becomme '\u0049' (I).
+When the uppercase transformation is applied, the character `\u0131` will become '\u0049' (I).
 It can be an issue if the developer only one user to be <code>"ADMIN"</code>.<br/>
 <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>if(username.toUpperCase().equals("ADMIN")) {
   //...
@@ -7352,9 +7611,9 @@ It can be an issue if the developer only one user to be <code>"ADMIN"</code>.<br
 </p>
 
 <p>
-Similar characters transformations can occurs with normalization functions.
+Similar characters transformations can occur with normalization functions.
 In the code bellow, the string <code>"BAC\u212AUP"</code> would cause the condition to be true.
-When the normalization transformation is applied, the character `\u212A` will becomme '\u0048' (K).<br/>
+When the normalization transformation is applied, the character `\u212A` will become '\u004B' (K).<br/>
 <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>if(Normalizer.normalize(input, Normalizer.Form.NFC).equals("BACKUP")) {
   //...
 }
@@ -7418,6 +7677,8 @@ if (matcher.find()) {
 <p>
 <b>References</b><br/>
 <a target="_blank" href="https://wiki.sei.cmu.edu/confluence/display/java/IDS11-J.+Perform+any+string+modifications+before+validation">CERT: IDS11-J. Perform any string modifications before validation</a><br/>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/179.html">CWE-179: Incorrect Behavior Order: Early Validation</a><br/>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/182.html">CWE-182: Collapse of Data into Unsafe Value</a><br/>
 </p>
 
             
@@ -7430,7 +7691,7 @@ if (matcher.find()) {
     <section>
         <a class="anchor" name="NORMALIZATION_AFTER_VALIDATION"></a>
         <h2 class="page-header">
-            String is normalzied after validation and not before it
+            String is normalized after validation and not before it
             <a href="#NORMALIZATION_AFTER_VALIDATION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
         </h2>
         <p class="text-muted"><em><small>Bug Pattern: <tt>NORMALIZATION_AFTER_VALIDATION</tt></small></em></p>
@@ -7441,7 +7702,7 @@ if (matcher.find()) {
 A string must not be normalized after validation because it may allow an attacker to bypass validation using a tricky
 string which becomes malicious after the normalization. For example, a program may filter out the &langle;script&rangle; tags from
 HTML input to avoid cross-site scripting (XSS) and other vulnerabilities. However, in unicode, the same string can have
-many different representations. For example, \uFE64 is normalized to &langle; and \uFE65 is normalized to &rangle;. Thus the
+many different representations. For example, \uFE64 is normalized to &langle; and \uFE65 is normalized to &rangle;. Thus,
 if an attacker passes the string "\uFE64" + "script" + "\uFE65" the validation check fails to detect the &langle;script&rangle; tag,
 but thereafter the string is normalized to the &langle;script&rangle; tag in the input:
 <pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>Pattern pattern = Pattern.compile("[<>]"); // Check for angle brackets
@@ -7468,6 +7729,9 @@ if (matcher.find()) {
 <p>
 <b>References</b><br/>
 <a target="_blank" href="https://wiki.sei.cmu.edu/confluence/display/java/IDS01-J.+Normalize+strings+before+validating+them">CERT: IDS01-J. Normalize strings before validating them</a><br/>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/179.html">CWE-179: Incorrect Behavior Order: Early Validation</a><br/>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/180.html">CWE-180: Incorrect Behavior Order: Validate Before Canonicalize</a><br/>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/289.html">CWE-289: Authentication Bypass by Alternate Name</a><br/>
 </p>
 
             
@@ -7515,9 +7779,59 @@ pc.add(new RuntimePermission("createClassLoader"));
 
 <p>References</b><br>
 <a target="_blank" href="https://wiki.sei.cmu.edu/confluence/display/java/ENV03-J.+Do+not+grant+dangerous+combinations+of+permissions">CERT: ENV03-J. Do not grant dangerous combinations of permissions</a><br/>
+<a target="_blank" href="https://cwe.mitre.org/data/definitions/732.html">CWE-732: Incorrect Permission Assignment for Critical Resource</a><br/>
 </p>
             
+        
+
+        <hr/>
+        <br/>
+    </section>
     
+    <section>
+        <a class="anchor" name="POTENTIAL_XML_INJECTION"></a>
+        <h2 class="page-header">
+            An unsafe string is potentially injected into an XML string
+            <a href="#POTENTIAL_XML_INJECTION" title="Permanent link"><small><i class="fa fa-link"></i></small></a>
+        </h2>
+        <p class="text-muted"><em><small>Bug Pattern: <tt>POTENTIAL_XML_INJECTION</tt></small></em></p>
+
+        
+        
+<p>
+Unsafe strings (e.g. from a user input) may contain XML tags. If such a string is inserted into an XML document then it
+may change its structure to a valid but semantically different document. To prevent this unsafe strings must b
+sanitized first.
+</p>
+
+<p>
+<b>Example:</b><br/>
+
+An XML document may look like this:<br/>
+
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>&langle;product&rangle;
+    &langle;name&rangle;Cell Phone&langle;/name&rangle;
+    &langle;price&rangle;800&langle;/price&rangle;
+    &langle;amount&rangle;1&langle;/amount&rangle;
+&langle;/product&rangle;
+</code></pre>
+<br/>
+
+An attacker may put the following string to the field "amount":<br/>
+
+<pre class='keep-initial-line-feed'><code class='code.language-java keep-initial-line-feed'>1&langle;/amount&rangle;&langle;price&rangle;1&langle;/price&rangle;&langle;amount&rangle;1
+</code></pre>
+<br/>
+
+If the XML parser works in a way that the second price overwrites the first one then the attacker may buy the cell
+phone for 1 singe dollar.
+</p>
+
+<p>References</b><br>
+<a target="_blank" href="https://wiki.sei.cmu.edu/confluence/display/java/IDS16-J.+Prevent+XML+Injection">IDS16-J. Prevent XML Injection</a><br/>
+</p>
+        
+        
 
         <hr/>
         <br/>
@@ -7544,7 +7858,7 @@ pc.add(new RuntimePermission("createClassLoader"));
 <footer id="footer" class="footer hidden-print">
     <div class="container text-center">
         <div>
-            Find Security Bugs 1.12.0
+            Find Security Bugs 1.14.0
             <span class="hide-xs">&middot;</span>
             Created by <a target="_blank" href="https://twitter.com/h3xstream">Philippe Arteau</a>
         </div>
